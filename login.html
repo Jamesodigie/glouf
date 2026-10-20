@@ -22,7 +22,7 @@
     <div class="tabs" role="tablist"><button class="on" data-tab="merchant" role="tab">Merchant</button><button data-tab="admin" role="tab">Admin</button></div>
     <form id="mLogin">
       <div class="field"><label for="em">Email</label><input id="em" type="email" required autocomplete="email"></div>
-      <div class="field"><label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password"></div>
+      <div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password"></div>
       <p class="err" id="err"></p>
       <button class="btn btn-blue" type="submit">Log in</button>
       <p class="alt">Don't have an account? <a href="signup.html">Sign up</a></p>
@@ -31,7 +31,7 @@
       <p class="muted" style="margin-bottom:16px">Review go-live submissions, approve merchants and monitor scans across Glouf.</p>
       <button class="btn btn-blue" id="adminGo">Enter admin dashboard</button>
     </div>
-    <p class="note"><b>Prototype:</b> accounts are saved in this browser only, and admin access is open for preview. Real logins need the Glouf backend connected.</p>
+    <p class="note"><b>Open access:</b> while we connect the Glouf backend, any email and password will log you in. Your data is saved in this browser.</p>
   </div></div>
 </div>
 <script src="assets/store.js"></script>

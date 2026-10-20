@@ -61,7 +61,8 @@
     createMerchant: function (f) {
       return S.mutate(function (d) {
         var email = String(f.email || '').trim().toLowerCase();
-        if (d.merchants.some(function (m) { return m.email === email; })) throw new Error('An account with this email already exists on this device. Log in instead.');
+        var ex = d.merchants.filter(function (m) { return m.email === email; })[0];
+        if (ex) { d.session = { role: 'merchant', id: ex.id }; return ex; }
         var m = {
           id: uid('m_'), short: short(f.business, 4), business: f.business.trim(), name: f.name.trim(), email: email,
           phone: f.phone || '', industry: f.industry || '', pass: hash(f.password || ''), createdAt: now(),
@@ -75,14 +76,18 @@
       });
     },
     login: function (email, password) {
-      return S.mutate(function (d) {
-        email = String(email || '').trim().toLowerCase();
-        var m = d.merchants.filter(function (x) { return x.email === email; })[0];
-        if (!m) throw new Error('No merchant account with this email on this device. Create an account first.');
-        if (m.pass && m.pass !== hash(password || '')) throw new Error('That password doesn\'t match. Please try again.');
-        d.session = { role: 'merchant', id: m.id };
-        return m;
-      });
+      /* OPEN ACCESS until the backend is connected: any email and any password
+         logs in. If no account exists for the email on this device, one is created. */
+      email = String(email || '').trim().toLowerCase();
+      if (!email) throw new Error('Enter your email to log in.');
+      var d = read();
+      var m = d.merchants.filter(function (x) { return x.email === email; })[0];
+      if (!m) {
+        var dom = (email.split('@')[1] || '').split('.')[0] || email.split('@')[0];
+        var biz = dom.charAt(0).toUpperCase() + dom.slice(1);
+        return S.createMerchant({ business: biz || 'My business', name: email.split('@')[0], email: email, phone: '', industry: '', password: password || '' });
+      }
+      return S.mutate(function (dd) { dd.session = { role: 'merchant', id: m.id }; return m; });
     },
     loginAdmin: function () { S.mutate(function (d) { d.session = { role: 'admin' }; }); },
     logout: function () { S.mutate(function (d) { d.session = null; }); },

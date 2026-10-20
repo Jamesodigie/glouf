@@ -20,7 +20,7 @@ Marketing site and merchant dashboard prototype for Glouf. Identify the original
 Flow: sign up → set up the dashboard and create products → click **Go live** and submit documents → admin reviews → merchant is alerted when the account is live and codes become active.
 
 ### Important
-The dashboard is a **front-end prototype**. Accounts, products, codes and scans are saved in the visitor's browser (`assets/store.js`, localStorage), and admin access is open. Before real merchants use it, connect it to the Glouf backend: real authentication, a database, secure document storage, real scan data from the Glouf app, and the official Glouf QR code format. Replace the functions in `assets/store.js` with API calls.
+The dashboard is a **front-end prototype**. Accounts, products, codes and scans are saved in the visitor's browser (`assets/store.js`, localStorage). Login is open: any email and any password gets in (a new account is created if the email is new on that device), and admin access is open. Before real merchants use it, connect it to the Glouf backend: real authentication, a database, secure document storage, real scan data from the Glouf app, and the official Glouf QR code format. Replace the functions in `assets/store.js` with API calls.
 
 QR codes are generated with [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT), bundled in `assets/qrcode.js`.
 
