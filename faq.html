@@ -472,6 +472,13 @@ details.faq p{color:var(--muted);padding:0 40px 22px 0}
 .cline:first-of-type{border-top:0}
 .cline span{color:var(--muted);min-width:70px}
 .ph{color:var(--red);font-weight:600}
+.store-btn{display:inline-flex;align-items:center;gap:10px;background:#000;color:#fff;border:1px solid #000;border-radius:11px;padding:8px 18px 8px 13px;min-width:158px;transition:transform .2s,background .2s}
+.store-btn:hover{transform:translateY(-2px);background:#1a1a1a}
+.store-btn svg{width:24px;height:24px;flex:none}
+.store-btn span{display:flex;flex-direction:column;line-height:1.1;font-family:Archivo;font-weight:700;font-size:1.08rem;letter-spacing:-.01em}
+.store-btn small{font-family:"Public Sans";font-size:.6rem;font-weight:600;letter-spacing:.07em;opacity:.8}
+footer .store-btn{border-color:rgba(255,255,255,.28)}
+@media(max-width:640px){.stores .store-btn{flex:1 1 150px;justify-content:center}}
 </style>
 </head>
 <body>
@@ -540,10 +547,7 @@ details.faq p{color:var(--muted);padding:0 40px 22px 0}
       <div>
         <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
         <p>Identify the original amid similarities. A technology by Blimp International Digital Services Limited.</p>
-        <div style="margin-top:20px"><div class="stores">
-  <a class="store" href="https://glouf.com" aria-label="Get Glouf on Google Play"><img class="gp" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play"></a>
-  <a class="store" href="https://glouf.com" aria-label="Download Glouf on the App Store"><img class="ios-img" src="img/app-store-badge.svg" alt="Download on the App Store" hidden onload="this.hidden=false;if(this.nextElementSibling)this.nextElementSibling.remove()"><span class="ios-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>Download on the</small>App Store</span></span></a>
-</div></div>
+        <div style="margin-top:20px"><div class="stores"><a class="store-btn" href="https://glouf.com" aria-label="Get Glouf on Google Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg><span><small>GET IT ON</small>Google Play</span></a><a class="store-btn" href="https://glouf.com" aria-label="Download Glouf on the App Store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>DOWNLOAD ON THE</small>App Store</span></a></div></div>
       </div>
       <div class="fcols">
         <div><b>Product</b><a href="index.html#why">Why Glouf</a><a href="index.html#verify">How to verify</a><a href="index.html#videos">Videos</a></div>
