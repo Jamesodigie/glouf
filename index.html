@@ -667,20 +667,139 @@ details.faq{border-color:var(--line)}
 footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
 .foot-cta{margin-top:22px}
 @media(max-width:640px){footer{border-radius:28px 28px 0 0}}
+
+/* nav dropdown */
+.nav-links{align-items:center}
+.dd{position:relative}
+.dd-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:0;font:inherit;font-weight:600;color:var(--navy);cursor:pointer;padding:6px 0}
+.dd-btn svg{width:12px;height:12px;transition:transform .2s}
+.dd:hover .dd-btn svg,.dd.open .dd-btn svg{transform:rotate(180deg)}
+.dd-menu{position:absolute;top:calc(100% + 10px);left:-18px;width:330px;background:#fff;border-radius:22px;padding:10px;box-shadow:0 30px 60px -25px rgba(10,34,64,.35);opacity:0;visibility:hidden;transform:translateY(6px);transition:all .18s;z-index:60}
+.dd-menu::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+.dd:hover .dd-menu,.dd:focus-within .dd-menu,.dd.open .dd-menu{opacity:1;visibility:visible;transform:none}
+.dd-menu a{display:flex;gap:12px;padding:12px;border-radius:14px;align-items:flex-start}
+.dd-menu a::after{display:none}
+.dd-menu a:hover{background:var(--bg)}
+.dd-menu i{flex:none;width:36px;height:36px;border-radius:11px;background:var(--sky);display:grid;place-items:center;font-style:normal;color:var(--blue)}
+.dd-menu i svg{width:18px;height:18px}
+.dd-menu b{display:block;color:var(--navy);font-size:.95rem}
+.dd-menu span{display:block;color:var(--muted);font-size:.82rem;font-weight:500;line-height:1.4}
+.nav-r .login{font-weight:700;color:var(--navy);padding:0 6px}
+.m-menu .m-sub{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:16px 4px 4px;border:0}
+.m-menu .btn-line{color:var(--navy);margin-top:10px}
+
+/* service cards on home */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.svc-grid{grid-template-columns:1fr}}
+.svc{background:#fff;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;transition:transform .3s}
+.svc:hover{transform:translateY(-6px)}
+.svc .art{padding:18px 18px 0}
+.svc .art svg{width:100%;height:auto;display:block}
+.svc .bd{padding:18px 26px 28px}
+.svc h3{font-size:1.35rem;margin-bottom:8px}
+.svc p{color:var(--muted)}
+
+/* service pages */
+.sec-title{text-align:center;max-width:760px;margin:0 auto 40px}
+.sec-title h2{font-size:clamp(2rem,4vw,3.2rem);margin:10px 0 12px}
+.sec-title p{color:#33445c;font-size:1.06rem}
+.stat-duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.stat-duo div{background:#fff;border-radius:20px;padding:18px}
+.stat-duo b{display:block;font-family:Archivo;font-size:2rem;color:var(--blue);letter-spacing:-.03em}
+.stat-duo span{color:var(--muted);font-size:.9rem}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:860px){.duo{grid-template-columns:1fr}}
+.duo .box{background:#fff;border-radius:28px;padding:32px}
+.duo .box.blue{background:var(--sky)}
+.duo .box h3{font-size:1.4rem;margin:14px 0 8px}
+.duo .box p{color:#33445c}
+.ico{width:48px;height:48px;border-radius:15px;background:var(--sky);color:var(--blue);display:grid;place-items:center}
+.duo .box.blue .ico{background:#fff}
+.ico svg{width:24px;height:24px}
+
+/* voucher page */
+.v-hero{padding:18px 0 10px}
+.v-hero-card{border-radius:36px;background:linear-gradient(135deg,#2a5fe8 0%,#1f4fd8 45%,#0f2f8f 100%);color:#fff;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;padding:72px 64px;position:relative;overflow:hidden;isolation:isolate}
+.v-hero-card::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000)}
+.v-hero h1{color:#fff;font-size:clamp(2.4rem,5vw,4.4rem);margin-bottom:18px}
+.v-hero p{color:#dbe5ff;font-size:1.12rem;max-width:480px;margin-bottom:30px}
+.v-hero .btn-white{background:#fff;color:var(--navy)}
+.v-hero .btn-white:hover{background:var(--yellow)}
+.v-hero .btn-line{border-color:#fff;color:#fff}
+.v-hero .btn-line:hover{background:#fff;color:var(--navy)}
+@media(max-width:960px){.v-hero-card{grid-template-columns:1fr;padding:44px 24px;border-radius:28px}}
+.vcard-wrap{perspective:1200px;display:grid;place-items:center}
+.vcard{width:min(380px,100%);aspect-ratio:1.6;border-radius:24px;padding:26px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0a2240,#173da8 60%,#3b6cf0);box-shadow:0 40px 70px -30px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.15);
+  transform:rotateY(-14deg) rotateX(8deg);transition:transform .5s;animation:vfloat 6s ease-in-out infinite;display:flex;flex-direction:column}
+.vcard-wrap:hover .vcard{transform:rotateY(0) rotateX(0)}
+@keyframes vfloat{50%{translate:0 -10px}}
+.vcard::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.22) 45%,transparent 60%);transform:translateX(-100%);animation:shimmer 4s ease-in-out infinite}
+@keyframes shimmer{60%,100%{transform:translateX(100%)}}
+.vcard .vtop{display:flex;justify-content:space-between;align-items:flex-start}
+.vcard .vbrand{font-family:Archivo;font-weight:800;font-size:1.3rem}
+.vcard .vbrand small{display:block;font-family:"Public Sans";font-weight:600;font-size:.62rem;letter-spacing:.18em;color:#b9c9f5;margin-top:2px}
+.vcard .vamt{font-family:Archivo;font-weight:800;font-size:2rem;color:var(--yellow);letter-spacing:-.02em}
+.vcard .scratch{margin-top:auto;height:46px;border-radius:12px;background:repeating-linear-gradient(135deg,#c9cfd8 0 8px,#bcc3ce 8px 16px);display:grid;place-items:center;color:#5d6878;font-weight:800;letter-spacing:.2em;font-size:.72rem;position:relative;overflow:hidden}
+.vcard .scratch span{position:absolute;inset:0;display:grid;place-items:center;background:#fff;color:var(--navy);font-family:ui-monospace,Menlo,monospace;letter-spacing:.12em;font-size:.95rem;clip-path:inset(0 100% 0 0);transition:clip-path 1s ease}
+.vcard-wrap:hover .scratch span{clip-path:inset(0 0 0 0)}
+.vcard .vfoot{display:flex;justify-content:space-between;font-size:.66rem;color:#b9c9f5;margin-top:10px;letter-spacing:.08em}
+
+.buy{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:start}
+@media(max-width:960px){.buy{grid-template-columns:1fr}}
+.buy .form{padding:34px}
+@media(max-width:640px){.buy .form{padding:22px}}
+.buy h3.fs{font-size:1.02rem;color:var(--navy);margin:22px 0 12px}
+.buy h3.fs:first-of-type{margin-top:0}
+.amts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:480px){.amts{grid-template-columns:repeat(2,1fr)}}
+.amts label{cursor:pointer}
+.amts input{position:absolute;opacity:0}
+.amts span{display:block;text-align:center;padding:16px 8px;border-radius:16px;border:1.5px solid var(--line);background:var(--bg);font-family:Archivo;font-weight:800;font-size:1.15rem;color:var(--navy);transition:all .15s}
+.amts input:checked+span{border-color:var(--blue);background:var(--sky);color:var(--blue)}
+.amts input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:var(--bg);overflow:hidden}
+.qty button{width:44px;height:44px;border:0;background:none;font-size:1.3rem;cursor:pointer;color:var(--navy)}
+.qty input{width:56px;text-align:center;border:0;background:none;font-weight:800;font-size:1.05rem;color:var(--navy);-moz-appearance:textfield}
+.qty input::-webkit-inner-spin-button{display:none}
+.summary{position:sticky;top:100px;background:var(--navy);color:#fff;border-radius:28px;padding:28px}
+@media(max-width:960px){.summary{position:static}}
+.summary h3{color:#fff;font-size:1.2rem;margin-bottom:16px}
+.summary .line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12);color:#b4c3da;font-size:.95rem}
+.summary .line b{color:#fff}
+.summary .total{display:flex;justify-content:space-between;align-items:baseline;padding-top:16px}
+.summary .total b{font-family:Archivo;font-size:2rem;color:var(--yellow)}
+.summary p{color:#b4c3da;font-size:.85rem;margin-top:14px}
+.summary .btn{width:100%;justify-content:center;margin-top:18px;background:#fff;color:var(--navy)}
+.summary .btn:hover{background:var(--yellow)}
+.mini-v{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border-radius:16px;padding:12px;margin-bottom:12px}
+.mini-v i{width:54px;height:34px;border-radius:7px;background:linear-gradient(135deg,#173da8,#3b6cf0);flex:none;position:relative}
+.mini-v i::after{content:"";position:absolute;left:6px;right:6px;bottom:6px;height:7px;border-radius:3px;background:#c9cfd8}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.tips{grid-template-columns:1fr}}
+.tips div{background:#fff;border-radius:24px;padding:26px}
+.tips b{display:block;font-family:Archivo;color:var(--navy);font-size:1.1rem;margin:12px 0 6px}
+.tips p{color:var(--muted);font-size:.94rem}
+.verify-result{margin-top:28px;display:flex;gap:16px;align-items:center;background:#fff;border-radius:22px;padding:20px 22px;max-width:640px}
+.verify-result .vr-ic{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.4rem;flex:none}
+.verify-result b{display:block;font-family:Archivo;color:var(--navy);font-size:1.15rem}
+.verify-result span{color:var(--muted);font-size:.92rem}
+.m-menu .btn{text-align:center;display:flex}
+.m-menu .btn-line{border:1.5px solid var(--navy) !important;background:transparent;color:var(--navy) !important}
 </style>
 </head>
 <body>
-<div class="topbar">Manufacturers: protect your products from counterfeits today.<a href="signup.html">Register as a merchant →</a></div>
 <nav id="nav">
   <div class="wrap nav-in">
     <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
-    <div class="nav-links"><a href="about.html">About us</a><a href="how-it-works.html">How it works</a><a href="manufacturers.html">Manufacturers</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
+    <div class="nav-links"><a href="about.html">About us</a><div class="dd"><button class="dd-btn" type="button" aria-expanded="false">Services <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button><div class="dd-menu"><a href="authentication.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i><span><b>Product authentication</b><span>Verify products and protect your brand</span></span></a><a href="commerce.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg></i><span><b>Commerce</b><span>Quick Buy, merchant tools and sales analytics</span></span></a><a href="payments.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></svg></i><span><b>Self-checkout &amp; payments</b><span>Vouchers, transfers, scan to pay, withdrawals</span></span></a></div></div><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
     <div class="nav-r">
-      <a href="signup.html" class="btn btn-blue">Get started</a>
+      <a href="login.html" class="login">Log in</a>
+      <a href="voucher.html" class="btn btn-blue">Purchase voucher</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
     </div>
   </div>
-  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><a href="how-it-works.html">How it works</a><a href="manufacturers.html">Manufacturers</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="signup.html" class="btn btn-blue">Register as a merchant</a></div>
+  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><span class="m-sub">Services</span><a href="authentication.html">Product authentication</a><a href="commerce.html">Commerce</a><a href="payments.html">Self-checkout &amp; payments</a><span class="m-sub">More</span><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="how-it-works.html">How it works</a><a href="faq.html">FAQ</a><a href="voucher.html" class="btn btn-blue">Purchase voucher</a><a href="signup.html" class="btn btn-line">Register as a merchant</a><a href="login.html" class="btn btn-line">Merchant log in</a></div>
 </nav>
 <main>
 
@@ -695,68 +814,38 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
           <a href="how-it-works.html" class="btn btn-line">How it works</a>
         </div>
       </div>
-      <div class="wa-hero-art fade-up d3"><svg viewBox="0 0 560 500" role="img" aria-label="Supermarket shelf with similar-looking products, and a phone scanning one pack's Glouf code">
-        <!-- wall -->
-        <rect width="560" height="500" fill="#e9f0fd"/>
-        <!-- shelf 1 products -->
-        <g class="sway">
-          <rect x="60" y="88" width="56" height="112" rx="8" fill="#fff"/><rect x="60" y="120" width="56" height="40" fill="#1f4fd8"/><rect x="74" y="72" width="28" height="18" rx="3" fill="#0a2240"/>
-        </g>
-        <g class="sway" style="animation-delay:-1s">
-          <rect x="130" y="88" width="56" height="112" rx="8" fill="#fff"/><rect x="130" y="120" width="56" height="40" fill="#1f4fd8"/><rect x="144" y="72" width="28" height="18" rx="3" fill="#0a2240"/>
-        </g>
-        <g class="sway" style="animation-delay:-2s">
-          <rect x="200" y="88" width="56" height="112" rx="8" fill="#fff"/><rect x="200" y="120" width="56" height="40" fill="#1f4fd8"/><rect x="214" y="72" width="28" height="18" rx="3" fill="#0a2240"/>
-        </g>
-        <rect x="276" y="110" width="74" height="90" rx="6" fill="#ffcb47"/><rect x="276" y="110" width="74" height="22" rx="6" fill="#f0b829"/><rect x="290" y="148" width="46" height="8" rx="4" fill="#fff" opacity=".8"/>
-        <rect x="364" y="110" width="74" height="90" rx="6" fill="#ffcb47"/><rect x="364" y="110" width="74" height="22" rx="6" fill="#f0b829"/><rect x="378" y="148" width="46" height="8" rx="4" fill="#fff" opacity=".8"/>
-        <rect x="452" y="120" width="56" height="80" rx="26" fill="#0a2240"/><rect x="460" y="106" width="40" height="18" rx="4" fill="#5b6b82"/><rect x="452" y="148" width="56" height="20" fill="#fff"/>
-        <!-- shelf plank 1 -->
-        <rect x="30" y="200" width="500" height="16" rx="3" fill="#c7d6ef"/><rect x="30" y="216" width="500" height="6" fill="#aec2e5"/>
-        <rect x="80" y="204" width="34" height="14" rx="2" fill="#fff"/><rect x="300" y="204" width="34" height="14" rx="2" fill="#fff"/>
-
-        <!-- shelf 2 cartons -->
-        <g>
-          <rect x="56" y="290" width="88" height="130" rx="6" fill="#fff"/><rect x="56" y="290" width="88" height="30" rx="6" fill="#0a2240"/><text x="100" y="311" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="13">PURE</text><rect x="70" y="340" width="60" height="6" rx="3" fill="#d5e2fa"/><rect x="70" y="352" width="44" height="6" rx="3" fill="#d5e2fa"/>
-        </g>
-        <!-- highlighted pack with QR -->
-        <g>
-          <rect x="160" y="276" width="100" height="144" rx="6" fill="#fff" stroke="#1f4fd8" stroke-width="3"/><rect x="160" y="276" width="100" height="32" rx="6" fill="#0a2240"/><text x="210" y="298" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="14">PURE</text>
-          <rect x="182" y="322" width="56" height="56" fill="#fff" stroke="#0a2240" stroke-width="2"/>
-          <g fill="#0a2240"><rect x="186" y="326" width="14" height="14"/><rect x="220" y="326" width="14" height="14"/><rect x="186" y="360" width="14" height="14"/><rect x="204" y="328" width="5" height="5"/><rect x="204" y="338" width="5" height="5"/><rect x="211" y="345" width="5" height="5"/><rect x="204" y="352" width="5" height="5"/><rect x="221" y="350" width="5" height="5"/><rect x="227" y="362" width="5" height="5"/><rect x="214" y="366" width="5" height="5"/><rect x="190" y="347" width="5" height="5"/></g>
-          <g fill="#fff"><rect x="189" y="329" width="8" height="8"/><rect x="223" y="329" width="8" height="8"/><rect x="189" y="363" width="8" height="8"/></g>
-          <text x="210" y="398" text-anchor="middle" font-size="9" font-weight="700" fill="#1f4fd8" letter-spacing=".8">VERIFY WITH GLOUF</text>
-          <rect x="182" y="322" width="56" height="3" fill="#1f4fd8" class="scanline"/>
-        </g>
-        <g>
-          <rect x="276" y="290" width="88" height="130" rx="6" fill="#fff"/><rect x="276" y="290" width="88" height="30" rx="6" fill="#0a2240"/><text x="320" y="311" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="13">PURE</text><rect x="290" y="340" width="60" height="6" rx="3" fill="#d5e2fa"/><rect x="290" y="352" width="44" height="6" rx="3" fill="#d5e2fa"/>
-        </g>
-        <!-- shelf plank 2 -->
-        <rect x="30" y="420" width="500" height="16" rx="3" fill="#c7d6ef"/><rect x="30" y="436" width="500" height="6" fill="#aec2e5"/>
-        <rect x="190" y="424" width="40" height="14" rx="2" fill="#ffcb47"/>
-
-        <!-- hand + phone -->
-        <g class="phone-bob">
-          <path d="M560 500 L560 410 C520 400 470 395 440 380 L430 430 C470 450 520 470 540 500 Z" fill="#8b5a3c"/>
-          <rect x="378" y="250" width="112" height="210" rx="18" fill="#0a2240"/>
-          <rect x="386" y="262" width="96" height="186" rx="12" fill="#fff"/>
-          <g class="scr-a">
-            <rect x="386" y="262" width="96" height="186" rx="12" fill="#f6f8fb"/>
-            <rect x="404" y="300" width="60" height="60" rx="6" fill="none" stroke="#1f4fd8" stroke-width="3" stroke-dasharray="14 10"/>
-            <text x="434" y="392" text-anchor="middle" font-size="11" font-weight="700" fill="#0a2240">Scanning…</text>
-            <text x="434" y="408" text-anchor="middle" font-size="8.5" fill="#5b6b82">Hold steady</text>
-          </g>
-          <g class="scr-b">
-            <circle cx="434" cy="320" r="24" fill="#169c55"/>
-            <path d="M423 320l8 8 15-16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" class="tick"/>
-            <text x="434" y="370" text-anchor="middle" font-size="12" font-weight="800" fill="#0a2240" font-family="Archivo">Original</text>
-            <text x="434" y="386" text-anchor="middle" font-size="8.5" fill="#5b6b82">Registered producer</text>
-            <text x="434" y="398" text-anchor="middle" font-size="8.5" fill="#5b6b82">matched</text>
-            <rect x="398" y="414" width="72" height="20" rx="6" fill="#1f4fd8"/><text x="434" y="428" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">View details</text>
-          </g>
-          <path d="M440 380 C428 392 424 410 436 416 L470 420 C480 410 470 392 460 386 Z" fill="#8b5a3c"/>
-        </g>
-      </svg></div>
+      <div class="wa-hero-art fade-up d3"><svg viewBox="0 0 560 500" role="img" aria-label="Shelf of similar-looking bottles, and a phone scanning the Glouf code on one bottle">
+  <rect width="560" height="500" fill="#e9f0fd"/>
+  <g class="sway"><g transform="translate(52 90) scale(0.5)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="4.40"/><rect x="14" y="100" width="72" height="66" fill="#1f4fd8"/></g></g><g class="sway" style="animation-delay:-1s"><g transform="translate(108 90) scale(0.5)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="4.40"/><rect x="14" y="100" width="72" height="66" fill="#1f4fd8"/></g></g><g class="sway" style="animation-delay:-2s"><g transform="translate(164 90) scale(0.5)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="4.40"/><rect x="14" y="100" width="72" height="66" fill="#1f4fd8"/></g></g><g transform="translate(232 115) scale(0.5)"><rect x="20" y="0" width="60" height="26" rx="5" fill="#fff"/><rect x="28" y="24" width="44" height="12" fill="#c97a2b" stroke="#0a2240" stroke-width="4.40"/><rect x="12" y="34" width="76" height="136" rx="14" fill="#c97a2b" stroke="#0a2240" stroke-width="4.40"/><rect x="12" y="72" width="76" height="66" fill="#fff"/></g><g transform="translate(286 115) scale(0.5)"><rect x="20" y="0" width="60" height="26" rx="5" fill="#fff"/><rect x="28" y="24" width="44" height="12" fill="#c97a2b" stroke="#0a2240" stroke-width="4.40"/><rect x="12" y="34" width="76" height="136" rx="14" fill="#c97a2b" stroke="#0a2240" stroke-width="4.40"/><rect x="12" y="72" width="76" height="66" fill="#fff"/></g><g transform="translate(344 95) scale(0.5)"><rect x="50" y="0" width="34" height="9" rx="4" fill="#0a2240"/><rect x="44" y="6" width="12" height="26" fill="#0a2240"/><rect x="34" y="30" width="32" height="16" rx="4" fill="#0a2240"/><rect x="18" y="44" width="64" height="166" rx="18" fill="#f6eadf" stroke="#0a2240" stroke-width="4.40"/><rect x="18" y="96" width="64" height="70" fill="#ffcb47"/></g><g transform="translate(398 95) scale(0.5)"><rect x="50" y="0" width="34" height="9" rx="4" fill="#0a2240"/><rect x="44" y="6" width="12" height="26" fill="#0a2240"/><rect x="34" y="30" width="32" height="16" rx="4" fill="#0a2240"/><rect x="18" y="44" width="64" height="166" rx="18" fill="#f6eadf" stroke="#0a2240" stroke-width="4.40"/><rect x="18" y="96" width="64" height="70" fill="#ffcb47"/></g>
+  <rect x="30" y="200" width="500" height="16" rx="3" fill="#c7d6ef"/><rect x="30" y="216" width="500" height="6" fill="#aec2e5"/>
+  <rect x="70" y="204" width="34" height="14" rx="2" fill="#fff"/><rect x="250" y="204" width="34" height="14" rx="2" fill="#fff"/>
+  <g transform="translate(58 304) scale(0.53)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="4.15"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="139.0" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="17" fill="#fff">PURE</text></g><g transform="translate(140 300) scale(0.56)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#1f4fd8" stroke-width="3.93"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">PURE</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="124.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="48.29" y="133.57" width="5.14" height="5.14" fill="#0a2240"/><rect x="44.86" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="55.14" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="63.14" y="147.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="50.57" y="153.00" width="5.14" height="5.14" fill="#0a2240"/><rect x="58.57" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="35.71" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="25" y="121" width="50" height="5" fill="#1f4fd8" class="scanline" style="filter:drop-shadow(0 0 4px #1f4fd8)"/></g><g transform="translate(222 304) scale(0.53)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="4.15"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="139.0" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="17" fill="#fff">PURE</text></g>
+  <rect x="30" y="420" width="500" height="16" rx="3" fill="#c7d6ef"/><rect x="30" y="436" width="500" height="6" fill="#aec2e5"/>
+  <rect x="160" y="424" width="40" height="14" rx="2" fill="#ffcb47"/>
+  <g class="phone-bob">
+    <path d="M600 520V392c-30-14-70-24-112-22l-36 150z" fill="#8b5a3c"/>
+    <rect x="378" y="250" width="112" height="210" rx="18" fill="#0a2240"/>
+    <rect x="386" y="262" width="96" height="186" rx="12" fill="#fff"/>
+    <g class="scr-a">
+      <rect x="386" y="262" width="96" height="186" rx="12" fill="#f6f8fb"/>
+      <rect x="404" y="300" width="60" height="60" rx="6" fill="none" stroke="#1f4fd8" stroke-width="3" stroke-dasharray="14 10"/>
+      <text x="434" y="392" text-anchor="middle" font-size="11" font-weight="700" fill="#0a2240">Scanning…</text>
+      <text x="434" y="408" text-anchor="middle" font-size="8.5" fill="#5b6b82">Hold steady</text>
+    </g>
+    <g class="scr-b">
+      <circle cx="434" cy="320" r="24" fill="#169c55"/>
+      <path d="M423 320l8 8 15-16" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" class="tick"/>
+      <text x="434" y="370" text-anchor="middle" font-size="12" font-weight="800" fill="#0a2240" font-family="Archivo">Original</text>
+      <text x="434" y="386" text-anchor="middle" font-size="8.5" fill="#5b6b82">Registered producer</text>
+      <text x="434" y="398" text-anchor="middle" font-size="8.5" fill="#5b6b82">matched</text>
+      <rect x="398" y="414" width="72" height="20" rx="10" fill="#1f4fd8"/><text x="434" y="428" text-anchor="middle" font-size="8.5" fill="#fff" font-weight="700">View details</text>
+    </g>
+    <rect x="362" y="330" width="22" height="17" rx="8.5" fill="#8b5a3c"/>
+    <rect x="360" y="352" width="24" height="17" rx="8.5" fill="#8b5a3c"/>
+    <rect x="362" y="374" width="22" height="17" rx="8.5" fill="#7a4d32"/>
+    <rect x="486" y="352" width="20" height="42" rx="10" fill="#8b5a3c"/>
+  </g>
+</svg></div>
     </div>
   </div>
 </header>
@@ -782,7 +871,7 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
       <div class="device">
         <div class="screen">
           <div class="scr cam on">
-            <svg viewBox="0 0 120 150"><rect x="10" y="6" width="100" height="138" rx="6" fill="#fff"/><rect x="10" y="6" width="100" height="30" rx="6" fill="#0a2240"/><text x="60" y="27" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="14">PURE</text><rect x="33" y="50" width="54" height="54" fill="#fff" stroke="#0a2240" stroke-width="2"/><g fill="#0a2240"><rect x="37" y="54" width="14" height="14"/><rect x="69" y="54" width="14" height="14"/><rect x="37" y="86" width="14" height="14"/><rect x="57" y="74" width="7" height="7"/><rect x="70" y="86" width="7" height="7"/><rect x="58" y="58" width="6" height="6"/></g><rect x="30" y="118" width="60" height="6" rx="3" fill="#d5e2fa"/></svg>
+            <svg viewBox="0 0 120 150"><g transform="translate(30 -42) scale(0.9)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="2.44"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">PURE</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="124.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="48.29" y="133.57" width="5.14" height="5.14" fill="#0a2240"/><rect x="44.86" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="55.14" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="63.14" y="147.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="50.57" y="153.00" width="5.14" height="5.14" fill="#0a2240"/><rect x="58.57" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="35.71" y="140.43" width="5.14" height="5.14" fill="#0a2240"/></g></svg>
             <div class="brk"><b></b><b></b><b></b><b></b><em></em></div>
             <div class="cam-cap">Point at the Glouf code</div>
           </div>
@@ -820,16 +909,16 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
     <div class="wa-media reveal" style="background:var(--sky)">
       <div class="compare">
       <div class="cmp reveal" data-cmp>
-        <svg viewBox="0 0 120 170"><rect x="12" y="10" width="96" height="150" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="2"/><rect x="12" y="10" width="96" height="34" rx="6" fill="#0a2240"/><text x="60" y="33" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="15">PURE</text><rect x="34" y="62" width="52" height="52" fill="#fff" stroke="#0a2240" stroke-width="2"/><rect x="38" y="66" width="14" height="14" fill="#0a2240"/><rect x="68" y="66" width="14" height="14" fill="#0a2240"/><rect x="38" y="96" width="14" height="14" fill="#0a2240"/><rect x="58" y="88" width="8" height="8" fill="#0a2240"/><rect x="70" y="98" width="8" height="8" fill="#0a2240"/><rect x="34" y="126" width="52" height="6" rx="3" fill="#d5e2fa"/></svg>
-        <div><h3>Pack A</h3><p>Bought from an authorised distributor.</p><span class="result ok">Tap to scan</span></div>
+        <svg viewBox="0 0 120 170"><g transform="translate(28 4) scale(0.73)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="3.01"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">PURE</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="124.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="48.29" y="133.57" width="5.14" height="5.14" fill="#0a2240"/><rect x="44.86" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="55.14" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="63.14" y="147.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="50.57" y="153.00" width="5.14" height="5.14" fill="#0a2240"/><rect x="58.57" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="35.71" y="140.43" width="5.14" height="5.14" fill="#0a2240"/></g></svg>
+        <div><h3>Bottle A</h3><p>Bought from an authorised distributor.</p><span class="result ok">Tap to scan</span></div>
       </div>
       <div class="cmp reveal" data-cmp>
-        <svg viewBox="0 0 120 170"><rect x="12" y="10" width="96" height="150" rx="6" fill="#fff" stroke="#e2e8f0" stroke-width="2"/><rect x="12" y="10" width="96" height="34" rx="6" fill="#0a2240"/><text x="60" y="33" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="15">PURE</text><rect x="34" y="62" width="52" height="52" fill="#fff" stroke="#0a2240" stroke-width="2"/><rect x="38" y="66" width="14" height="14" fill="#0a2240"/><rect x="68" y="66" width="14" height="14" fill="#0a2240"/><rect x="38" y="96" width="14" height="14" fill="#0a2240"/><rect x="60" y="86" width="8" height="8" fill="#0a2240"/><rect x="72" y="96" width="8" height="8" fill="#0a2240"/><rect x="34" y="126" width="52" height="6" rx="3" fill="#d5e2fa"/></svg>
-        <div><h3>Pack B</h3><p>Bought from a roadside stall.</p><span class="result bad">Tap to scan</span></div>
+        <svg viewBox="0 0 120 170"><g transform="translate(28 4) scale(0.73)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="3.01"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">PURE</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="127.86" width="5.14" height="5.14" fill="#0a2240"/><rect x="46.00" y="135.86" width="5.14" height="5.14" fill="#0a2240"/><rect x="51.71" y="142.71" width="5.14" height="5.14" fill="#0a2240"/><rect x="62.00" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="56.29" y="150.71" width="5.14" height="5.14" fill="#0a2240"/><rect x="47.14" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="64.29" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="39.14" y="139.29" width="5.14" height="5.14" fill="#0a2240"/></g></svg>
+        <div><h3>Bottle B</h3><p>Bought from a roadside stall.</p><span class="result bad">Tap to scan</span></div>
       </div>
     </div>
     
-      <p class="hint">Tap each pack to see what a Glouf scan shows.</p>
+      <p class="hint">Tap each bottle to see what a Glouf scan shows.</p>
     </div>
   </div>
 </section>
@@ -849,53 +938,41 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
       <a class="more" href="verify.html">Learn more <span>›</span></a>
     </div>
     <div class="wa-media reveal" style="background:#fff3d1">
-      <div class="scene"><svg viewBox="0 0 640 420" role="img" aria-label="Animated illustration: packs leaving a factory line, then a shopper scanning a pack and getting a verified result">
+      <div class="scene"><svg viewBox="0 0 640 420" role="img" aria-label="Animated illustration: bottles get Glouf codes at the factory, then a shopper scans a bottle and gets a verified result">
           <rect width="640" height="420" fill="#fff"/>
-          <!-- floor -->
           <rect y="360" width="640" height="60" fill="#f6f8fb"/>
-          <!-- factory side -->
           <rect x="24" y="60" width="250" height="300" rx="10" fill="#e9f0fd"/>
           <path d="M24 110 L84 80 L84 110 L144 80 L144 110 L204 80 L204 110 L274 80 L274 60 L24 60 Z" fill="#d5e2fa"/>
           <text x="40" y="140" font-family="Archivo" font-weight="700" font-size="12" fill="#1f4fd8" letter-spacing="1">AT THE FACTORY</text>
           <rect x="40" y="290" width="218" height="14" rx="7" fill="#aec2e5"/>
           <line x1="48" y1="297" x2="250" y2="297" stroke="#0a2240" stroke-width="2" stroke-dasharray="6 4" class="belt"/>
-          <g class="slide-box">
-            <rect x="110" y="246" width="40" height="44" rx="3" fill="#fff" stroke="#0a2240" stroke-width="1.5"/><rect x="110" y="246" width="40" height="11" fill="#0a2240"/><rect x="120" y="263" width="20" height="20" fill="#fff" stroke="#1f4fd8" stroke-width="2"/><rect x="123" y="266" width="6" height="6" fill="#1f4fd8"/><rect x="131" y="274" width="6" height="6" fill="#1f4fd8"/>
-          </g>
-          <!-- label applicator -->
-          <rect x="112" y="170" width="36" height="50" rx="4" fill="#0a2240"/><rect x="124" y="220" width="12" height="18" fill="#5b6b82"/>
-          <rect x="70" y="180" width="30" height="30" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="2"/><text x="85" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#1f4fd8">QR</text>
+          <g class="slide-box"><g transform="translate(112 222) scale(0.31)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="7.10"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><rect x="24.0" y="107" width="52" height="52" fill="#fff"/><rect x="24.00" y="107.00" width="17.83" height="17.83" fill="#0a2240"/><rect x="28.46" y="111.46" width="8.91" height="8.91" fill="#fff"/><rect x="58.17" y="107.00" width="17.83" height="17.83" fill="#0a2240"/><rect x="62.63" y="111.46" width="8.91" height="8.91" fill="#fff"/><rect x="24.00" y="141.17" width="17.83" height="17.83" fill="#0a2240"/><rect x="28.46" y="145.63" width="8.91" height="8.91" fill="#fff"/><rect x="47.77" y="111.46" width="6.69" height="6.69" fill="#0a2240"/><rect x="47.77" y="123.34" width="6.69" height="6.69" fill="#0a2240"/><rect x="43.31" y="132.26" width="6.69" height="6.69" fill="#0a2240"/><rect x="56.69" y="132.26" width="6.69" height="6.69" fill="#0a2240"/><rect x="67.09" y="141.17" width="6.69" height="6.69" fill="#0a2240"/><rect x="50.74" y="148.60" width="6.69" height="6.69" fill="#0a2240"/><rect x="61.14" y="151.57" width="6.69" height="6.69" fill="#0a2240"/><rect x="31.43" y="132.26" width="6.69" height="6.69" fill="#0a2240"/></g><g transform="translate(52 222) scale(0.31)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="7.10"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><rect x="24.0" y="107" width="52" height="52" fill="#fff"/><rect x="24.00" y="107.00" width="17.83" height="17.83" fill="#0a2240"/><rect x="28.46" y="111.46" width="8.91" height="8.91" fill="#fff"/><rect x="58.17" y="107.00" width="17.83" height="17.83" fill="#0a2240"/><rect x="62.63" y="111.46" width="8.91" height="8.91" fill="#fff"/><rect x="24.00" y="141.17" width="17.83" height="17.83" fill="#0a2240"/><rect x="28.46" y="145.63" width="8.91" height="8.91" fill="#fff"/><rect x="47.77" y="111.46" width="6.69" height="6.69" fill="#0a2240"/><rect x="47.77" y="123.34" width="6.69" height="6.69" fill="#0a2240"/><rect x="43.31" y="132.26" width="6.69" height="6.69" fill="#0a2240"/><rect x="56.69" y="132.26" width="6.69" height="6.69" fill="#0a2240"/><rect x="67.09" y="141.17" width="6.69" height="6.69" fill="#0a2240"/><rect x="50.74" y="148.60" width="6.69" height="6.69" fill="#0a2240"/><rect x="61.14" y="151.57" width="6.69" height="6.69" fill="#0a2240"/><rect x="31.43" y="132.26" width="6.69" height="6.69" fill="#0a2240"/></g></g>
+          <rect x="112" y="170" width="36" height="40" rx="4" fill="#0a2240"/><rect x="124" y="208" width="12" height="12" fill="#5b6b82"/>
+          <rect x="70" y="176" width="30" height="30" rx="4" fill="#fff" stroke="#1f4fd8" stroke-width="2"/><text x="85" y="196" text-anchor="middle" font-size="9" font-weight="700" fill="#1f4fd8">QR</text>
           <text x="40" y="340" font-size="11" fill="#5b6b82">Glouf codes applied on the line</text>
-
-          <!-- arrow -->
           <path d="M290 210 h30" stroke="#aec2e5" stroke-width="3" stroke-dasharray="5 5"/><path d="M318 202l10 8-10 8" fill="none" stroke="#aec2e5" stroke-width="3"/>
-
-          <!-- shop side -->
           <text x="350" y="76" font-family="Archivo" font-weight="700" font-size="12" fill="#1f4fd8" letter-spacing="1">IN THE SHOP</text>
           <rect x="340" y="300" width="290" height="14" rx="3" fill="#c7d6ef"/>
-          <rect x="356" y="196" width="76" height="104" rx="5" fill="#fff" stroke="#0a2240" stroke-width="2"/><rect x="356" y="196" width="76" height="24" fill="#0a2240"/><text x="394" y="213" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="11">PURE</text>
-          <rect x="374" y="230" width="40" height="40" fill="#fff" stroke="#0a2240" stroke-width="1.5"/><rect x="377" y="233" width="10" height="10" fill="#0a2240"/><rect x="401" y="233" width="10" height="10" fill="#0a2240"/><rect x="377" y="257" width="10" height="10" fill="#0a2240"/><rect x="392" y="248" width="5" height="5" fill="#0a2240"/><rect x="401" y="258" width="5" height="5" fill="#0a2240"/>
-          <rect x="374" y="230" width="40" height="3" fill="#1f4fd8" class="beam2"/>
-          <!-- person -->
+          <g transform="translate(352 152) scale(0.68)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="3.24"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">PURE</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="124.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="48.29" y="133.57" width="5.14" height="5.14" fill="#0a2240"/><rect x="44.86" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="55.14" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="63.14" y="147.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="50.57" y="153.00" width="5.14" height="5.14" fill="#0a2240"/><rect x="58.57" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="35.71" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="23" y="121" width="54" height="4" fill="#1f4fd8" class="beam2"/></g>
           <path d="M500 420 C500 340 516 300 548 288 L590 288 C620 300 636 340 640 420 Z" fill="#1f4fd8"/>
           <rect x="558" y="258" width="22" height="34" rx="8" fill="#8b5a3c"/>
           <circle cx="568" cy="232" r="34" fill="#8b5a3c"/>
           <path d="M534 226 C532 192 560 186 576 192 C596 198 604 216 600 232 C592 216 572 210 556 216 C546 220 540 228 534 226 Z" fill="#1b1b1b"/>
           <circle cx="552" cy="236" r="3" fill="#1b1b1b"/>
           <g class="arm">
-            <path d="M548 318 C520 312 486 300 470 290" stroke="#1f4fd8" stroke-width="22" stroke-linecap="round" fill="none"/>
-            <circle cx="466" cy="288" r="12" fill="#8b5a3c"/>
+            <path d="M548 318 C520 312 490 302 476 296" stroke="#1f4fd8" stroke-width="22" stroke-linecap="round" fill="none"/>
+            <circle cx="476" cy="296" r="12" fill="#8b5a3c"/>
             <rect x="440" y="242" width="32" height="58" rx="6" fill="#0a2240"/>
             <rect x="443" y="247" width="26" height="48" rx="3" fill="#f6f8fb" class="ps-a"/>
             <rect x="447" y="256" width="18" height="18" fill="none" stroke="#1f4fd8" stroke-width="2" stroke-dasharray="4 3" class="ps-a"/>
             <g class="ps-b"><rect x="443" y="247" width="26" height="48" rx="3" fill="#169c55"/><path d="M449 270l5 5 9-10" stroke="#fff" stroke-width="2.8" fill="none" stroke-linecap="round"/></g>
+            <rect x="472" y="262" width="8" height="20" rx="4" fill="#8b5a3c"/>
           </g>
-          <!-- toast -->
           <g class="toast">
-            <rect x="350" y="100" width="230" height="64" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
-            <circle cx="382" cy="132" r="15" fill="#e4f6ec"/><path d="M375 132l5 5 9-10" stroke="#169c55" stroke-width="2.8" fill="none" stroke-linecap="round"/>
-            <text x="406" y="128" font-family="Archivo" font-weight="800" font-size="14" fill="#0a2240">Verified original</text>
-            <text x="406" y="146" font-size="11" fill="#5b6b82">Pure Dairy Ltd · registered</text>
+            <rect x="350" y="96" width="230" height="64" rx="14" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
+            <circle cx="382" cy="128" r="15" fill="#e4f6ec"/><path d="M375 128l5 5 9-10" stroke="#169c55" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+            <text x="406" y="124" font-family="Archivo" font-weight="800" font-size="14" fill="#0a2240">Verified original</text>
+            <text x="406" y="142" font-size="11" fill="#5b6b82">Pure Dairy Ltd · registered</text>
           </g>
         </svg></div>
     </div>
@@ -907,14 +984,14 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
     <div class="wa-text reveal">
       <span class="label">For manufacturers</span>
       <h2>On Glouf in four steps.</h2>
-      <p>No new machinery needed. If you can print a label, you can use Glouf.</p>
+      <p>Start setting up right away. You only need your documents when you're ready to go live.</p>
       <ol class="mini">
-        <li><b>Create an account</b><span>Download the Glouf app or use our sign-up page.</span></li>
-        <li><b>Sign up as a merchant</b><span>Register your company and the products you want to protect.</span></li>
-        <li><b>Get your QR codes</b><span>Unique codes linked to each registered product.</span></li>
-        <li><b>Paste on your product</b><span>Apply them before goods leave your floor.</span></li>
+        <li><b>Create your merchant account</b><span>Sign up and go straight to your dashboard.</span></li>
+        <li><b>Set up and create products</b><span>Add products and stores, and try test QR codes.</span></li>
+        <li><b>Click "Go live"</b><span>Submit your business documents. We review them and alert you when you're live.</span></li>
+        <li><b>Print and paste your codes</b><span>Your codes are active. Apply them before goods leave your floor.</span></li>
       </ol>
-      <div class="hero-btns"><a href="signup.html" class="btn btn-blue">Register as a merchant</a></div>
+      <div class="hero-btns"><a href="signup.html" class="btn btn-blue">Register as a merchant</a><a href="login.html" class="btn btn-line">Log in</a></div>
       <a class="more" href="manufacturers.html">Learn more <span>›</span></a>
     </div>
     <div class="wa-media reveal" style="background:var(--sky)"><div class="dash">
@@ -938,6 +1015,35 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
   </div>
 </section>
 
+<section style="padding:70px 0 30px" id="services">
+  <div class="wrap">
+    <div class="sec-title reveal"><span class="label">Our services</span><h2>One platform for authentic products and easy payments.</h2></div>
+    <div class="svc-grid">
+      <a class="svc reveal" href="authentication.html"><div class="art"><svg viewBox="0 0 320 240" role="img" aria-label="Phone scanning a bottle's Glouf code">
+  <g transform="translate(40 20) scale(0.95)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="2.32"/><rect x="14" y="100" width="72" height="66" fill="#0a2240"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">PURE</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="124.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="48.29" y="133.57" width="5.14" height="5.14" fill="#0a2240"/><rect x="44.86" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="55.14" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="63.14" y="147.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="50.57" y="153.00" width="5.14" height="5.14" fill="#0a2240"/><rect x="58.57" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="35.71" y="140.43" width="5.14" height="5.14" fill="#0a2240"/></g>
+  <rect x="190" y="30" width="96" height="180" rx="16" fill="#0a2240"/><rect x="197" y="40" width="82" height="160" rx="10" fill="#fff"/><circle cx="238" cy="100" r="22" fill="#169c55"/><path d="M228 100l7 7 14-15" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><text x="238" y="146" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="13" fill="#0a2240">Original</text><rect x="210" y="160" width="56" height="8" rx="4" fill="#d5e2fa"/><rect x="216" y="174" width="44" height="8" rx="4" fill="#d5e2fa"/>
+  <path d="M150 128h32" stroke="#1f4fd8" stroke-width="3" stroke-dasharray="5 5"/>
+</svg></div><div class="bd"><h3>Product authentication</h3><p>Shoppers verify genuine products in the Glouf app. Merchants protect their products with unique codes.</p><span class="more">Learn more <span>›</span></span></div></a>
+      <a class="svc reveal" href="commerce.html"><div class="art"><svg viewBox="0 0 320 240" role="img" aria-label="Shopper scans a bottle in store and pays instantly">
+  <g transform="translate(30 40) scale(0.8)"><rect x="20" y="0" width="60" height="26" rx="5" fill="#fff"/><rect x="28" y="24" width="44" height="12" fill="#c97a2b" stroke="#0a2240" stroke-width="2.75"/><rect x="12" y="34" width="76" height="136" rx="14" fill="#c97a2b" stroke="#0a2240" stroke-width="2.75"/><rect x="12" y="72" width="76" height="66" fill="#fff"/><rect x="24.0" y="79" width="52" height="52" fill="#fff"/><rect x="24.00" y="79.00" width="17.83" height="17.83" fill="#0a2240"/><rect x="28.46" y="83.46" width="8.91" height="8.91" fill="#fff"/><rect x="58.17" y="79.00" width="17.83" height="17.83" fill="#0a2240"/><rect x="62.63" y="83.46" width="8.91" height="8.91" fill="#fff"/><rect x="24.00" y="113.17" width="17.83" height="17.83" fill="#0a2240"/><rect x="28.46" y="117.63" width="8.91" height="8.91" fill="#fff"/><rect x="47.77" y="83.46" width="6.69" height="6.69" fill="#0a2240"/><rect x="47.77" y="95.34" width="6.69" height="6.69" fill="#0a2240"/><rect x="43.31" y="104.26" width="6.69" height="6.69" fill="#0a2240"/><rect x="56.69" y="104.26" width="6.69" height="6.69" fill="#0a2240"/><rect x="67.09" y="113.17" width="6.69" height="6.69" fill="#0a2240"/><rect x="50.74" y="120.60" width="6.69" height="6.69" fill="#0a2240"/><rect x="61.14" y="123.57" width="6.69" height="6.69" fill="#0a2240"/><rect x="31.43" y="104.26" width="6.69" height="6.69" fill="#0a2240"/></g>
+  <rect x="150" y="20" width="110" height="200" rx="16" fill="#0a2240"/><rect x="157" y="30" width="96" height="180" rx="10" fill="#fff"/><text x="205" y="62" text-anchor="middle" font-family="Archivo" font-weight="800" font-size="12" fill="#0a2240">Quick Buy</text><rect x="167" y="74" width="76" height="36" rx="8" fill="#e9f0fd"/><text x="175" y="90" font-size="8" fill="#5b6b82">Vitamin C 500mg</text><text x="175" y="103" font-size="10" font-weight="800" fill="#0a2240">₦4,500</text><rect x="167" y="118" width="76" height="8" rx="4" fill="#e2e8f0"/><rect x="167" y="132" width="56" height="8" rx="4" fill="#e2e8f0"/><rect x="167" y="172" width="76" height="24" rx="12" fill="#169c55"/><text x="205" y="188" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">Paid ✓</text>
+</svg></div><div class="bd"><h3>Commerce</h3><p>Quick Buy lets shoppers scan and pay in store, with no queue. Plus product tools and sales analytics.</p><span class="more">Learn more <span>›</span></span></div></a>
+      <a class="svc reveal" href="payments.html"><div class="art"><svg viewBox="0 0 320 240" role="img" aria-label="Glouf recharge voucher card">
+  <g transform="rotate(-8 160 120)">
+    <rect x="40" y="52" width="240" height="140" rx="18" fill="#1f4fd8"/>
+    <rect x="40" y="52" width="240" height="140" rx="18" fill="url(#vg)"/>
+    <defs><linearGradient id="vg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b6cf0"/><stop offset="1" stop-color="#0a2240"/></linearGradient></defs>
+    <text x="62" y="86" font-family="Archivo" font-weight="800" font-size="16" fill="#fff">Glouf</text>
+    <text x="62" y="104" font-size="9" fill="#cdd8ea" letter-spacing="1.5">RECHARGE VOUCHER</text>
+    <text x="258" y="92" text-anchor="end" font-family="Archivo" font-weight="800" font-size="24" fill="#ffcb47">₦5,000</text>
+    <rect x="62" y="132" width="196" height="30" rx="8" fill="#c9cfd8"/>
+    <text x="160" y="152" text-anchor="middle" font-size="10" font-weight="700" fill="#6b7686" letter-spacing="2">SCRATCH HERE</text>
+  </g>
+</svg></div><div class="bd"><h3>Self-checkout &amp; payments</h3><p>Vouchers, bank transfers, scan to pay, a payment API and instant withdrawals.</p><span class="more">Learn more <span>›</span></span></div></a>
+    </div>
+  </div>
+</section>
+
 <section class="wa-row rev">
   <div class="wrap wa-row-in">
     <div class="wa-text reveal">
@@ -950,7 +1056,10 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
       </div>
       <a class="more" href="about.html">About Glouf <span>›</span></a>
     </div>
-    <div class="wa-media art-panel reveal" style="background:var(--navy)"><svg viewBox="0 0 220 220"><rect x="40" y="30" width="140" height="170" rx="10" fill="#fff" stroke="#0a2240" stroke-width="3"/><rect x="40" y="30" width="140" height="40" rx="10" fill="#0a2240"/><text x="110" y="57" text-anchor="middle" fill="#fff" font-family="Archivo" font-weight="800" font-size="15">YOUR BRAND</text><g transform="rotate(-6 110 130)"><rect x="70" y="92" width="80" height="80" rx="6" fill="#ffcb47"/><rect x="80" y="102" width="60" height="60" fill="#fff"/><g fill="#0a2240"><rect x="84" y="106" width="16" height="16"/><rect x="120" y="106" width="16" height="16"/><rect x="84" y="142" width="16" height="16"/><rect x="106" y="128" width="7" height="7"/><rect x="122" y="140" width="7" height="7"/><rect x="128" y="150" width="7" height="7"/></g></g><circle cx="176" cy="44" r="22" fill="#169c55"/><path d="M166 44l7 7 13-14" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="wa-media art-panel reveal" style="background:var(--navy)"><svg viewBox="0 0 220 220" role="img" aria-label="Your brand's bottle with a Glouf code, verified">
+  <g transform="translate(58 6) scale(0.95)"><rect x="38" y="0" width="24" height="15" rx="3" fill="#0a2240"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="#ffffff" stroke="#0a2240" stroke-width="2.32"/><rect x="14" y="100" width="72" height="66" fill="#1f4fd8"/><text x="50" y="115" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="12" fill="#fff">BRAND</text><rect x="30.0" y="121" width="40" height="40" fill="#fff"/><rect x="30.00" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="56.29" y="121.00" width="13.71" height="13.71" fill="#0a2240"/><rect x="59.71" y="124.43" width="6.86" height="6.86" fill="#fff"/><rect x="30.00" y="147.29" width="13.71" height="13.71" fill="#0a2240"/><rect x="33.43" y="150.71" width="6.86" height="6.86" fill="#fff"/><rect x="48.29" y="124.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="48.29" y="133.57" width="5.14" height="5.14" fill="#0a2240"/><rect x="44.86" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="55.14" y="140.43" width="5.14" height="5.14" fill="#0a2240"/><rect x="63.14" y="147.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="50.57" y="153.00" width="5.14" height="5.14" fill="#0a2240"/><rect x="58.57" y="155.29" width="5.14" height="5.14" fill="#0a2240"/><rect x="35.71" y="140.43" width="5.14" height="5.14" fill="#0a2240"/></g>
+  <circle cx="160" cy="40" r="22" fill="#169c55"/><path d="M150 40l7 7 13-14" stroke="#fff" stroke-width="4.0" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
   </div>
 </section>
 
@@ -999,21 +1108,24 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
       <div>
         <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
         <p>Identify the original amid similarities. A technology by Blimp International Digital Services Limited.</p>
+        <p style="margin-top:10px">No. 7 Bamisile Street, Alimosho, Lagos, Nigeria<br>Support: Monday to Saturday, 8:00 AM to 6:00 PM</p>
         <a href="signup.html" class="btn btn-blue foot-cta">Register as a merchant</a>
       </div>
       <div class="fcols">
-        <div><b>Product</b><a href="how-it-works.html">How it works</a><a href="verify.html">Verify a product</a><a href="index.html#videos">Videos</a><a href="blog.html">Blog</a></div>
-        <div><b>Merchants</b><a href="manufacturers.html">For manufacturers</a><a href="signup.html">Merchant sign-up</a><a href="faq.html#merchants">Merchant FAQ</a></div>
-        <div><b>Company</b><a href="about.html">About us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="contact.html#report">Report a fake</a></div>
+        <div><b>Services</b><a href="authentication.html">Product authentication</a><a href="commerce.html">Commerce</a><a href="payments.html">Self-checkout &amp; payments</a><a href="voucher.html">Purchase voucher</a></div>
+        <div><b>Merchants</b><a href="manufacturers.html">For manufacturers</a><a href="how-it-works.html">How it works</a><a href="signup.html">Create an account</a><a href="login.html">Merchant log in</a><a href="faq.html#merchants">Merchant FAQ</a></div>
+        <div><b>Company</b><a href="about.html">About us</a><a href="verify.html">Verify a product</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="contact.html#report">Report a fake</a></div>
       </div>
     </div>
-    <p class="copy">© <span id="yr"></span> Blimp International Digital Services Limited. All rights reserved.</p>
+    <div class="copy" style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap"><span>© <span id="yr"></span> Blimp International Digital Services Limited · CAC RC: 8037834</span><a href="https://x.com/blimppay" target="_blank" rel="noopener" aria-label="Glouf on X" style="display:inline-flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.7 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.5 4.7H5.7z"/></svg> @blimppay</a></div>
   </div>
 </footer>
 <script>
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10));
 document.getElementById('yr').textContent=new Date().getFullYear();
+document.querySelectorAll('.dd-btn').forEach(b=>b.addEventListener('click',e=>{const d=b.parentNode,o=!d.classList.contains('open');d.classList.toggle('open',o);b.setAttribute('aria-expanded',o);e.stopPropagation()}));
+document.addEventListener('click',e=>{if(!e.target.closest('.dd'))document.querySelectorAll('.dd.open').forEach(d=>{d.classList.remove('open');d.querySelector('.dd-btn').setAttribute('aria-expanded','false')})});
 const menuBtn=document.getElementById('menuBtn');
 menuBtn.addEventListener('click',()=>{const o=nav.classList.toggle('menu-open');menuBtn.setAttribute('aria-expanded',o)});
 document.querySelectorAll('#mMenu a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('menu-open')));
@@ -1051,5 +1163,6 @@ document.querySelectorAll('form[data-mail]').forEach(form=>form.addEventListener
   location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent('Glouf '+subj)+'&body='+encodeURIComponent(lines.join('\n'));
   msg.style.display='block'}));
 </script>
+
 </body>
 </html>

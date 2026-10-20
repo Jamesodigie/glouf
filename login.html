@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Log in · Glouf</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+</head>
+<body>
+<div class="auth">
+  <div class="auth-art">
+    <a href="index.html" class="logo"><svg width="30" height="30" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#fff"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#1f4fd8"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
+    <div><h2>Welcome back.</h2><p>Manage your products, print your codes and see where they're being scanned.</p></div>
+    <p style="font-size:.85rem">CAC RC: 8037834</p>
+  </div>
+  <div class="auth-form"><div class="box">
+    <h1>Log in</h1><p class="lead">New to Glouf? <a href="signup.html" style="color:var(--blue);font-weight:700">Create a merchant account</a></p>
+    <div class="tabs" role="tablist"><button class="on" data-tab="merchant" role="tab">Merchant</button><button data-tab="admin" role="tab">Admin</button></div>
+    <form id="mLogin">
+      <div class="field"><label for="em">Email</label><input id="em" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="pw">Password</label><input id="pw" type="password" required autocomplete="current-password"></div>
+      <p class="err" id="err"></p>
+      <button class="btn btn-blue" type="submit">Log in</button>
+      <p class="alt">Don't have an account? <a href="signup.html">Sign up</a></p>
+    </form>
+    <div id="aLogin" hidden>
+      <p class="muted" style="margin-bottom:16px">Review go-live submissions, approve merchants and monitor scans across Glouf.</p>
+      <button class="btn btn-blue" id="adminGo">Enter admin dashboard</button>
+    </div>
+    <p class="note"><b>Prototype:</b> accounts are saved in this browser only, and admin access is open for preview. Real logins need the Glouf backend connected.</p>
+  </div></div>
+</div>
+<script src="assets/store.js"></script>
+<script>
+(function(){
+  var S=GloufStore, s=S.session();
+  if(s&&s.role==='merchant'&&S.current()) location.replace('dashboard.html');
+  function tab(t){document.querySelectorAll('[data-tab]').forEach(function(b){b.classList.toggle('on',b.dataset.tab===t)});document.getElementById('mLogin').hidden=t!=='merchant';document.getElementById('aLogin').hidden=t!=='admin'}
+  document.querySelectorAll('[data-tab]').forEach(function(b){b.onclick=function(){tab(b.dataset.tab)}});
+  if(location.hash==='#admin')tab('admin');
+  document.getElementById('mLogin').onsubmit=function(e){e.preventDefault();
+    try{S.login(document.getElementById('em').value,document.getElementById('pw').value);location.href='dashboard.html'}catch(err){document.getElementById('err').textContent=err.message}};
+  document.getElementById('adminGo').onclick=function(){S.loginAdmin();location.href='admin.html'};
+})();
+</script>
+</body>
+</html>

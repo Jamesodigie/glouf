@@ -667,20 +667,139 @@ details.faq{border-color:var(--line)}
 footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
 .foot-cta{margin-top:22px}
 @media(max-width:640px){footer{border-radius:28px 28px 0 0}}
+
+/* nav dropdown */
+.nav-links{align-items:center}
+.dd{position:relative}
+.dd-btn{display:inline-flex;align-items:center;gap:5px;background:none;border:0;font:inherit;font-weight:600;color:var(--navy);cursor:pointer;padding:6px 0}
+.dd-btn svg{width:12px;height:12px;transition:transform .2s}
+.dd:hover .dd-btn svg,.dd.open .dd-btn svg{transform:rotate(180deg)}
+.dd-menu{position:absolute;top:calc(100% + 10px);left:-18px;width:330px;background:#fff;border-radius:22px;padding:10px;box-shadow:0 30px 60px -25px rgba(10,34,64,.35);opacity:0;visibility:hidden;transform:translateY(6px);transition:all .18s;z-index:60}
+.dd-menu::before{content:"";position:absolute;left:0;right:0;top:-14px;height:14px}
+.dd:hover .dd-menu,.dd:focus-within .dd-menu,.dd.open .dd-menu{opacity:1;visibility:visible;transform:none}
+.dd-menu a{display:flex;gap:12px;padding:12px;border-radius:14px;align-items:flex-start}
+.dd-menu a::after{display:none}
+.dd-menu a:hover{background:var(--bg)}
+.dd-menu i{flex:none;width:36px;height:36px;border-radius:11px;background:var(--sky);display:grid;place-items:center;font-style:normal;color:var(--blue)}
+.dd-menu i svg{width:18px;height:18px}
+.dd-menu b{display:block;color:var(--navy);font-size:.95rem}
+.dd-menu span{display:block;color:var(--muted);font-size:.82rem;font-weight:500;line-height:1.4}
+.nav-r .login{font-weight:700;color:var(--navy);padding:0 6px}
+.m-menu .m-sub{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:16px 4px 4px;border:0}
+.m-menu .btn-line{color:var(--navy);margin-top:10px}
+
+/* service cards on home */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.svc-grid{grid-template-columns:1fr}}
+.svc{background:#fff;border-radius:28px;overflow:hidden;display:flex;flex-direction:column;transition:transform .3s}
+.svc:hover{transform:translateY(-6px)}
+.svc .art{padding:18px 18px 0}
+.svc .art svg{width:100%;height:auto;display:block}
+.svc .bd{padding:18px 26px 28px}
+.svc h3{font-size:1.35rem;margin-bottom:8px}
+.svc p{color:var(--muted)}
+
+/* service pages */
+.sec-title{text-align:center;max-width:760px;margin:0 auto 40px}
+.sec-title h2{font-size:clamp(2rem,4vw,3.2rem);margin:10px 0 12px}
+.sec-title p{color:#33445c;font-size:1.06rem}
+.stat-duo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.stat-duo div{background:#fff;border-radius:20px;padding:18px}
+.stat-duo b{display:block;font-family:Archivo;font-size:2rem;color:var(--blue);letter-spacing:-.03em}
+.stat-duo span{color:var(--muted);font-size:.9rem}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:860px){.duo{grid-template-columns:1fr}}
+.duo .box{background:#fff;border-radius:28px;padding:32px}
+.duo .box.blue{background:var(--sky)}
+.duo .box h3{font-size:1.4rem;margin:14px 0 8px}
+.duo .box p{color:#33445c}
+.ico{width:48px;height:48px;border-radius:15px;background:var(--sky);color:var(--blue);display:grid;place-items:center}
+.duo .box.blue .ico{background:#fff}
+.ico svg{width:24px;height:24px}
+
+/* voucher page */
+.v-hero{padding:18px 0 10px}
+.v-hero-card{border-radius:36px;background:linear-gradient(135deg,#2a5fe8 0%,#1f4fd8 45%,#0f2f8f 100%);color:#fff;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;padding:72px 64px;position:relative;overflow:hidden;isolation:isolate}
+.v-hero-card::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(rgba(255,255,255,.14) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(90deg,transparent,#000);mask-image:linear-gradient(90deg,transparent,#000)}
+.v-hero h1{color:#fff;font-size:clamp(2.4rem,5vw,4.4rem);margin-bottom:18px}
+.v-hero p{color:#dbe5ff;font-size:1.12rem;max-width:480px;margin-bottom:30px}
+.v-hero .btn-white{background:#fff;color:var(--navy)}
+.v-hero .btn-white:hover{background:var(--yellow)}
+.v-hero .btn-line{border-color:#fff;color:#fff}
+.v-hero .btn-line:hover{background:#fff;color:var(--navy)}
+@media(max-width:960px){.v-hero-card{grid-template-columns:1fr;padding:44px 24px;border-radius:28px}}
+.vcard-wrap{perspective:1200px;display:grid;place-items:center}
+.vcard{width:min(380px,100%);aspect-ratio:1.6;border-radius:24px;padding:26px;color:#fff;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0a2240,#173da8 60%,#3b6cf0);box-shadow:0 40px 70px -30px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.15);
+  transform:rotateY(-14deg) rotateX(8deg);transition:transform .5s;animation:vfloat 6s ease-in-out infinite;display:flex;flex-direction:column}
+.vcard-wrap:hover .vcard{transform:rotateY(0) rotateX(0)}
+@keyframes vfloat{50%{translate:0 -10px}}
+.vcard::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.22) 45%,transparent 60%);transform:translateX(-100%);animation:shimmer 4s ease-in-out infinite}
+@keyframes shimmer{60%,100%{transform:translateX(100%)}}
+.vcard .vtop{display:flex;justify-content:space-between;align-items:flex-start}
+.vcard .vbrand{font-family:Archivo;font-weight:800;font-size:1.3rem}
+.vcard .vbrand small{display:block;font-family:"Public Sans";font-weight:600;font-size:.62rem;letter-spacing:.18em;color:#b9c9f5;margin-top:2px}
+.vcard .vamt{font-family:Archivo;font-weight:800;font-size:2rem;color:var(--yellow);letter-spacing:-.02em}
+.vcard .scratch{margin-top:auto;height:46px;border-radius:12px;background:repeating-linear-gradient(135deg,#c9cfd8 0 8px,#bcc3ce 8px 16px);display:grid;place-items:center;color:#5d6878;font-weight:800;letter-spacing:.2em;font-size:.72rem;position:relative;overflow:hidden}
+.vcard .scratch span{position:absolute;inset:0;display:grid;place-items:center;background:#fff;color:var(--navy);font-family:ui-monospace,Menlo,monospace;letter-spacing:.12em;font-size:.95rem;clip-path:inset(0 100% 0 0);transition:clip-path 1s ease}
+.vcard-wrap:hover .scratch span{clip-path:inset(0 0 0 0)}
+.vcard .vfoot{display:flex;justify-content:space-between;font-size:.66rem;color:#b9c9f5;margin-top:10px;letter-spacing:.08em}
+
+.buy{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:start}
+@media(max-width:960px){.buy{grid-template-columns:1fr}}
+.buy .form{padding:34px}
+@media(max-width:640px){.buy .form{padding:22px}}
+.buy h3.fs{font-size:1.02rem;color:var(--navy);margin:22px 0 12px}
+.buy h3.fs:first-of-type{margin-top:0}
+.amts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:480px){.amts{grid-template-columns:repeat(2,1fr)}}
+.amts label{cursor:pointer}
+.amts input{position:absolute;opacity:0}
+.amts span{display:block;text-align:center;padding:16px 8px;border-radius:16px;border:1.5px solid var(--line);background:var(--bg);font-family:Archivo;font-weight:800;font-size:1.15rem;color:var(--navy);transition:all .15s}
+.amts input:checked+span{border-color:var(--blue);background:var(--sky);color:var(--blue)}
+.amts input:focus-visible+span{outline:2px solid var(--blue);outline-offset:2px}
+.qty{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;background:var(--bg);overflow:hidden}
+.qty button{width:44px;height:44px;border:0;background:none;font-size:1.3rem;cursor:pointer;color:var(--navy)}
+.qty input{width:56px;text-align:center;border:0;background:none;font-weight:800;font-size:1.05rem;color:var(--navy);-moz-appearance:textfield}
+.qty input::-webkit-inner-spin-button{display:none}
+.summary{position:sticky;top:100px;background:var(--navy);color:#fff;border-radius:28px;padding:28px}
+@media(max-width:960px){.summary{position:static}}
+.summary h3{color:#fff;font-size:1.2rem;margin-bottom:16px}
+.summary .line{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.12);color:#b4c3da;font-size:.95rem}
+.summary .line b{color:#fff}
+.summary .total{display:flex;justify-content:space-between;align-items:baseline;padding-top:16px}
+.summary .total b{font-family:Archivo;font-size:2rem;color:var(--yellow)}
+.summary p{color:#b4c3da;font-size:.85rem;margin-top:14px}
+.summary .btn{width:100%;justify-content:center;margin-top:18px;background:#fff;color:var(--navy)}
+.summary .btn:hover{background:var(--yellow)}
+.mini-v{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border-radius:16px;padding:12px;margin-bottom:12px}
+.mini-v i{width:54px;height:34px;border-radius:7px;background:linear-gradient(135deg,#173da8,#3b6cf0);flex:none;position:relative}
+.mini-v i::after{content:"";position:absolute;left:6px;right:6px;bottom:6px;height:7px;border-radius:3px;background:#c9cfd8}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.tips{grid-template-columns:1fr}}
+.tips div{background:#fff;border-radius:24px;padding:26px}
+.tips b{display:block;font-family:Archivo;color:var(--navy);font-size:1.1rem;margin:12px 0 6px}
+.tips p{color:var(--muted);font-size:.94rem}
+.verify-result{margin-top:28px;display:flex;gap:16px;align-items:center;background:#fff;border-radius:22px;padding:20px 22px;max-width:640px}
+.verify-result .vr-ic{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:1.4rem;flex:none}
+.verify-result b{display:block;font-family:Archivo;color:var(--navy);font-size:1.15rem}
+.verify-result span{color:var(--muted);font-size:.92rem}
+.m-menu .btn{text-align:center;display:flex}
+.m-menu .btn-line{border:1.5px solid var(--navy) !important;background:transparent;color:var(--navy) !important}
 </style>
 </head>
 <body>
-<div class="topbar">Manufacturers: protect your products from counterfeits today.<a href="signup.html">Register as a merchant →</a></div>
 <nav id="nav">
   <div class="wrap nav-in">
     <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
-    <div class="nav-links"><a href="about.html">About us</a><a href="how-it-works.html">How it works</a><a href="manufacturers.html">Manufacturers</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
+    <div class="nav-links"><a href="about.html">About us</a><div class="dd"><button class="dd-btn" type="button" aria-expanded="false">Services <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button><div class="dd-menu"><a href="authentication.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i><span><b>Product authentication</b><span>Verify products and protect your brand</span></span></a><a href="commerce.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg></i><span><b>Commerce</b><span>Quick Buy, merchant tools and sales analytics</span></span></a><a href="payments.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></svg></i><span><b>Self-checkout &amp; payments</b><span>Vouchers, transfers, scan to pay, withdrawals</span></span></a></div></div><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
     <div class="nav-r">
-      <a href="signup.html" class="btn btn-blue">Get started</a>
+      <a href="login.html" class="login">Log in</a>
+      <a href="voucher.html" class="btn btn-blue">Purchase voucher</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
     </div>
   </div>
-  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><a href="how-it-works.html">How it works</a><a href="manufacturers.html">Manufacturers</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="signup.html" class="btn btn-blue">Register as a merchant</a></div>
+  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><span class="m-sub">Services</span><a href="authentication.html">Product authentication</a><a href="commerce.html">Commerce</a><a href="payments.html">Self-checkout &amp; payments</a><span class="m-sub">More</span><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="how-it-works.html">How it works</a><a href="faq.html">FAQ</a><a href="voucher.html" class="btn btn-blue">Purchase voucher</a><a href="signup.html" class="btn btn-line">Register as a merchant</a><a href="login.html" class="btn btn-line">Merchant log in</a></div>
 </nav>
 <main>
 
@@ -708,7 +827,7 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
         <details class="faq"><summary>Does a QR code alone guarantee a product is real?</summary><p>No code is a guarantee on its own. Glouf confirms the link between a code and its registered source. Check that the details on screen match the product in your hand, and watch for damaged or tampered labels.</p></details>
       </div>
       <div class="faq-group reveal" id="merchants"><h2>For manufacturers</h2>
-        <details class="faq"><summary>How do I get started?</summary><p>Create an account in the Glouf app or on our merchant sign-up page, sign up as a merchant, register your products, get your QR codes, and apply them to your packaging.</p></details>
+        <details class="faq"><summary>How do I get started?</summary><p>Create a merchant account and you go straight to your dashboard. Add your products and try test QR codes, then click Go live and submit your documents. We review them and alert you when your account is live. Then you print and apply your codes.</p></details>
         <details class="faq"><summary>Do I need special equipment?</summary><p>No. If you can print labels or packaging, you can apply Glouf codes. Many producers add them to existing label designs.</p></details>
         <details class="faq"><summary>Which products can I register?</summary><p>Any product you produce or own, from medicines and food to cosmetics, spare parts and electronics.</p></details>
         <details class="faq"><summary>How do I stop counterfeiters copying my codes?</summary><p>Use one unique code per unit where possible, print on tamper-evident labels, and tell customers to scan only with the official Glouf app. That makes copied codes much easier to spot.</p></details>
@@ -734,21 +853,24 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
       <div>
         <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
         <p>Identify the original amid similarities. A technology by Blimp International Digital Services Limited.</p>
+        <p style="margin-top:10px">No. 7 Bamisile Street, Alimosho, Lagos, Nigeria<br>Support: Monday to Saturday, 8:00 AM to 6:00 PM</p>
         <a href="signup.html" class="btn btn-blue foot-cta">Register as a merchant</a>
       </div>
       <div class="fcols">
-        <div><b>Product</b><a href="how-it-works.html">How it works</a><a href="verify.html">Verify a product</a><a href="index.html#videos">Videos</a><a href="blog.html">Blog</a></div>
-        <div><b>Merchants</b><a href="manufacturers.html">For manufacturers</a><a href="signup.html">Merchant sign-up</a><a href="faq.html#merchants">Merchant FAQ</a></div>
-        <div><b>Company</b><a href="about.html">About us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="contact.html#report">Report a fake</a></div>
+        <div><b>Services</b><a href="authentication.html">Product authentication</a><a href="commerce.html">Commerce</a><a href="payments.html">Self-checkout &amp; payments</a><a href="voucher.html">Purchase voucher</a></div>
+        <div><b>Merchants</b><a href="manufacturers.html">For manufacturers</a><a href="how-it-works.html">How it works</a><a href="signup.html">Create an account</a><a href="login.html">Merchant log in</a><a href="faq.html#merchants">Merchant FAQ</a></div>
+        <div><b>Company</b><a href="about.html">About us</a><a href="verify.html">Verify a product</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="contact.html#report">Report a fake</a></div>
       </div>
     </div>
-    <p class="copy">© <span id="yr"></span> Blimp International Digital Services Limited. All rights reserved.</p>
+    <div class="copy" style="display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap"><span>© <span id="yr"></span> Blimp International Digital Services Limited · CAC RC: 8037834</span><a href="https://x.com/blimppay" target="_blank" rel="noopener" aria-label="Glouf on X" style="display:inline-flex;gap:6px;align-items:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.7 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.5 4.7H5.7z"/></svg> @blimppay</a></div>
   </div>
 </footer>
 <script>
 const nav=document.getElementById('nav');
 addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>10));
 document.getElementById('yr').textContent=new Date().getFullYear();
+document.querySelectorAll('.dd-btn').forEach(b=>b.addEventListener('click',e=>{const d=b.parentNode,o=!d.classList.contains('open');d.classList.toggle('open',o);b.setAttribute('aria-expanded',o);e.stopPropagation()}));
+document.addEventListener('click',e=>{if(!e.target.closest('.dd'))document.querySelectorAll('.dd.open').forEach(d=>{d.classList.remove('open');d.querySelector('.dd-btn').setAttribute('aria-expanded','false')})});
 const menuBtn=document.getElementById('menuBtn');
 menuBtn.addEventListener('click',()=>{const o=nav.classList.toggle('menu-open');menuBtn.setAttribute('aria-expanded',o)});
 document.querySelectorAll('#mMenu a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('menu-open')));
@@ -786,5 +908,6 @@ document.querySelectorAll('form[data-mail]').forEach(form=>form.addEventListener
   location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent('Glouf '+subj)+'&body='+encodeURIComponent(lines.join('\n'));
   msg.style.display='block'}));
 </script>
+
 </body>
 </html>
