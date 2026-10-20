@@ -479,21 +479,90 @@ details.faq p{color:var(--muted);padding:0 40px 22px 0}
 .store-btn small{font-family:"Public Sans";font-size:.6rem;font-weight:600;letter-spacing:.07em;opacity:.8}
 footer .store-btn{border-color:rgba(255,255,255,.28)}
 @media(max-width:640px){.stores .store-btn{flex:1 1 150px;justify-content:center}}
+
+@media(max-width:1080px){.nav-links{display:none}.menu-btn{display:grid}}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:860px){.lanes{grid-template-columns:1fr}}
+.lane{border:1px solid var(--line);border-radius:20px;padding:30px;background:#fff}
+.lane.blue{background:var(--sky);border-color:var(--sky-2)}
+.lane small{font-weight:700;color:var(--blue);font-size:.82rem}
+.lane h3{font-size:1.5rem;margin:4px 0 6px}
+.lane>p{color:var(--muted);margin-bottom:20px}
+.lane ol{list-style:none;counter-reset:l}
+.lane ol li{counter-increment:l;position:relative;padding:14px 0 14px 52px;border-top:1px solid var(--line)}
+.lane.blue ol li{border-color:var(--sky-2)}
+.lane ol li::before{content:counter(l);position:absolute;left:0;top:14px;width:36px;height:36px;border-radius:10px;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:Archivo;font-weight:800;font-size:.9rem}
+.lane ol b{display:block;color:var(--navy)}
+.lane ol span{color:var(--muted);font-size:.94rem}
+.flow-card{border-radius:20px;background:var(--off);border:1px solid var(--line);padding:24px;margin-bottom:24px}
+.flow-card svg{width:100%;height:auto}
+
+.results{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:760px){.results{grid-template-columns:1fr}}
+.res{border-radius:20px;padding:30px;border:1px solid var(--line)}
+.res.ok{background:#f0faf4;border-color:#cdebd9}
+.res.bad{background:#fff4f4;border-color:#f6d3d5}
+.res .badge{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-family:Archivo;padding:8px 14px;border-radius:10px;margin-bottom:16px;color:#fff}
+.res.ok .badge{background:var(--green)}
+.res.bad .badge{background:var(--red)}
+.res h3{font-size:1.3rem;margin-bottom:8px}
+.res p{color:var(--muted)}
+.res ul{margin:14px 0 0 18px;font-size:.95rem}
+.res li{padding:4px 0}
+.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.checks{grid-template-columns:1fr}}
+.chk{background:var(--off);border-radius:16px;padding:26px}
+.chk i{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:10px;background:#fff;color:var(--blue);font-style:normal;font-weight:800;margin-bottom:14px;font-family:Archivo}
+.chk b{display:block;font-family:Archivo;color:var(--navy);font-size:1.1rem;margin-bottom:6px}
+.chk span{color:var(--muted);font-size:.94rem}
+
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:960px){.posts{grid-template-columns:1fr;max-width:560px}}
+.post-card{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:transform .3s,border-color .3s}
+.post-card:hover{transform:translateY(-4px);border-color:var(--blue)}
+.post-art{height:170px;display:grid;place-items:center}
+.post-art svg{height:110px;width:auto}
+.post-body{padding:22px 24px 26px;display:flex;flex-direction:column;gap:8px;flex:1}
+.post-body small{color:var(--blue);font-weight:700;font-size:.8rem}
+.post-body h3{font-size:1.22rem}
+.post-body p{color:var(--muted);font-size:.94rem;flex:1}
+.post-body .more{font-weight:700;color:var(--blue);font-size:.92rem}
+.article{max-width:740px;margin:0 auto;padding:70px 0;border-top:1px solid var(--line);scroll-margin-top:90px}
+.article .meta{color:var(--blue);font-weight:700;font-size:.85rem}
+.article h2{font-size:clamp(1.8rem,3.4vw,2.5rem);margin:10px 0 22px}
+.article p{color:#33445c;margin-bottom:16px;font-size:1.04rem}
+.article h3{font-size:1.2rem;margin:26px 0 8px}
+.article ul{margin:0 0 16px 20px;color:#33445c}
+.article li{padding:5px 0}
+.back{display:inline-block;margin-top:10px;font-weight:700;color:var(--blue);font-size:.92rem}
+
+.su-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:44px;align-items:start}
+@media(max-width:900px){.su-grid{grid-template-columns:1fr}}
+.form h3.fs{font-size:1rem;color:var(--blue);margin:24px 0 12px;padding-top:20px;border-top:1px solid var(--line)}
+.form h3.fs.first{border-top:0;padding-top:0;margin-top:0}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);margin:8px 0 10px;cursor:pointer}
+.agree input{margin-top:3px;width:18px;height:18px;accent-color:var(--blue);flex:none}
+.next{position:sticky;top:100px;display:flex;flex-direction:column;gap:16px}
+@media(max-width:900px){.next{position:static}}
+.next ol{list-style:none;counter-reset:n;margin-top:10px}
+.next ol li{counter-increment:n;position:relative;padding:12px 0 12px 46px;border-top:1px solid var(--line);font-size:.94rem;color:var(--muted)}
+.next ol li::before{content:counter(n);position:absolute;left:0;top:12px;width:30px;height:30px;border-radius:8px;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.next ol li b{display:block;color:var(--navy)}
+.sent.warn{background:#fff7e0;color:#8a6100}
 </style>
 </head>
 <body>
-<div class="topbar">Manufacturers: protect your products from counterfeits today.<a href="manufacturers.html">Register as a merchant →</a></div>
+<div class="topbar">Manufacturers: protect your products from counterfeits today.<a href="signup.html">Register as a merchant →</a></div>
 <nav id="nav">
   <div class="wrap nav-in">
     <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
-    <div class="nav-links"><a href="about.html">About us</a><a href="manufacturers.html">Manufacturers</a><a href="index.html#verify">How it works</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></div>
+    <div class="nav-links"><a href="about.html">About us</a><a href="how-it-works.html">How it works</a><a href="manufacturers.html">Manufacturers</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
     <div class="nav-r">
-      <a href="https://glouf.com" class="login">Log in</a>
-      <a href="manufacturers.html" class="btn btn-blue">Get started</a>
+      <a href="signup.html" class="btn btn-blue">Get started</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
     </div>
   </div>
-  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><a href="manufacturers.html">Manufacturers</a><a href="index.html#verify">How it works</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="manufacturers.html" class="btn btn-blue">Register as a merchant</a></div>
+  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><a href="how-it-works.html">How it works</a><a href="manufacturers.html">Manufacturers</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="signup.html" class="btn btn-blue">Register as a merchant</a></div>
 </nav>
 <main>
 
@@ -509,10 +578,6 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
         <a href="#manufacturers" class="btn btn-blue">Register as a merchant
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
         <a href="#verify" class="btn btn-line">How verification works</a>
-      </div>
-      <div class="stores fade-up d4">
-        <a class="store-btn" href="https://glouf.com" aria-label="Get Glouf on Google Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg><span><small>GET IT ON</small>Google Play</span></a>
-        <a class="store-btn" href="https://glouf.com" aria-label="Download Glouf on the App Store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>DOWNLOAD ON THE</small>App Store</span></a>
       </div>
       <div class="hero-meta fade-up d4">
         <div><b>One code</b>linked to each registered product</div>
@@ -736,7 +801,7 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
         </svg>
       </div>
       <ol class="v-steps">
-        <li><b>Open Glouf</b><span>Use the Glouf app, or visit glouf.com on any phone.</span></li>
+        <li><b>Open Glouf</b><span>Use the Glouf app on any smartphone.</span></li>
         <li><b>Scan the code on the pack</b><span>Point the camera at the Glouf QR code.</span></li>
         <li><b>See who registered it</b><span>Glouf checks the code against the producer's record.</span></li>
         <li><b>Buy, or walk away</b><span>If there's no match, don't buy it, and report the seller.</span></li>
@@ -756,7 +821,7 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
       <div class="m reveal">
         <div class="m-ill"><svg viewBox="0 0 80 90"><rect x="18" y="4" width="44" height="82" rx="8" fill="#0a2240"/><rect x="22" y="12" width="36" height="64" rx="3" fill="#fff"/><circle cx="40" cy="36" r="9" fill="#d5e2fa"/><rect x="28" y="52" width="24" height="5" rx="2.5" fill="#1f4fd8"/><rect x="28" y="61" width="24" height="5" rx="2.5" fill="#e2e8f0"/></svg></div>
         <small>Step 1</small><h3>Create an account</h3>
-        <p>Download the Glouf app or sign up at glouf.com.</p>
+        <p>Download the Glouf app or register on our sign-up page.</p>
       </div>
       <div class="m reveal">
         <div class="m-ill"><svg viewBox="0 0 100 90"><path d="M8 84V40l22 14V40l22 14V40l22 14V20h18v64z" fill="#1f4fd8"/><rect x="78" y="8" width="10" height="14" fill="#0a2240"/><rect x="18" y="62" width="10" height="10" fill="#fff"/><rect x="40" y="62" width="10" height="10" fill="#fff"/><rect x="62" y="62" width="10" height="10" fill="#ffcb47"/></svg></div>
@@ -775,12 +840,8 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
       </div>
     </div>
     <div class="m-cta reveal">
-      <a href="https://glouf.com" class="btn btn-blue">Sign up as a merchant</a>
+      <a href="signup.html" class="btn btn-blue">Sign up as a merchant</a>
       <a href="manufacturers.html" class="btn btn-line">Merchant details</a>
-      <div class="stores">
-        <a class="store-btn" href="https://glouf.com" aria-label="Get Glouf on Google Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg><span><small>GET IT ON</small>Google Play</span></a>
-        <a class="store-btn" href="https://glouf.com" aria-label="Download Glouf on the App Store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>DOWNLOAD ON THE</small>App Store</span></a>
-      </div>
     </div>
   </div>
 </section>
@@ -848,7 +909,7 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
     </div>
     <div class="tip reveal">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-      <p><b>Tip for producers:</b> a code is strongest when it's hard to copy. Use one unique code per unit where you can, print on tamper-evident labels, and tell customers to scan only through the official Glouf app or glouf.com.</p>
+      <p><b>Tip for producers:</b> a code is strongest when it's hard to copy. Use one unique code per unit where you can, print on tamper-evident labels, and tell customers to scan only through the official Glouf app.</p>
     </div>
   </div>
 </section>
@@ -861,11 +922,7 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
         <h2>Don't let a copy carry your name.</h2>
         <p>Register as a Glouf merchant and give every customer a simple way to know they're holding the real thing.</p>
         <div class="btns">
-          <a href="https://glouf.com" class="btn btn-blue">Sign up as a merchant</a>
-        </div>
-        <div class="stores" style="margin-top:18px">
-          <a class="store-btn" href="https://glouf.com" aria-label="Get Glouf on Google Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg><span><small>GET IT ON</small>Google Play</span></a>
-          <a class="store-btn" href="https://glouf.com" aria-label="Download Glouf on the App Store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>DOWNLOAD ON THE</small>App Store</span></a>
+          <a href="signup.html" class="btn btn-blue">Sign up as a merchant</a>
         </div>
       </div>
       <div class="cta-art">
@@ -883,12 +940,12 @@ footer .store-btn{border-color:rgba(255,255,255,.28)}
       <div>
         <a href="index.html" class="logo"><svg width="32" height="32" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#1f4fd8"/><path d="M8 8h6v6H8zM18 8h6v6h-6zM8 18h6v6H8z" fill="#fff"/><path d="M18 21l2.5 2.5L25 19" stroke="#ffcb47" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Glouf</a>
         <p>Identify the original amid similarities. A technology by Blimp International Digital Services Limited.</p>
-        <div style="margin-top:20px"><div class="stores"><a class="store-btn" href="https://glouf.com" aria-label="Get Glouf on Google Play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3.5v17a1 1 0 0 0 1.5.86l14-8.5a1 1 0 0 0 0-1.72l-14-8.5A1 1 0 0 0 6 3.5z"/></svg><span><small>GET IT ON</small>Google Play</span></a><a class="store-btn" href="https://glouf.com" aria-label="Download Glouf on the App Store"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>DOWNLOAD ON THE</small>App Store</span></a></div></div>
+        <div style="margin-top:20px"></div>
       </div>
       <div class="fcols">
-        <div><b>Product</b><a href="index.html#why">Why Glouf</a><a href="index.html#verify">How to verify</a><a href="index.html#videos">Videos</a></div>
-        <div><b>Merchants</b><a href="manufacturers.html">For manufacturers</a><a href="https://glouf.com">Sign up</a><a href="faq.html#merchants">Merchant FAQ</a></div>
-        <div><b>Company</b><a href="about.html">About us</a><a href="contact.html">Contact</a><a href="contact.html#report">Report a fake</a></div>
+        <div><b>Product</b><a href="how-it-works.html">How it works</a><a href="verify.html">Verify a product</a><a href="index.html#videos">Videos</a><a href="blog.html">Blog</a></div>
+        <div><b>Merchants</b><a href="manufacturers.html">For manufacturers</a><a href="signup.html">Merchant sign-up</a><a href="faq.html#merchants">Merchant FAQ</a></div>
+        <div><b>Company</b><a href="about.html">About us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="contact.html#report">Report a fake</a></div>
       </div>
     </div>
     <p class="copy">© <span id="yr"></span> Blimp International Digital Services Limited. All rights reserved.</p>
@@ -924,14 +981,16 @@ document.querySelectorAll('[data-cmp]').forEach(c=>c.addEventListener('click',()
 const steps=document.querySelectorAll('.v-steps li');
 if(steps.length){const t0=performance.now();setInterval(()=>{const t=((performance.now()-t0)%6000)/6000;const i=t<.18?0:t<.45?1:t<.6?2:3;steps.forEach((s,k)=>s.classList.toggle('on',k===i))},200)}
 
-const form=document.getElementById('contactForm');
-if(form){
-  const params=new URLSearchParams(location.search);
-  if(location.hash==='#report'){const r=form.querySelector('input[value="Report a fake product"]');if(r)r.checked=true}
-  form.addEventListener('submit',e=>{e.preventDefault();const d=new FormData(form);
-    const body=`Name: ${d.get('name')}\nCompany: ${d.get('company')||'-'}\nEmail: ${d.get('email')}\nPhone: ${d.get('phone')||'-'}\nTopic: ${d.get('topic')}\n\n${d.get('message')}`;
-    location.href=`mailto:hello@glouf.com?subject=${encodeURIComponent('Glouf enquiry: '+d.get('topic'))}&body=${encodeURIComponent(body)}`;
-    document.getElementById('sent').style.display='block'})}
+const EMAIL='hello@glouf.com';
+const cf=document.getElementById('contactForm');
+if(cf&&location.hash==='#report'){const r=cf.querySelector('input[value="Report a fake product"]');if(r)r.checked=true}
+document.querySelectorAll('form[data-mail]').forEach(form=>form.addEventListener('submit',e=>{e.preventDefault();
+  const d=new FormData(form),msg=form.querySelector('.sent'),lines=[];
+  for(const [k,v] of d.entries()){if(v&&k!=='agree')lines.push(k+': '+v)}
+  if(!EMAIL){msg.textContent='Thanks! This form is not connected to an inbox yet.';msg.classList.add('warn');msg.style.display='block';return}
+  const subj=form.dataset.mail+(d.get('topic')?': '+d.get('topic'):'');
+  location.href='mailto:'+EMAIL+'?subject='+encodeURIComponent('Glouf '+subj)+'&body='+encodeURIComponent(lines.join('\n'));
+  msg.style.display='block'}));
 </script>
 </body>
 </html>
