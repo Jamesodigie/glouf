@@ -351,6 +351,11 @@ footer .logo{color:#fff}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.reveal,.fade-up{opacity:1;transform:none}.hl path{stroke-dashoffset:0}}
 
+.ios-btn{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 16px 0 12px;border-radius:9px;background:#000;color:#fff;border:1px solid #a6a6a6;font-family:-apple-system,"Public Sans",sans-serif;font-weight:600;font-size:1.05rem;line-height:1.05;white-space:nowrap}
+.ios-btn svg{width:24px;height:24px;flex:none}
+.ios-btn small{display:block;font-size:.62rem;font-weight:500;letter-spacing:.02em}
+.ios-img{height:44px;width:auto;display:block}
+
 .nav-links a.active{color:var(--blue)}
 .page-hero{position:relative;isolation:isolate;padding:84px 0 76px;background:linear-gradient(180deg,#f3f7ff 0%,#fff 85%)}
 .page-hero::before{content:"";position:absolute;inset:0;z-index:-1;background-image:radial-gradient(#cfdcf3 1.1px,transparent 1.2px);background-size:24px 24px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 80%);mask-image:linear-gradient(180deg,#000,transparent 80%)}
@@ -546,7 +551,7 @@ details.faq p{color:var(--muted);padding:0 40px 22px 0}
         <p>Identify the original amid similarities. A technology by Blimp International Digital Services Limited.</p>
         <div style="margin-top:20px"><div class="stores">
   <a class="store" href="https://glouf.com" aria-label="Get Glouf on Google Play"><img class="gp" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play"></a>
-  <a class="store" href="https://glouf.com" aria-label="Download Glouf on the App Store"><img src="https://tools.applemarketingtools.com/api/badges/download-on-the-app-store/white/en-us?size=250x83" alt="Download on the App Store"></a>
+  <a class="store" href="https://glouf.com" aria-label="Download Glouf on the App Store"><img class="ios-img" src="img/app-store-badge.svg" alt="Download on the App Store" hidden onload="this.hidden=false;if(this.nextElementSibling)this.nextElementSibling.remove()"><span class="ios-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg><span><small>Download on the</small>App Store</span></span></a>
 </div></div>
       </div>
       <div class="fcols">
