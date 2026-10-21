@@ -38,18 +38,47 @@
     items = items.slice(0, 6);
     var max = Math.max.apply(null, items.map(function (x) { return x.v; }).concat([1]));
     var rings = items.map(function (x, i) {
-      var r = 88 - i * 15, C = 2 * Math.PI * r, len = 0.75 * C * (x.v / max);
-      return '<circle cx="110" cy="110" r="' + r + '" fill="none" stroke="var(--sky)" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + (0.75 * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 110 110)"/>' +
-        '<circle class="ring" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + x.c + '" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + len.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + len.toFixed(1) + '" transform="rotate(-90 110 110)" style="transition-delay:' + (i * 0.12) + 's"/>';
+      var r = 98 - i * 12, C = 2 * Math.PI * r, len = 0.75 * C * (x.v / max);
+      return '<circle cx="110" cy="110" r="' + r + '" fill="none" stroke="var(--sky)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (0.75 * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 110 110)"/>' +
+        '<circle class="ring" data-name="' + esc(x.name) + '" data-v="' + x.v + '" data-c="' + x.c + '" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + x.c + '" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + len.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + len.toFixed(1) + '" transform="rotate(-90 110 110)" style="transition-delay:' + (i * 0.12) + 's"/>';
     }).join('');
-    return '<div class="radial-wrap"><svg viewBox="0 0 220 220" class="radial" role="img" aria-label="Products compared">' + rings + '</svg>' +
-      '<ul class="radial-legend">' + items.map(function (x) { return '<li><i style="background:' + x.c + '"></i><span>' + esc(x.name) + '</span><b>' + x.v.toLocaleString() + '</b><small>' + unit + '</small></li>'; }).join('') + '</ul></div>';
+    return '<div class="radial-wrap"><div class="radial-box"><svg viewBox="0 0 220 220" class="radial" role="img" aria-label="Products compared">' + rings + '</svg><div class="radial-mid" id="radialMid"></div><div class="radial-cap" id="radialCap"></div></div>' +
+      '<ul class="radial-legend">' + items.map(function (x) { return '<li class="rl"><i style="background:' + x.c + '"></i><span>' + esc(x.name) + '</span><b>' + x.v.toLocaleString() + '</b><small>' + unit + '</small></li>'; }).join('') + '</ul></div>';
   }
   function bars(items, unit) {
     var max = Math.max.apply(null, items.map(function (x) { return x.v; }).concat([1]));
     return '<div class="hbars">' + items.map(function (x) {
       return '<div class="hbar"><span class="hb-name">' + esc(x.name) + '</span><span class="hb-track"><i class="grow" data-w="' + Math.max(2, Math.round(x.v / max * 100)) + '" style="background:linear-gradient(90deg,' + x.c + ',' + S.shade(x.c, 0.3) + ')"></i></span><b>' + x.v.toLocaleString() + '</b></div>';
     }).join('') + '</div><p class="sub" style="margin-top:8px">' + unit + '</p>';
+  }
+  var radialTimer = null;
+  function startRadial() {
+    var rings = document.querySelectorAll('.radial .ring'), lis = document.querySelectorAll('.radial-legend .rl');
+    if (!rings.length) return;
+    var i = 0;
+    function show() {
+      var k = i % rings.length, r = rings[k];
+      rings.forEach(function (x, j) { x.classList.toggle('on', j === k); x.classList.toggle('dim', rings.length > 1 && j !== k); });
+      lis.forEach(function (x, j) { x.classList.toggle('on', j === k); });
+      var mid = document.getElementById('radialMid');
+      if (mid) mid.innerHTML = '<b style="color:' + r.getAttribute('data-c') + '">' + Number(r.getAttribute('data-v')).toLocaleString() + '</b>';
+      var cap = document.getElementById('radialCap'); if (cap) cap.innerHTML = '<i style="background:' + r.getAttribute('data-c') + '"></i>' + r.getAttribute('data-name');
+      i++;
+    }
+    radialTimer = setTimeout(function () { show(); if (rings.length > 1) radialTimer = setInterval(show, 1000); }, 1300);
+  }
+  function countUp() {
+    document.querySelectorAll('.kpi b, .metric b, .hbar b, .radial-legend b, .wc-bal, .wm b, .pt-row b').forEach(function (el) {
+      var t = el.textContent.trim(), m = /^(₦)?([\d,]+)(%)?$/.exec(t);
+      if (!m) return;
+      var to = parseInt(m[2].replace(/,/g, ''), 10); if (!to) return;
+      var pre = m[1] || '', suf = m[3] || '', t0 = performance.now(), dur = 900;
+      (function step(now) {
+        var k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        el.textContent = pre + Math.round(to * e).toLocaleString() + suf;
+        if (k < 1) requestAnimationFrame(step);
+      })(t0);
+    });
   }
   function animateCharts() {
     requestAnimationFrame(function () {
@@ -212,7 +241,7 @@
       '<div class="cat-chips">' + Object.keys(cats).map(function (k) { return '<span>' + esc(k) + ' · ' + cats[k] + '</span>'; }).join('') + '</div></div></div>' +
       '<div class="prods">' + items.map(function (x) {
         var p = x.p, vr = x.scans ? Math.round(x.ver / x.scans * 100) : 0;
-        return '<div class="prod"><div class="prod-hero" style="background:linear-gradient(135deg,' + S.shade(x.c, 0.85) + ',' + S.shade(x.c, 0.6) + ')"><span class="kind-tag" style="color:' + S.shade(x.c, -0.35) + '">' + kindName(p.kind) + '</span><div class="prod-art">' + S.art(p.kind, x.c, 116) + '</div>' + (p.price ? '<span class="price">' + S.money(p.price) + '</span>' : '') + '</div>' +
+        return '<div class="prod"><div class="prod-hero" style="background:linear-gradient(135deg,' + S.shade(x.c, 0.85) + ',' + S.shade(x.c, 0.6) + ')"><span class="kind-tag" style="color:' + S.shade(x.c, -0.35) + '">' + kindName(p.kind) + '</span><div class="prod-art">' + S.art(p.kind, x.c, 116) + '</div><span class="pshadow"></span>' + (p.price ? '<span class="price">' + S.money(p.price) + '</span>' : '') + '</div>' +
           '<div class="prod-body"><h3>' + esc(p.name) + '</h3><span class="muted" style="font-size:.84rem">' + esc(p.category) + (p.size ? ' · ' + esc(p.size) : '') + (p.sku ? ' · SKU ' + esc(p.sku) : '') + '</span>' +
           '<div class="metric"><span>QR codes generated</span><b>' + x.codes.toLocaleString() + '</b></div><div class="abar"><i class="grow" data-w="' + Math.max(2, Math.round(x.codes / maxCodes * 100)) + '" style="background:' + x.c + '"></i></div>' +
           '<div class="metric"><span>Total scanned</span><b>' + x.scans + '</b></div><div class="abar"><i class="grow" data-w="' + Math.max(2, Math.round(x.scans / maxScans * 100)) + '" style="background:' + S.shade(x.c, 0.25) + '"></i></div>' +
@@ -423,7 +452,8 @@
     $('#view').innerHTML = V[v]();
     $('.app').classList.remove('open');
     if (v === 'overview') startDonut(); else clearInterval(donutTimer);
-    animateCharts();
+    clearTimeout(radialTimer); clearInterval(radialTimer); if (v === 'products') startRadial();
+    animateCharts(); countUp();
   }
   function renderBell() {
     var unread = me.notifications.filter(function (n) { return !n.read; }).length;

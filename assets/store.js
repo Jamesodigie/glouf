@@ -228,7 +228,7 @@
     art: function (kind, color, size) {
       size = size || 64; color = color || '#1f4fd8';
       var N = '#0a2240', W = '#fff', dk = S.shade(color, -0.3), lt = S.shade(color, 0.35), o = ' stroke="' + N + '" stroke-width="4" stroke-linejoin="round"';
-      var lbl = function (x, y, w, h) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="#fff" opacity=".92"/><rect x="' + (x + w / 2 - 9) + '" y="' + (y + h / 2 - 9) + '" width="18" height="18" fill="' + N + '"/><rect x="' + (x + w / 2 - 5) + '" y="' + (y + h / 2 - 5) + '" width="10" height="10" fill="#fff"/>'; };
+      var lbl = function (x, y, w, h) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="#fff" opacity=".92"/><rect x="' + (x + w / 2 - 9) + '" y="' + (y + h / 2 - 9) + '" width="18" height="18" fill="' + N + '"/><rect x="' + (x + w / 2 - 5) + '" y="' + (y + h / 2 - 5) + '" width="10" height="10" fill="#fff"/><rect class="pscan" x="' + (x + 2) + '" y="' + y + '" width="' + (w - 4) + '" height="3" rx="1.5" fill="#22c58b" style="--d:' + (h - 3) + 'px"/>'; };
       var g = {
         drink: '<rect x="38" y="0" width="24" height="15" rx="3" fill="' + N + '"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="' + W + '"' + o + '/><rect x="16" y="100" width="68" height="66" fill="' + color + '"/>' + lbl(34, 116, 32, 34),
         can: '<rect x="22" y="40" width="56" height="170" rx="12" fill="' + color + '"' + o + '/><rect x="26" y="32" width="48" height="12" rx="5" fill="#c9d2e0"' + o + '/><rect x="22" y="58" width="56" height="8" fill="' + dk + '"/><rect x="22" y="184" width="56" height="8" fill="' + dk + '"/>' + lbl(30, 96, 40, 52),
