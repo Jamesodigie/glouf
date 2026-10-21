@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Buy a recharge voucher — Glouf</title>
-<script>(function(){var V='1792600311';try{fetch('assets/version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){var m=/[?&]r=([^&#]+)/.exec(location.search);if(d&&d.v&&d.v!==V&&(!m||m[1]!==d.v)){var q=location.search.replace(/([?&])r=[^&#]*&?/,'$1').replace(/[?&]$/,'');location.replace(location.pathname+(q?q+'&':'?')+'r='+d.v+location.hash)}}).catch(function(){})}catch(e){}})();</script>
+<script>(function(){var V='1792600489';try{fetch('assets/version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){var m=/[?&]r=([^&#]+)/.exec(location.search);if(d&&d.v&&d.v!==V&&(!m||m[1]!==d.v)){var q=location.search.replace(/([?&])r=[^&#]*&?/,'$1').replace(/[?&]$/,'');location.replace(location.pathname+(q?q+'&':'?')+'r='+d.v+location.hash)}}).catch(function(){})}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="assets/logo-64.png">
 <link rel="apple-touch-icon" href="assets/logo-192.png">
 <meta name="description" content="Buy Glouf recharge vouchers online or from authorised shops, and fund your Glouf account instantly.">
@@ -808,20 +808,22 @@ section.story{height:auto;padding:0}
 .hb{animation:hbob 3.2s ease-in-out infinite;transform-box:fill-box;transform-origin:bottom center}
 @keyframes hbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @media(prefers-reduced-motion:reduce){.hb{animation:none}}
+.doc-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.doc-tags span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:.86rem;font-weight:600;color:var(--navy)}
 </style>
 </head>
 <body>
 <nav id="nav">
   <div class="wrap nav-in">
     <a href="index.html" class="logo"><img src="assets/logo-64.png" width="34" height="34" alt="" style="display:block">Glouf</a>
-    <div class="nav-links"><a href="about.html">About us</a><div class="dd"><button class="dd-btn" type="button" aria-expanded="false">Services <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button><div class="dd-menu"><a href="authentication.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i><span><b>Product authentication</b><span>Verify products and protect your brand</span></span></a><a href="commerce.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg></i><span><b>Commerce</b><span>Quick Buy, merchant tools and sales analytics</span></span></a><a href="payments.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></svg></i><span><b>Self-checkout &amp; payments</b><span>Vouchers, transfers, scan to pay, withdrawals</span></span></a></div></div><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
+    <div class="nav-links"><a href="about.html">About us</a><div class="dd"><button class="dd-btn" type="button" aria-expanded="false">Services <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg></button><div class="dd-menu"><a href="authentication.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i><span><b>Product &amp; document authentication</b><span>Verify products and documents, protect your brand</span></span></a><a href="commerce.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6"/></svg></i><span><b>Commerce</b><span>Quick Buy, merchant tools and sales analytics</span></span></a><a href="payments.html"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20M6 15h4"/></svg></i><span><b>Self-checkout &amp; payments</b><span>Vouchers, transfers, scan to pay, withdrawals</span></span></a></div></div><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a></div>
     <div class="nav-r">
       <a href="login.html" class="login">Log in</a>
       <a href="voucher.html" class="btn btn-blue">Purchase voucher</a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
     </div>
   </div>
-  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><span class="m-sub">Services</span><a href="authentication.html">Product authentication</a><a href="commerce.html">Commerce</a><a href="payments.html">Self-checkout &amp; payments</a><span class="m-sub">More</span><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="how-it-works.html">How it works</a><a href="faq.html">FAQ</a><a href="voucher.html" class="btn btn-blue">Purchase voucher</a><a href="signup.html" class="btn btn-line">Register as a merchant</a><a href="login.html" class="btn btn-line">Merchant log in</a></div>
+  <div class="m-menu" id="mMenu"><a href="index.html">Home</a><a href="about.html">About us</a><span class="m-sub">Services</span><a href="authentication.html">Product &amp; document authentication</a><a href="commerce.html">Commerce</a><a href="payments.html">Self-checkout &amp; payments</a><span class="m-sub">More</span><a href="manufacturers.html">Merchants</a><a href="verify.html">Verify</a><a href="blog.html">Blog</a><a href="contact.html">Contact</a><a href="how-it-works.html">How it works</a><a href="faq.html">FAQ</a><a href="voucher.html" class="btn btn-blue">Purchase voucher</a><a href="signup.html" class="btn btn-line">Register as a merchant</a><a href="login.html" class="btn btn-line">Merchant log in</a></div>
 </nav>
 <main>
 
