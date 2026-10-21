@@ -464,3 +464,24 @@ html[data-theme=dark] .kind-tag{background:rgba(255,255,255,.9)}
 html[data-theme=dark] .scan-badge{background:#169c55}
 html[data-theme=dark] .sc-ic.sc-green{background:#0f2d1f}html[data-theme=dark] .sc-ic.sc-amber{background:#3a2e10}
 @media(prefers-reduced-motion:reduce){.anim-in,.gicon{animation:none}}
+
+/* ===== more breathing room, no decorative circles ===== */
+.prod-hero::after{display:none}
+.prods{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.prod-hero{height:190px}
+.prod-body{padding:22px 24px 24px;gap:8px}
+.prod-body h3{font-size:1.12rem;margin-bottom:2px}
+.metric{margin-top:10px}
+.prod .acts{margin-top:18px;gap:10px}
+.ptiles-row{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin-bottom:24px}
+.gtile{padding:20px 18px 26px;gap:4px}
+.gtag{margin-bottom:14px;padding:10px 10px}
+.gtile .pt-num{margin-bottom:10px;font-size:1.25rem}
+.gicon{right:14px;bottom:12px}
+.ov-top{gap:20px;margin-bottom:24px}
+.ov-stats{gap:20px}
+.view .grid{gap:20px}
+.view .mb{margin-bottom:24px}
+.radial-wrap{gap:28px}
+.radial-legend{gap:10px}
+.hbars{gap:16px}

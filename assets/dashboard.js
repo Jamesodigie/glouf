@@ -40,8 +40,7 @@
     var max = Math.max.apply(null, items.map(function (x) { return x.v; }).concat([1]));
     var rings = items.map(function (x, i) {
       var r = 98 - i * 12, C = 2 * Math.PI * r, len = 0.75 * C * (x.v / max);
-      return '<circle cx="110" cy="110" r="' + r + '" fill="none" stroke="var(--sky)" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + (0.75 * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 110 110)"/>' +
-        '<circle class="ring" data-name="' + esc(x.name) + '" data-v="' + x.v + '" data-c="' + x.c + '" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + x.c + '" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + len.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + len.toFixed(1) + '" transform="rotate(-90 110 110)" style="transition-delay:' + (i * 0.12) + 's"/>';
+      return '<circle class="ring" data-name="' + esc(x.name) + '" data-v="' + x.v + '" data-c="' + x.c + '" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + x.c + '" stroke-width="9" stroke-linecap="round" stroke-dasharray="' + len.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + len.toFixed(1) + '" transform="rotate(-90 110 110)" style="transition-delay:' + (i * 0.12) + 's"/>';
     }).join('');
     return '<div class="radial-wrap"><div class="radial-box"><svg viewBox="0 0 220 220" class="radial" role="img" aria-label="Products compared">' + rings + '</svg><div class="radial-mid" id="radialMid"></div><div class="radial-cap" id="radialCap"></div></div>' +
       '<ul class="radial-legend">' + items.map(function (x) { return '<li class="rl"><i style="background:' + x.c + '"></i><span>' + esc(x.name) + '</span><b>' + x.v.toLocaleString() + '</b><small>' + unit + '</small></li>'; }).join('') + '</ul></div>';
