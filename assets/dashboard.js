@@ -6,8 +6,8 @@
 
   var INDUSTRIES = ['Pharmaceuticals', 'Food & beverage', 'Dairy', 'Cosmetics & skincare', 'Wines & spirits', 'Auto parts', 'Electronics', 'Agro-chemicals', 'Fashion', 'Other'];
   var STATES = ['Abia', 'Abuja (FCT)', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'];
-  var COLORS = ['#1f4fd8', '#0a2240', '#169c55', '#d9434a', '#ffcb47', '#7c3aed', '#c97a2b'];
-  var TITLES = { overview: 'Overview', products: 'Products', codes: 'QR codes', stores: 'Stores', analytics: 'Scans & analytics', golive: 'Go live', settings: 'Settings' };
+  var COLORS = ['#1f4fd8', '#169c55', '#d9434a', '#f0a51a', '#7c3aed', '#0ea5a4', '#ea580c', '#db2777', '#0a2240', '#65a30d', '#8b5a3c', '#64748b'];
+  var TITLES = { overview: 'Overview', wallet: 'Wallet', products: 'Products', codes: 'QR codes', stores: 'Stores', analytics: 'Scans & analytics', golive: 'Go live', settings: 'Settings' };
   var ui = { lastBatch: null, product: 'all', loc: null };
   var PALETTE = ['#1f4fd8', '#169c55', '#d9434a', '#f0a51a', '#7c3aed', '#0ea5a4', '#ea580c', '#db2777', '#0a2240', '#65a30d'];
   var donutTimer = null;
@@ -17,7 +17,7 @@
     { q: 'How to download QR codes', go: 'codes', steps: ['Open QR codes and generate a batch, or click "View" on an existing batch.', 'Click "Download first as SVG" to save a single code as a file.', 'To get every code in a batch, click "Print" and choose "Save as PDF" as the printer.'] },
     { q: 'How to print QR code labels', go: 'codes', steps: ['Open QR codes.', 'Click "Print" next to the batch you want.', 'Your printer window opens with every code laid out as labels, five per row.', 'Print on label paper, or choose "Save as PDF" to send to your printer.'] },
     { q: 'How to add a store', go: 'stores', act: 'add-store', steps: ['Open Stores in the menu.', 'Click "+ Add store".', 'Enter the store name, street, city and state.', 'Your store appears on a Google map, with its own store QR code.'] },
-    { q: 'How to go live', go: 'golive', steps: ['Add at least one product first.', 'Open Go live in the menu.', 'Fill in your business details and upload your CAC certificate, director\'s ID and proof of address (plus NAFDAC or SON approval if your products need one).', 'Click "Submit for review". We\'ll alert you here when your account is live.'] },
+    { q: 'How to go live', go: 'overview', act: 'golive', steps: ['Add at least one product first.', 'Click the "Go live" button on your Overview, or tap your status at the top of the page.', 'Fill in your business details and upload your CAC certificate, director\'s ID and proof of address (plus NAFDAC or SON approval if your products need one).', 'Click "Submit for review". We\'ll alert you here when your account is live.'] },
     { q: 'How to test a scan', go: 'codes', steps: ['Open QR codes.', 'Click "Test a scan" next to a batch.', 'The scan appears in Overview and in Scans & analytics.', 'You can also scan a printed code with your phone camera to open the verify page.'] },
     { q: 'What does a flagged scan mean?', go: 'analytics', steps: ['A flagged scan is a possible counterfeit.', 'It happens when the same code is scanned in different places, scanned too many times, or reported by a shopper.', 'Open Scans & analytics to see where and when it happened.'] },
     { q: 'How to see where my products are scanned', go: 'analytics', steps: ['Open Scans & analytics.', 'Look at Locations: tap any city to see it on the Google map.', 'Use the product filter to see one product at a time.'] },
@@ -31,6 +31,34 @@
     q = (q || '').trim().toLowerCase();
     var list = TIPS.filter(function (t) { return !q || t.q.toLowerCase().indexOf(q) > -1 || q.split(/\s+/).every(function (w) { return t.q.toLowerCase().indexOf(w) > -1; }); });
     $('#tipsMenu').innerHTML = list.length ? list.map(function (t) { return '<button type="button" data-tip="' + TIPS.indexOf(t) + '">' + esc(t.q) + '</button>'; }).join('') : '<p class="muted" style="padding:10px 12px">No tips found. Try "QR code" or "store".</p>';
+  }
+  function pcolor(p, i) { return p.color || PALETTE[i % PALETTE.length]; }
+  function kindName(k) { var f = S.KINDS.filter(function (x) { return x[0] === k; })[0]; return f ? f[1] : 'Product'; }
+  function radial(items, unit) {
+    items = items.slice(0, 6);
+    var max = Math.max.apply(null, items.map(function (x) { return x.v; }).concat([1]));
+    var rings = items.map(function (x, i) {
+      var r = 88 - i * 15, C = 2 * Math.PI * r, len = 0.75 * C * (x.v / max);
+      return '<circle cx="110" cy="110" r="' + r + '" fill="none" stroke="var(--sky)" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + (0.75 * C).toFixed(1) + ' ' + C.toFixed(1) + '" transform="rotate(-90 110 110)"/>' +
+        '<circle class="ring" cx="110" cy="110" r="' + r + '" fill="none" stroke="' + x.c + '" stroke-width="10" stroke-linecap="round" stroke-dasharray="' + len.toFixed(1) + ' ' + C.toFixed(1) + '" stroke-dashoffset="' + len.toFixed(1) + '" transform="rotate(-90 110 110)" style="transition-delay:' + (i * 0.12) + 's"/>';
+    }).join('');
+    return '<div class="radial-wrap"><svg viewBox="0 0 220 220" class="radial" role="img" aria-label="Products compared">' + rings + '</svg>' +
+      '<ul class="radial-legend">' + items.map(function (x) { return '<li><i style="background:' + x.c + '"></i><span>' + esc(x.name) + '</span><b>' + x.v.toLocaleString() + '</b><small>' + unit + '</small></li>'; }).join('') + '</ul></div>';
+  }
+  function bars(items, unit) {
+    var max = Math.max.apply(null, items.map(function (x) { return x.v; }).concat([1]));
+    return '<div class="hbars">' + items.map(function (x) {
+      return '<div class="hbar"><span class="hb-name">' + esc(x.name) + '</span><span class="hb-track"><i class="grow" data-w="' + Math.max(2, Math.round(x.v / max * 100)) + '" style="background:linear-gradient(90deg,' + x.c + ',' + S.shade(x.c, 0.3) + ')"></i></span><b>' + x.v.toLocaleString() + '</b></div>';
+    }).join('') + '</div><p class="sub" style="margin-top:8px">' + unit + '</p>';
+  }
+  function animateCharts() {
+    requestAnimationFrame(function () {
+      setTimeout(function () {
+        document.querySelectorAll('.ring').forEach(function (r) { r.style.strokeDashoffset = '0'; });
+        document.querySelectorAll('.grow').forEach(function (b) { b.style.width = b.getAttribute('data-w') + '%'; });
+        document.querySelectorAll('.grow-h').forEach(function (b) { b.style.height = b.getAttribute('data-h') + '%'; });
+      }, 60);
+    });
   }
   function initials(n) { var w = String(n || '?').trim().split(/\s+/); return ((w[0] || '?')[0] + (w[1] ? w[1][0] : (w[0][1] || ''))).toUpperCase(); }
   function donut() {
@@ -127,7 +155,7 @@
       ['Add your first product', 'Name, size, price and look.', me.products.length > 0, '<button class="btn btn-soft btn-sm" data-act="add-product">Add product</button>'],
       ['Add a store (optional)', 'Where customers can find you.', me.stores.length > 0, '<button class="btn btn-soft btn-sm" data-act="add-store">Add store</button>'],
       ['Generate test QR codes', 'Try your codes before going live.', me.batches.length > 0, '<a class="btn btn-soft btn-sm" href="#codes">Generate</a>'],
-      ['Click "Go live" and submit documents', 'We review them for you.', me.status === 'review' || me.status === 'live', '<a class="btn btn-blue btn-sm" href="#golive">Go live</a>'],
+      ['Click "Go live" and submit documents', 'We review them for you.', me.status === 'review' || me.status === 'live', '<button class="btn btn-blue btn-sm" data-act="golive">Go live</button>'],
       ['Account live', 'Your codes become active.', me.status === 'live', '']
     ];
     var done = steps.filter(function (s) { return s[2]; }).length;
@@ -157,9 +185,9 @@
   function kpi(label, val, cls, em) { return '<div class="kpi ' + (cls || '') + '"><small>' + label + '</small><b>' + val + '</b>' + (em ? '<em>' + em + '</em>' : '') + '</div>'; }
   function banner() {
     var s = me.status;
-    if (s === 'setup') return '<div class="banner b-amber"><span class="ic">!</span><div class="txt"><h3>You\'re in test mode</h3><p>Set up your products and try your codes. When you\'re ready, click "Go live" and submit your documents.</p></div><a class="btn btn-blue" href="#golive">Go live</a></div>';
-    if (s === 'review') return '<div class="banner b-blue"><span class="ic">⏳</span><div class="txt"><h3>Your documents are under review</h3><p>We\'re checking your submission. We\'ll alert you here as soon as your account is live.</p></div><a class="btn btn-line" href="#golive">View submission</a></div>';
-    if (s === 'changes') return '<div class="banner b-red"><span class="ic">✎</span><div class="txt"><h3>Changes requested</h3><p>' + esc(me.reviewNote) + '</p></div><a class="btn btn-blue" href="#golive">Update and resubmit</a></div>';
+    if (s === 'setup') return '<div class="banner b-amber"><span class="ic">!</span><div class="txt"><h3>You\'re in test mode</h3><p>Set up your products and try your codes. When you\'re ready, click "Go live" and submit your documents.</p></div><button class="btn btn-blue" data-act="golive">Go live</button></div>';
+    if (s === 'review') return '<div class="banner b-blue"><span class="ic">⏳</span><div class="txt"><h3>Your documents are under review</h3><p>We\'re checking your submission. We\'ll alert you here as soon as your account is live.</p></div><button class="btn btn-line" data-act="golive">View submission</button></div>';
+    if (s === 'changes') return '<div class="banner b-red"><span class="ic">✎</span><div class="txt"><h3>Changes requested</h3><p>' + esc(me.reviewNote) + '</p></div><button class="btn btn-blue" data-act="golive">Update and resubmit</button></div>';
     return '<div class="banner b-green"><span class="ic">✓</span><div class="txt"><h3>Your account is live</h3><p>Your QR codes are active. Shoppers who scan them will see your verified products.</p></div><a class="btn btn-blue" href="#codes">Generate codes</a></div>';
   }
   function scanTable(list) {
@@ -169,21 +197,62 @@
   }
 
   V.products = function () {
-    var head = '<div class="card-head"><p class="muted">Add each product you want to protect. You\'ll generate unique QR codes for it next.</p><button class="btn btn-blue" data-act="add-product">+ Add product</button></div>';
-    if (!me.products.length) return head + '<div class="card empty">' + S.bottle('drink', '#1f4fd8', 90) + '<h3>No products yet</h3><p>Add your first product to start generating QR codes.</p><button class="btn btn-blue" data-act="add-product">Add your first product</button></div>';
-    return head + '<div class="prods">' + me.products.map(function (p) {
-      var scans = me.scans.filter(function (s) { return s.productId === p.id; }).length;
-      return '<div class="prod"><div class="prod-top"><div class="prod-thumb">' + S.bottle(p.kind, p.color, 64) + '</div><div><h3>' + esc(p.name) + '</h3><span class="muted" style="font-size:.84rem">' + esc(p.category) + '</span></div></div>' +
-        '<div class="meta"><span>Size</span><b>' + esc(p.size || '—') + '</b><span>Price</span><b>' + S.money(p.price) + '</b><span>SKU</span><b>' + esc(p.sku || '—') + '</b><span>Codes · scans</span><b>' + (p.codes || 0).toLocaleString() + ' · ' + scans + '</b></div>' +
-        '<div class="acts"><button class="btn btn-blue btn-sm" data-act="gen-for" data-id="' + p.id + '">Generate codes</button><button class="btn btn-soft btn-sm" data-act="edit-product" data-id="' + p.id + '">Edit</button><button class="btn btn-red btn-sm" data-act="del-product" data-id="' + p.id + '">Delete</button></div></div>';
-    }).join('') + '</div>';
+    var head = '<div class="card-head"><p class="muted">Every product you protect, with its own colour and type. Generate unique QR codes for each one.</p><button class="btn btn-blue" data-act="add-product">+ Add product</button></div>';
+    if (!me.products.length) return head + '<div class="card empty"><div class="kind-row">' + ['drink', 'can', 'box', 'bag', 'pouch', 'tote'].map(function (k, i) { return S.art(k, COLORS[i], 80); }).join('') + '</div><h3>No products yet</h3><p>Drinks, cans, cartons, bags, sachets, cosmetics: add your first product to start generating QR codes.</p><button class="btn btn-blue" data-act="add-product">Add your first product</button></div>';
+    var items = me.products.map(function (p, i) {
+      var ps = me.scans.filter(function (x) { return x.productId === p.id; });
+      return { p: p, name: p.name, c: pcolor(p, i), codes: p.codes || 0, scans: ps.length, ver: ps.filter(function (x) { return x.result === 'verified'; }).length };
+    });
+    var maxCodes = Math.max.apply(null, items.map(function (x) { return x.codes; }).concat([1]));
+    var maxScans = Math.max.apply(null, items.map(function (x) { return x.scans; }).concat([1]));
+    var cats = {}; me.products.forEach(function (p) { cats[p.category] = (cats[p.category] || 0) + 1; });
+    return head +
+      '<div class="grid g2 mb"><div class="card"><h3>Products at a glance</h3><p class="sub" style="margin-bottom:10px">QR codes generated per product.</p>' + radial(items.map(function (x) { return { name: x.name, v: x.codes, c: x.c }; }), 'codes') + '</div>' +
+      '<div class="card"><h3>Scans by product</h3><p class="sub" style="margin-bottom:14px">How often shoppers scan each product.</p>' + bars(items.map(function (x) { return { name: x.name, v: x.scans, c: x.c }; }), 'Total scans (clicks)') +
+      '<div class="cat-chips">' + Object.keys(cats).map(function (k) { return '<span>' + esc(k) + ' · ' + cats[k] + '</span>'; }).join('') + '</div></div></div>' +
+      '<div class="prods">' + items.map(function (x) {
+        var p = x.p, vr = x.scans ? Math.round(x.ver / x.scans * 100) : 0;
+        return '<div class="prod"><div class="prod-hero" style="background:linear-gradient(135deg,' + S.shade(x.c, 0.85) + ',' + S.shade(x.c, 0.6) + ')"><span class="kind-tag" style="color:' + S.shade(x.c, -0.35) + '">' + kindName(p.kind) + '</span><div class="prod-art">' + S.art(p.kind, x.c, 116) + '</div>' + (p.price ? '<span class="price">' + S.money(p.price) + '</span>' : '') + '</div>' +
+          '<div class="prod-body"><h3>' + esc(p.name) + '</h3><span class="muted" style="font-size:.84rem">' + esc(p.category) + (p.size ? ' · ' + esc(p.size) : '') + (p.sku ? ' · SKU ' + esc(p.sku) : '') + '</span>' +
+          '<div class="metric"><span>QR codes generated</span><b>' + x.codes.toLocaleString() + '</b></div><div class="abar"><i class="grow" data-w="' + Math.max(2, Math.round(x.codes / maxCodes * 100)) + '" style="background:' + x.c + '"></i></div>' +
+          '<div class="metric"><span>Total scanned</span><b>' + x.scans + '</b></div><div class="abar"><i class="grow" data-w="' + Math.max(2, Math.round(x.scans / maxScans * 100)) + '" style="background:' + S.shade(x.c, 0.25) + '"></i></div>' +
+          '<div class="metric"><span>Verified rate</span><b>' + (x.scans ? vr + '%' : '—') + '</b></div><div class="abar"><i class="grow" data-w="' + Math.max(2, vr) + '" style="background:var(--green)"></i></div>' +
+          '<div class="acts"><button class="btn btn-blue btn-sm" data-act="gen-for" data-id="' + p.id + '">Generate codes</button><button class="btn btn-soft btn-sm" data-act="edit-product" data-id="' + p.id + '">Edit</button><button class="btn btn-red btn-sm" data-act="del-product" data-id="' + p.id + '">Delete</button></div></div></div>';
+      }).join('') + '<button class="prod add-tile" data-act="add-product"><span>+</span><b>Add another product</b><small>Drinks, cans, bags, cartons and more</small></button></div>';
   };
+
+  /* ---------- wallet ---------- */
+  function wallet() {
+    if (!me.wallet) save(function (m) { var h = 0; for (var i = 0; i < m.id.length; i++) h = (h * 31 + m.id.charCodeAt(i)) >>> 0; m.wallet = { acct: '90' + String(h).padStart(8, '0').slice(-8), balance: 0, tx: [] }; });
+    return me.wallet;
+  }
+  V.wallet = function () {
+    var w = wallet(), now = new Date(), month = w.tx.filter(function (t) { var d = new Date(t.at); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); });
+    var inM = month.filter(function (t) { return t.amt > 0; }).reduce(function (a, t) { return a + t.amt; }, 0);
+    var outM = month.filter(function (t) { return t.amt < 0; }).reduce(function (a, t) { return a - t.amt; }, 0);
+    var days7 = [];
+    for (var i = 6; i >= 0; i--) { var d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i); var e = new Date(d); e.setDate(e.getDate() + 1); days7.push({ l: d.toLocaleDateString('en-GB', { weekday: 'short' }), v: w.tx.filter(function (t) { var x = new Date(t.at); return t.amt > 0 && x >= d && x < e; }).reduce(function (a, t) { return a + t.amt; }, 0) }); }
+    var max7 = Math.max.apply(null, days7.map(function (x) { return x.v; }).concat([1]));
+    return '<div class="grid g-21 mb"><div class="wallet-card"><div class="wc-top"><span>Wallet balance</span><span class="pill" style="background:rgba(255,255,255,.16);color:#fff">Prototype</span></div>' +
+      '<b class="wc-bal">' + S.money(w.balance).replace('—', '₦0') + '</b><div class="wc-acct"><span>Glouf account number</span><b class="mono" style="font-size:1.05rem;color:#fff">' + w.acct.replace(/(\d{2})(\d{4})(\d{4})/, '$1 $2 $3') + '</b></div>' +
+      '<div class="wc-acts"><button class="btn btn-white btn-sm" data-act="w-fund">+ Fund wallet</button><button class="btn btn-ghost btn-sm" data-act="w-withdraw">Withdraw</button><button class="btn btn-ghost btn-sm" data-act="w-receive">Receive payment</button></div></div>' +
+      '<div class="card"><h3>This month</h3><div class="wm"><span>Money in</span><b style="color:var(--green)">' + S.money(inM).replace('—', '₦0') + '</b></div><div class="abar"><i class="grow" data-w="' + (inM || outM ? Math.round(inM / Math.max(inM, outM) * 100) : 2) + '" style="background:var(--green)"></i></div>' +
+      '<div class="wm"><span>Money out</span><b style="color:var(--red)">' + S.money(outM).replace('—', '₦0') + '</b></div><div class="abar"><i class="grow" data-w="' + (inM || outM ? Math.round(outM / Math.max(inM, outM) * 100) : 2) + '" style="background:var(--red)"></i></div>' +
+      '<div class="wm"><span>Transactions</span><b>' + month.length + '</b></div></div></div>' +
+      '<div class="grid g-21"><div class="card"><div class="card-head"><h3>Transactions</h3>' + (w.tx.length ? '' : '<button class="btn btn-soft btn-sm" data-act="w-sample">Load sample transactions</button>') + '</div>' +
+      (w.tx.length ? '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Description</th><th>Channel</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>' + w.tx.slice(0, 30).map(function (t) {
+        return '<tr><td><b style="color:var(--navy)">' + esc(t.desc) + '</b></td><td class="muted">' + esc(t.ch) + '</td><td style="font-weight:700;color:' + (t.amt > 0 ? 'var(--green)' : 'var(--red)') + '">' + (t.amt > 0 ? '+' : '−') + S.money(Math.abs(t.amt)) + '</td><td><span class="pill t-green">Successful</span></td><td class="muted">' + S.when(t.at) + '</td></tr>';
+      }).join('') + '</tbody></table></div>' : '<p class="empty">No transactions yet. Fund your wallet, or receive a payment from a customer.</p>') + '</div>' +
+      '<div class="card"><h3>Money in, last 7 days</h3><div class="vbars">' + days7.map(function (x) { return '<div class="vb"><span class="vb-t"><i class="grow-h" data-h="' + Math.max(3, Math.round(x.v / max7 * 100)) + '"></i></span><small>' + x.l + '</small></div>'; }).join('') + '</div>' +
+      '<p class="sub" style="margin-top:12px">Prototype wallet: no real money moves until Glouf payments are connected.</p></div></div>';
+  };
+  function addTx(desc, ch, amt) { save(function (m) { m.wallet.balance += amt; m.wallet.tx.unshift({ id: S.newId('t_'), desc: desc, ch: ch, amt: amt, at: new Date().toISOString() }); }); }
 
   V.codes = function () {
     if (!me.products.length) return '<div class="card empty">' + S.bottle('drink', '#ffcb47', 90) + '<h3>Add a product first</h3><p>QR codes are linked to a product, so start by adding one.</p><button class="btn btn-blue" data-act="add-product">Add product</button></div>';
     var test = me.status !== 'live';
     var last = ui.lastBatch && me.batches.filter(function (b) { return b.id === ui.lastBatch; })[0];
-    return (test ? '<div class="banner b-amber"><span class="ic">!</span><div class="txt"><h3>Test codes</h3><p>Codes work for testing now. They become active for shoppers once your account is live.</p></div><a class="btn btn-line btn-sm" href="#golive">Go live</a></div>' : '') +
+    return (test ? '<div class="banner b-amber"><span class="ic">!</span><div class="txt"><h3>Test codes</h3><p>Codes work for testing now. They become active for shoppers once your account is live.</p></div><button class="btn btn-line btn-sm" data-act="golive">Go live</button></div>' : '') +
       '<div class="card mb"><h3>Generate QR codes</h3><p class="sub" style="margin-bottom:16px">Each unit gets its own unique code, so copied codes are easy to spot.</p>' +
       '<form data-form="generate" class="row2" style="align-items:end"><div class="field"><label for="g-prod">Product</label><select id="g-prod" name="product">' +
       me.products.map(function (p) { return '<option value="' + p.id + '"' + (ui.genFor === p.id ? ' selected' : '') + '>' + esc(p.name) + '</option>'; }).join('') +
@@ -253,7 +322,7 @@
       tk('2. Submit documents', 'Click "Go live"', s === 'review' || s === 'live' ? 'done' : (has ? 'now' : '')) +
       tk('3. Review', 'We check your details', s === 'live' ? 'done' : (s === 'review' ? 'now' : '')) +
       tk('4. Live', 'Codes are active', s === 'live' ? 'done' : '') + '</div>';
-    if (s === 'live') return tracker + '<div class="banner b-green"><span class="ic">✓</span><div class="txt"><h3>You\'re live</h3><p>Approved ' + (me.liveAt ? S.when(me.liveAt) : '') + '. Your codes are active and shoppers can verify your products.</p></div><a class="btn btn-blue" href="#codes">Print codes</a></div>' + submission();
+    if (s === 'live') return tracker + '<div class="banner b-green"><span class="ic">✓</span><div class="txt"><h3>You\'re live</h3><p>Approved ' + (me.liveAt ? S.when(me.liveAt) : '') + '. Your codes are active and shoppers can verify your products.</p></div><a class="btn btn-blue" href="#codes" data-close>Print codes</a></div>' + submission();
     if (s === 'review') return tracker + '<div class="banner b-blue"><span class="ic">⏳</span><div class="txt"><h3>Under review</h3><p>Submitted ' + S.when(me.golive.submittedAt) + '. We\'ll alert you here, and by email, once your account is live.</p></div></div>' + submission();
     var g = me.golive || {};
     return tracker + (s === 'changes' ? '<div class="banner b-red"><span class="ic">✎</span><div class="txt"><h3>Changes requested</h3><p>' + esc(me.reviewNote) + '</p></div></div>' : '') +
@@ -269,8 +338,12 @@
       fileBox('reg', 'Product approval', 'NAFDAC or SON certificate, if your products need one', false, g) +
       fileBox('tm', 'Trademark certificate', 'Optional, helps protect your brand', false, g) +
       '</div><label class="check"><input type="checkbox" required> I confirm these details are correct and I\'m authorised to register these products for my business.</label>' +
-      '<p class="err" id="gl-err"></p><button class="btn btn-blue" type="submit"' + (has ? '' : ' disabled') + '>Submit for review</button></form>';
+      '<p class="err" id="gl-err"></p><button class="btn btn-blue" type="submit">Go live: submit for review</button></form>';
   };
+  function openGoLive() {
+    var titles = { setup: 'Go live', changes: 'Update your go-live details', review: 'Your go-live submission', live: 'You\'re live' };
+    modal(head(titles[me.status] || 'Go live') + V.golive(), true);
+  }
   function tk(t, s, st) { return '<div class="' + st + '"><b>' + t + '</b><span>' + s + '</span></div>'; }
   function fileBox(name, title, hint, req, g) {
     var docs = g.docs || {}, f = docs[name];
@@ -299,17 +372,17 @@
 
   /* ---------- modals ---------- */
   function productForm(p) {
-    p = p || { kind: 'drink', color: COLORS[0], category: me.industry || INDUSTRIES[0] };
+    p = p || { kind: 'drink', color: COLORS[me.products.length % COLORS.length], category: me.industry || INDUSTRIES[0] };
     return head(p.id ? 'Edit product' : 'Add a product') + '<form data-form="product" data-id="' + (p.id || '') + '">' +
       '<div class="field"><label>Product name</label><input name="name" required placeholder="e.g. Pure Dairy Full-Cream Milk" value="' + esc(p.name || '') + '"></div>' +
       '<div class="row2"><div class="field"><label>Category</label><select name="category">' + opts(INDUSTRIES, p.category) + '</select></div><div class="field"><label>Size / weight</label><input name="size" placeholder="e.g. 500 ml or 250 g" value="' + esc(p.size || '') + '"></div></div>' +
       '<div class="row2"><div class="field"><label>Price (₦) <small>(optional)</small></label><input name="price" type="number" min="0" step="1" value="' + esc(p.price || '') + '"></div><div class="field"><label>SKU / barcode <small>(optional)</small></label><input name="sku" value="' + esc(p.sku || '') + '"></div></div>' +
       '<div class="field"><label>NAFDAC / SON number <small>(if applicable)</small></label><input name="reg" value="' + esc(p.reg || '') + '"></div>' +
-      '<div class="row2"><div class="field"><label>Container</label><div class="kinds">' + ['drink', 'pharma', 'pump'].map(function (k) {
-        return '<label><input type="radio" name="kind" value="' + k + '"' + (p.kind === k ? ' checked' : '') + '><span>' + S.bottle(k, p.color, 56) + '</span></label>';
-      }).join('') + '</div></div><div class="field"><label>Label colour</label><div class="swatches">' + COLORS.map(function (c) {
+      '<div class="field"><label>Product type</label><div class="kinds">' + S.KINDS.map(function (k) {
+        return '<label title="' + k[1] + '"><input type="radio" name="kind" value="' + k[0] + '"' + (p.kind === k[0] ? ' checked' : '') + '><span data-kind="' + k[0] + '">' + S.art(k[0], p.color, 54) + '<em>' + k[1] + '</em></span></label>';
+      }).join('') + '</div></div><div class="field"><label>Product colour</label><div class="swatches">' + COLORS.map(function (c) {
         return '<label><input type="radio" name="color" value="' + c + '"' + (p.color === c ? ' checked' : '') + '><span style="background:' + c + '"></span></label>';
-      }).join('') + '</div></div></div>' +
+      }).join('') + '</div></div>' +
       '<div class="modal-foot"><button type="button" class="btn btn-line" data-close>Cancel</button><button class="btn btn-blue" type="submit">' + (p.id ? 'Save product' : 'Add product') + '</button></div></form>';
   }
   function storeForm() {
@@ -338,17 +411,19 @@
     me = S.current();
     if (!me) { location.replace('login.html'); return; }
     var v = location.hash.slice(1) || 'overview';
+    if (v === 'golive') { history.replaceState(null, '', '#overview'); v = 'overview'; setTimeout(openGoLive, 0); }
     if (!V[v]) v = 'overview';
     document.querySelectorAll('.side nav a').forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + v); });
     $('#title').textContent = TITLES[v];
     document.title = TITLES[v] + ' · Glouf merchant';
-    $('#st').innerHTML = statusPill();
+    $('#st').innerHTML = '<button class="st-btn" data-act="golive" title="Go live status">' + statusPill() + '</button>';
     $('#uname').textContent = me.business; $('#uemail').textContent = me.email;
     $('#avatar').textContent = initials(me.business);
     renderBell();
     $('#view').innerHTML = V[v]();
     $('.app').classList.remove('open');
     if (v === 'overview') startDonut(); else clearInterval(donutTimer);
+    animateCharts();
   }
   function renderBell() {
     var unread = me.notifications.filter(function (n) { return !n.read; }).length;
@@ -381,8 +456,9 @@
       case 'theme': S.theme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); break;
       case 'tip-go':
         var then = el.getAttribute('data-then'); closeModal(); location.hash = el.getAttribute('data-go');
-        if (then) setTimeout(function () { modal(then === 'add-store' ? storeForm() : productForm()); }, 60);
+        if (then) setTimeout(function () { if (then === 'golive') openGoLive(); else modal(then === 'add-store' ? storeForm() : productForm()); }, 60);
         break;
+      case 'golive': openGoLive(); break;
       case 'add-product': modal(productForm()); break;
       case 'edit-product': modal(productForm(prod(id))); break;
       case 'del-product':
@@ -401,6 +477,25 @@
         toast(r.result === 'verified' ? 'Scan recorded in ' + r.city + ': verified ✓' : r.result === 'flagged' ? 'Scan flagged in ' + r.city : 'Test scan recorded in ' + r.city);
         break;
       case 'add-store': modal(storeForm()); break;
+      case 'w-fund':
+        var w1 = wallet();
+        modal(head('Fund your wallet') + '<div class="fund-opt"><h3>Bank transfer</h3><p class="muted">Transfer from any Nigerian bank to your Glouf account number. It reflects instantly.</p><p class="big-acct mono">' + w1.acct + '</p></div>' +
+          '<form data-form="voucher" class="fund-opt"><h3>Recharge voucher</h3><div class="field"><label>Voucher PIN</label><input name="pin" inputmode="numeric" required minlength="12" maxlength="19" placeholder="e.g. 4829 1176 3305 8841"></div><div class="field"><label>Voucher value (₦)</label><select name="val">' + [1000, 2000, 5000, 10000, 20000, 50000].map(function (v) { return '<option value="' + v + '">₦' + v.toLocaleString() + '</option>'; }).join('') + '</select></div><div class="modal-foot"><a class="btn btn-line" href="voucher.html" target="_blank">Buy a voucher</a><button class="btn btn-blue" type="submit">Redeem voucher</button></div></form>');
+        break;
+      case 'w-withdraw':
+        modal(head('Withdraw') + '<form data-form="withdraw"><p class="muted" style="margin-bottom:14px">Available: <b>' + S.money(wallet().balance).replace('—', '₦0') + '</b></p><div class="field"><label>Amount (₦)</label><input name="amt" type="number" min="100" required></div><div class="row2"><div class="field"><label>Bank</label><select name="bank" required>' + opts(['Access Bank', 'First Bank', 'GTBank', 'Kuda', 'Moniepoint', 'OPay', 'PalmPay', 'UBA', 'Wema Bank', 'Zenith Bank', 'Other']) + '</select></div><div class="field"><label>Account number</label><input name="acct" inputmode="numeric" pattern="[0-9]{10}" maxlength="10" required></div></div><p class="err" id="wd-err"></p><div class="modal-foot"><button type="button" class="btn btn-line" data-close>Cancel</button><button class="btn btn-blue" type="submit">Withdraw now</button></div></form>');
+        break;
+      case 'w-receive':
+        var pay = 'GLOUF-PAY:' + me.short + ':' + wallet().acct;
+        modal(head('Receive a payment') + '<div class="qr-one">' + S.qrSvg(pay, 6) + '<div><h3>' + esc(me.business) + '</h3><p class="muted" style="margin:6px 0 14px">Customers scan this with the Glouf app to pay you. You can also share your account number: <b class="mono">' + wallet().acct + '</b></p><button class="btn btn-soft btn-sm" data-act="w-sim-pay">Simulate a customer payment</button></div></div>');
+        break;
+      case 'w-sim-pay': var amt = [1500, 3200, 4800, 7500, 12000][Math.floor(Math.random() * 5)]; addTx('Payment from customer', 'Scan to pay', amt); closeModal(); render(); toast('Received ' + S.money(amt)); break;
+      case 'w-sample':
+        wallet();
+        [['Payment from customer', 'Scan to pay', 4800, 0], ['Payment from Shoprite order', 'Bank transfer', 125000, 1], ['Withdrawal to GTBank', 'Withdrawal', -60000, 2], ['Voucher top-up', 'Voucher', 10000, 3], ['Payment from customer', 'Scan to pay', 3200, 4], ['Online order #1042', 'Payment API', 18500, 5], ['Payment from customer', 'Mobile number', 7500, 6]].forEach(function (t) {
+          save(function (m) { m.wallet.balance += t[2]; m.wallet.tx.push({ id: S.newId('t_'), desc: t[0], ch: t[1], amt: t[2], at: new Date(Date.now() - t[3] * 864e5 - 3600e3).toISOString() }); });
+        });
+        render(); toast('Sample transactions added'); break;
       case 'del-store': if (confirm('Delete this store?')) { save(function (m) { m.stores = m.stores.filter(function (s) { return s.id !== id; }); }); render(); } break;
       case 'store-qr':
         var st = me.stores.filter(function (s) { return s.id === id; })[0], data = 'GLOUF-STORE:' + me.short + ':' + st.id;
@@ -426,7 +521,7 @@
     }
     if (t.name === 'color' || t.name === 'kind') {
       var form = t.form, color = form.querySelector('[name=color]:checked').value;
-      form.querySelectorAll('.kinds span').forEach(function (sp, i) { sp.innerHTML = S.bottle(['drink', 'pharma', 'pump'][i], color, 56); });
+      form.querySelectorAll('.kinds span[data-kind]').forEach(function (sp) { var k = sp.getAttribute('data-kind'); sp.innerHTML = S.art(k, color, 54) + '<em>' + kindName(k) + '</em>'; });
     }
   });
   document.addEventListener('submit', function (e) {
@@ -456,7 +551,13 @@
       });
       if (missing.length) { $('#gl-err').textContent = 'Please upload: ' + missing.join(', ') + '.'; return; }
       S.submitGoLive(me.id, { legal: d.legal, rc: d.rc, tin: d.tin, director: d.director, address: d.address, state: d.state, docs: docs });
-      me = S.current(); render(); window.scrollTo(0, 0); toast('Submitted. We\'ll alert you when you\'re live.');
+      closeModal(); me = S.current(); render(); window.scrollTo(0, 0); toast('Submitted. We\'ll alert you when you\'re live.');
+    } else if (kind === 'voucher') {
+      addTx('Voucher top-up', 'Voucher', parseInt(d.val, 10)); closeModal(); render(); toast('Wallet funded with ' + S.money(d.val));
+    } else if (kind === 'withdraw') {
+      var a = parseInt(d.amt, 10);
+      if (a > wallet().balance) { $('#wd-err').textContent = 'That\'s more than your balance.'; return; }
+      addTx('Withdrawal to ' + d.bank + ' ••' + d.acct.slice(-4), 'Withdrawal', -a); closeModal(); render(); toast(S.money(a) + ' sent to ' + d.bank);
     } else if (kind === 'profile') {
       save(function (m) { m.business = d.business; m.industry = d.industry; m.name = d.name; m.phone = d.phone; m.profile.address = d.address; m.profile.city = d.city; m.profile.state = d.state; });
       render(); toast('Profile saved');

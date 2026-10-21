@@ -219,16 +219,32 @@
       if (diff < 86400) return Math.floor(diff / 3600) + ' h ago';
       return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     },
-    bottle: function (kind, color, size) {
+    KINDS: [['drink', 'Drink bottle'], ['can', 'Can'], ['pharma', 'Medicine'], ['pump', 'Cosmetics'], ['jar', 'Jar'], ['tube', 'Tube'], ['box', 'Box / carton'], ['pouch', 'Pouch / sachet'], ['bag', 'Bag / sack'], ['tote', 'Fashion bag']],
+    shade: function (hex, amt) {
+      var n = parseInt(String(hex).slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+      function f(c) { return Math.max(0, Math.min(255, Math.round(amt < 0 ? c * (1 + amt) : c + (255 - c) * amt))); }
+      return '#' + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1);
+    },
+    art: function (kind, color, size) {
       size = size || 64; color = color || '#1f4fd8';
-      var navy = '#0a2240', body = '#fff';
-      var inner;
-      if (kind === 'pharma') inner = '<rect x="20" y="0" width="60" height="26" rx="5" fill="' + navy + '"/><rect x="28" y="24" width="44" height="12" fill="#c97a2b"/><rect x="12" y="34" width="76" height="136" rx="14" fill="#c97a2b"/><rect x="12" y="72" width="76" height="66" fill="#fff"/><rect x="36" y="84" width="28" height="28" fill="' + color + '"/>';
-      else if (kind === 'pump') inner = '<rect x="50" y="0" width="34" height="9" rx="4" fill="' + navy + '"/><rect x="44" y="6" width="12" height="26" fill="' + navy + '"/><rect x="34" y="30" width="32" height="16" rx="4" fill="' + navy + '"/><rect x="18" y="44" width="64" height="166" rx="18" fill="#f6eadf" stroke="' + navy + '" stroke-width="4"/><rect x="18" y="96" width="64" height="70" fill="' + color + '"/>';
-      else inner = '<rect x="38" y="0" width="24" height="15" rx="3" fill="' + navy + '"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="' + body + '" stroke="' + navy + '" stroke-width="4"/><rect x="14" y="100" width="72" height="66" fill="' + color + '"/>';
-      return '<svg viewBox="-6 -6 112 232" width="' + Math.round(size * 0.48) + '" height="' + size + '" aria-hidden="true">' + inner + '</svg>';
+      var N = '#0a2240', W = '#fff', dk = S.shade(color, -0.3), lt = S.shade(color, 0.35), o = ' stroke="' + N + '" stroke-width="4" stroke-linejoin="round"';
+      var lbl = function (x, y, w, h) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="#fff" opacity=".92"/><rect x="' + (x + w / 2 - 9) + '" y="' + (y + h / 2 - 9) + '" width="18" height="18" fill="' + N + '"/><rect x="' + (x + w / 2 - 5) + '" y="' + (y + h / 2 - 5) + '" width="10" height="10" fill="#fff"/>'; };
+      var g = {
+        drink: '<rect x="38" y="0" width="24" height="15" rx="3" fill="' + N + '"/><path d="M40 14h20v22c0 10 26 18 26 40v120a14 14 0 0 1-14 14H28a14 14 0 0 1-14-14V76c0-22 26-30 26-40z" fill="' + W + '"' + o + '/><rect x="16" y="100" width="68" height="66" fill="' + color + '"/>' + lbl(34, 116, 32, 34),
+        can: '<rect x="22" y="40" width="56" height="170" rx="12" fill="' + color + '"' + o + '/><rect x="26" y="32" width="48" height="12" rx="5" fill="#c9d2e0"' + o + '/><rect x="22" y="58" width="56" height="8" fill="' + dk + '"/><rect x="22" y="184" width="56" height="8" fill="' + dk + '"/>' + lbl(30, 96, 40, 52),
+        pharma: '<rect x="20" y="40" width="60" height="26" rx="5" fill="' + N + '"/><rect x="28" y="64" width="44" height="12" fill="#c97a2b"/><rect x="12" y="74" width="76" height="136" rx="14" fill="#c97a2b"' + o + '/><rect x="12" y="110" width="76" height="66" fill="#fff"/><rect x="12" y="110" width="76" height="12" fill="' + color + '"/>' + lbl(32, 128, 36, 40),
+        pump: '<rect x="50" y="0" width="34" height="9" rx="4" fill="' + N + '"/><rect x="44" y="6" width="12" height="26" fill="' + N + '"/><rect x="34" y="30" width="32" height="16" rx="4" fill="' + N + '"/><rect x="18" y="44" width="64" height="166" rx="18" fill="' + lt + '"' + o + '/><rect x="18" y="96" width="64" height="70" fill="' + color + '"/>' + lbl(34, 112, 32, 38),
+        jar: '<rect x="20" y="70" width="60" height="24" rx="6" fill="' + color + '"' + o + '/><rect x="14" y="92" width="72" height="118" rx="20" fill="#fff"' + o + '/><rect x="14" y="120" width="72" height="60" fill="' + lt + '"/>' + lbl(34, 128, 32, 44),
+        tube: '<rect x="20" y="30" width="60" height="12" rx="3" fill="#c9d2e0"' + o + '/><path d="M22 40h56l-10 142H32z" fill="' + color + '"' + o + '/><rect x="38" y="180" width="24" height="30" rx="5" fill="' + N + '"/>' + lbl(34, 86, 32, 46),
+        box: '<path d="M14 72l16-14h66l-16 14z" fill="' + lt + '"' + o + '/><path d="M80 72l16-14v138l-16 14z" fill="' + dk + '"' + o + '/><rect x="14" y="72" width="66" height="138" fill="' + color + '"' + o + '/>' + lbl(25, 110, 44, 54),
+        pouch: '<path d="M20 40h60l8 160a10 10 0 0 1-10 10H22a10 10 0 0 1-10-10z" fill="' + color + '"' + o + '/><path d="M22 56h56" stroke="' + dk + '" stroke-width="4" stroke-dasharray="6 4"/><ellipse cx="50" cy="168" rx="20" ry="14" fill="#fff" opacity=".35"/>' + lbl(31, 88, 38, 48),
+        bag: '<rect x="38" y="36" width="24" height="18" rx="4" fill="' + N + '"/><path d="M30 54h40c18 14 22 40 22 70v70a16 16 0 0 1-16 16H24a16 16 0 0 1-16-16v-70c0-30 4-56 22-70z" fill="' + color + '"' + o + '/><path d="M18 98h64" stroke="' + dk + '" stroke-width="4"/>' + lbl(28, 116, 44, 54),
+        tote: '<path d="M30 96c0-46 40-46 40 0" fill="none" stroke="' + N + '" stroke-width="7" stroke-linecap="round"/><path d="M10 96h80l-8 114H18z" fill="' + color + '"' + o + '/><rect x="10" y="96" width="80" height="14" fill="' + dk + '"/>' + lbl(32, 128, 36, 46)
+      };
+      return '<svg viewBox="-6 -6 112 232" width="' + Math.round(size * 0.48) + '" height="' + size + '" aria-hidden="true">' + (g[kind] || g.drink) + '</svg>';
     }
   };
+  S.bottle = S.art;
   S.theme = function (t) {
     if (t) { try { localStorage.setItem('glouf_theme', t); } catch (e) {} }
     else { try { t = localStorage.getItem('glouf_theme'); } catch (e) {} }

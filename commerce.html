@@ -897,7 +897,7 @@ const story=document.getElementById('story');
 if(story){const P=story.querySelectorAll('.panel'),S=story.querySelectorAll('.scr'),D=story.querySelectorAll('.prog i');let cur=0,tm=null;
   const show=k=>{cur=k%3;[P,S,D].forEach(g=>g.forEach((el,j)=>el.classList.toggle('on',j===cur)))};
   D.forEach((d,j)=>{d.style.cursor='pointer';d.addEventListener('click',()=>show(j))});
-  new IntersectionObserver(es=>{es.forEach(e=>{clearInterval(tm);if(e.isIntersecting)tm=setInterval(()=>show(cur+1),1000)})},{threshold:.35}).observe(story);
+  new IntersectionObserver(es=>{es.forEach(e=>{clearInterval(tm);if(e.isIntersecting)tm=setInterval(()=>show(cur+1),3000)})},{threshold:.35}).observe(story);
   show(0)}
 const chips=document.querySelectorAll('.wa-chips span');
 if(chips.length){let c=0;const hl=()=>{chips.forEach((x,j)=>x.classList.toggle('on',j===c));c=(c+1)%chips.length};hl();setInterval(hl,1000)}
