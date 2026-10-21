@@ -430,3 +430,37 @@ html[data-theme=dark] .kind-tag{background:rgba(255,255,255,.9)}
 .radial .ring.on{stroke-width:12}
 .radial-cap{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font-size:.84rem;font-weight:700;color:var(--navy);min-height:20px;text-align:center}
 .radial-cap i{width:10px;height:10px;border-radius:3px;flex:none}
+
+/* ===== Overview, Glouf dashboard layout ===== */
+.anim-in{animation:animIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0s)}
+@keyframes animIn{from{opacity:0;transform:translateY(16px) scale(.98)}}
+.ov-top{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:16px;align-items:stretch}
+@media(max-width:1000px){.ov-top{grid-template-columns:1fr}}
+.ov-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:520px){.ov-stats{grid-template-columns:1fr}}
+.stat-card{background:var(--card);border-radius:22px;padding:22px;display:flex;gap:16px;align-items:flex-start;box-shadow:0 18px 40px -30px rgba(10,34,64,.35)}
+.sc-ic{width:48px;height:48px;border-radius:14px;background:var(--sky);color:var(--blue);display:grid;place-items:center;flex:none}
+.sc-ic svg{width:24px;height:24px}
+.sc-ic.sc-green{background:#e4f6ec;color:var(--green)}.sc-ic.sc-amber{background:#fff4d6;color:var(--amber)}
+.sc-body small{display:block;font-size:.8rem;color:var(--blue);font-weight:600}
+.sc-num{display:block;font-family:Archivo;font-size:2rem;color:var(--navy);letter-spacing:-.02em;line-height:1.15;margin-top:4px}
+.sc-sub{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem;color:var(--blue);font-weight:600}
+.scan-badge{font-style:normal;background:#126b3c;color:#fff;font-weight:800;padding:3px 9px;border-radius:7px;font-family:Archivo;font-size:.95rem}
+.ov-donut{background:var(--card);border-radius:22px;padding:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 18px 40px -30px rgba(10,34,64,.35)}
+.ov-donut .donut-wrap{grid-template-columns:1fr;justify-items:center;gap:0}
+.ov-donut .donut-legend{display:none}
+.ov-donut .donut-box{width:240px;height:240px}
+.ov-donut .donut-mid{padding:0 60px}
+.donut .seg{transition:stroke-dasharray .9s cubic-bezier(.2,.8,.2,1),stroke-width .35s,opacity .35s}
+.donut-cap{margin-top:10px;font-weight:700;color:var(--navy);font-size:.92rem}
+.ptiles-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:14px;margin-bottom:16px}
+.gtile{position:relative;background:var(--card);border-radius:18px;padding:16px 14px 18px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 14px 30px -26px rgba(10,34,64,.4);transition:transform .25s}
+.gtile:hover{transform:translateY(-4px)}
+.gtag{display:block;width:100%;border-radius:8px;padding:9px 8px;font-weight:700;font-size:.82rem;margin-bottom:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 6px 14px -10px rgba(10,34,64,.5)}
+.gtile small{font-size:.76rem;color:var(--muted);line-height:1.3}
+.gtile .pt-num{font-family:Archivo;font-size:1.15rem;color:var(--navy);margin-bottom:6px}
+.gicon{position:absolute;right:10px;bottom:8px;animation:bob 3.4s ease-in-out infinite}
+.gtile:nth-child(2n) .gicon{animation-delay:-1.2s}.gtile:nth-child(3n) .gicon{animation-delay:-2.2s}
+html[data-theme=dark] .scan-badge{background:#169c55}
+html[data-theme=dark] .sc-ic.sc-green{background:#0f2d1f}html[data-theme=dark] .sc-ic.sc-amber{background:#3a2e10}
+@media(prefers-reduced-motion:reduce){.anim-in,.gicon{animation:none}}

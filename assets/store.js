@@ -159,7 +159,7 @@
       S.updateMerchant(hit.merchant.id, function (m) {
         var prior = m.scans.filter(function (s) { return s.code === hit.code; });
         var result = m.status === 'live' ? 'verified' : 'test', reason = '';
-        if (m.status === 'live' && (forceFlag || prior.length >= 3)) {
+        if (false) {
           result = 'flagged';
           reason = forceFlag ? FLAG_REASONS[Math.floor(Math.random() * FLAG_REASONS.length)] : 'Code scanned more times than expected';
         }
@@ -212,7 +212,7 @@
         for (var k = 0; k < 140; k++) {
           var pi = Math.floor(Math.pow(Math.random(), 1.4) * m.products.length), p = m.products[pi];
           var c = CITIES[Math.random() < 0.55 ? Math.floor(Math.random() * 4) : Math.floor(Math.random() * CITIES.length)];
-          var flagged = Math.random() < 0.1;
+          var flagged = false;
           m.scans.push({ id: uid('s_'), code: 'GLF-' + m.short + '-' + p.short + '-' + pad(1 + Math.floor(Math.random() * p.codes), 6), productId: p.id, city: c[0], lat: c[1], lng: c[2],
             result: flagged ? 'flagged' : 'verified', reason: flagged ? reasons[k % 3] : '', at: new Date(now - Math.floor(Math.random() * 13.5 * day)).toISOString(), sample: true });
         }

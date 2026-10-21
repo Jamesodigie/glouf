@@ -3,7 +3,7 @@
   var S = window.GloufStore, esc = S.esc;
   var sess = S.session();
   if (!sess || sess.role !== 'admin') { location.replace('login.html#admin'); return; }
-  var TITLES = { overview: 'Admin overview', reviews: 'Go-live reviews', merchants: 'Merchants', scans: 'Scans & flags' };
+  var TITLES = { overview: 'Admin overview', reviews: 'Go-live reviews', merchants: 'Merchants', scans: 'Scans' };
   var ui = { loc: null };
   var DOCS = { cac: 'CAC certificate', id: 'Director\'s ID', addr: 'Proof of address', reg: 'Product approval', tm: 'Trademark certificate' };
 
@@ -31,8 +31,7 @@
     var prods = ms.reduce(function (a, m) { return a + m.products.length; }, 0);
     var codes = ms.reduce(function (a, m) { return a + m.batches.reduce(function (x, b) { return x + b.qty; }, 0); }, 0);
     return '<div class="kpis">' + kpi('Merchants', ms.length) + kpi('Live', ms.filter(function (m) { return m.status === 'live'; }).length, 'k-green') +
-      kpi('Awaiting review', pending.length) + kpi('Products', prods) + kpi('QR codes', codes.toLocaleString()) + kpi('Scans (clicks)', sc.length) +
-      kpi('Flagged', sc.filter(function (s) { return s.result === 'flagged'; }).length, 'k-red') + '</div>' +
+      kpi('Awaiting review', pending.length) + kpi('Products', prods) + kpi('QR codes', codes.toLocaleString()) + kpi('Scans (clicks)', sc.length) + '</div>' +
       '<div class="grid g2"><div class="card"><div class="card-head"><h3>Awaiting review</h3><a class="btn btn-soft btn-sm" href="#reviews">Open queue</a></div>' +
       (pending.length ? '<div class="tbl-wrap"><table class="tbl"><tbody>' + pending.map(function (m) { return '<tr class="click" data-act="open" data-id="' + m.id + '"><td><b>' + esc(m.business) + '</b><br><span class="muted">' + esc(m.industry) + '</span></td><td class="muted">' + S.when(m.golive.submittedAt) + '</td><td>' + pill(m.status) + '</td></tr>'; }).join('') + '</tbody></table></div>' : '<p class="empty">Nothing waiting. You\'re all caught up.</p>') + '</div>' +
       '<div class="card"><div class="card-head"><h3>Newest merchants</h3><a class="btn btn-soft btn-sm" href="#merchants">All merchants</a></div>' +
@@ -65,22 +64,21 @@
     var sc = scans();
     if (!sc.length) return '<div class="card empty"><h3>No scans yet</h3><p>Scans from every merchant appear here.</p></div>';
     var map = {}; sc.forEach(function (s) { (map[s.city] = map[s.city] || { city: s.city, lat: s.lat, lng: s.lng, n: 0, bad: 0 }).n++; if (s.result === 'flagged') map[s.city].bad++; });
-    var locs = Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return b.bad - a.bad || b.n - a.n; });
+    var locs = Object.keys(map).map(function (k) { return map[k]; }).sort(function (a, b) { return b.n - a.n; });
     if (!ui.loc) ui.loc = locs[0].city;
     var sel = map[ui.loc] || locs[0], top = Math.max.apply(null, locs.map(function (l) { return l.n; }));
-    var flagged = sc.filter(function (s) { return s.result === 'flagged'; });
-    return '<div class="kpis">' + kpi('Scans (clicks)', sc.length) + kpi('Verified', sc.filter(function (s) { return s.result === 'verified'; }).length, 'k-green') + kpi('Flagged', flagged.length, 'k-red') + kpi('Locations', locs.length) + '</div>' +
-      '<div class="grid g-21 mb"><div class="card"><h3>' + esc(sel.city) + '</h3><p class="sub" style="margin-bottom:10px">' + sel.n + ' scans · ' + sel.bad + ' flagged</p><iframe class="map" loading="lazy" title="Map" src="' + mapSrc(sel.lat + ',' + sel.lng, 11) + '"></iframe></div>' +
-      '<div class="card"><h3>Hotspots</h3><ul class="loc-list" style="margin-top:10px">' + locs.map(function (l) { return '<li data-act="loc" data-city="' + esc(l.city) + '" class="' + (l.city === sel.city ? 'on' : '') + '"><b>' + esc(l.city) + (l.bad ? ' <span class="pill t-red" style="padding:1px 7px">' + l.bad + '</span>' : '') + '</b><span class="bar"><i style="width:' + Math.round(l.n / top * 100) + '%"></i></span><em>' + l.n + '</em></li>'; }).join('') + '</ul></div></div>' +
-      '<div class="card"><h3>Flagged scans</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Merchant</th><th>Product</th><th>Location</th><th>Reason</th><th>When</th></tr></thead><tbody>' +
-      (flagged.length ? flagged.slice(0, 30).map(function (s) { return '<tr><td>' + esc(s.merchant) + '</td><td>' + esc(s.product) + '<br><span class="mono muted">' + esc(s.code) + '</span></td><td>' + esc(s.city) + '</td><td>' + esc(s.reason) + '</td><td class="muted">' + S.when(s.at) + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="muted">Nothing flagged.</td></tr>') +
+    return '<div class="kpis">' + kpi('Scans (clicks)', sc.length) + kpi('Verified', sc.filter(function (s) { return s.result === 'verified'; }).length, 'k-green') + kpi('Locations', locs.length) + '</div>' +
+      '<div class="grid g-21 mb"><div class="card"><h3>' + esc(sel.city) + '</h3><p class="sub" style="margin-bottom:10px">' + sel.n + ' scans</p><iframe class="map" loading="lazy" title="Map" src="' + mapSrc(sel.lat + ',' + sel.lng, 11) + '"></iframe></div>' +
+      '<div class="card"><h3>Hotspots</h3><ul class="loc-list" style="margin-top:10px">' + locs.map(function (l) { return '<li data-act="loc" data-city="' + esc(l.city) + '" class="' + (l.city === sel.city ? 'on' : '') + '"><b>' + esc(l.city) + '' + '</b><span class="bar"><i style="width:' + Math.round(l.n / top * 100) + '%"></i></span><em>' + l.n + '</em></li>'; }).join('') + '</ul></div></div>' +
+      '<div class="card"><h3>Latest scans</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Merchant</th><th>Product</th><th>Location</th><th>Result</th><th>When</th></tr></thead><tbody>' +
+      sc.slice(0, 30).map(function (s) { return '<tr><td>' + esc(s.merchant) + '</td><td>' + esc(s.product) + '<br><span class="mono muted">' + esc(s.code) + '</span></td><td>' + esc(s.city) + '</td><td>' + (s.result === 'test' ? '<span class="pill t-amber">Test</span>' : '<span class="pill t-green">Verified</span>') + '</td><td class="muted">' + S.when(s.at) + '</td></tr>'; }).join('') +
       '</tbody></table></div></div>';
   };
   function detail(m) {
-    var ver = m.scans.filter(function (s) { return s.result === 'verified'; }).length, fl = m.scans.filter(function (s) { return s.result === 'flagged'; }).length;
+    var ver = m.scans.filter(function (s) { return s.result === 'verified'; }).length;
     return '<div class="modal-head"><h2>' + esc(m.business) + '</h2><button class="x" data-close aria-label="Close">×</button></div>' +
       '<p style="margin-bottom:14px">' + pill(m.status) + ' <span class="muted">· ' + esc(m.industry) + ' · merchant code <span class="mono">' + esc(m.short) + '</span></span></p>' +
-      '<div class="kpis">' + kpi('Products', m.products.length) + kpi('Stores', m.stores.length) + kpi('Scans', m.scans.length) + kpi('Verified', ver, 'k-green') + kpi('Flagged', fl, 'k-red') + '</div>' +
+      '<div class="kpis">' + kpi('Products', m.products.length) + kpi('Stores', m.stores.length) + kpi('Scans', m.scans.length) + kpi('Verified', ver, 'k-green') + '</div>' +
       '<div class="grid g2"><div><h4 style="margin-bottom:8px">Contact</h4><table class="tbl" style="min-width:0"><tbody><tr><td class="muted">Name</td><td>' + esc(m.name) + '</td></tr><tr><td class="muted">Email</td><td>' + esc(m.email) + '</td></tr><tr><td class="muted">Phone</td><td>' + esc(m.phone || '—') + '</td></tr><tr><td class="muted">Address</td><td>' + esc([m.profile.address, m.profile.city, m.profile.state].filter(Boolean).join(', ') || '—') + '</td></tr></tbody></table></div>' +
       '<div><h4 style="margin-bottom:8px">Products</h4>' + (m.products.length ? '<table class="tbl" style="min-width:0"><tbody>' + m.products.map(function (p) { return '<tr><td>' + S.bottle(p.kind, p.color, 34) + '</td><td>' + esc(p.name) + '<br><span class="muted">' + esc(p.size || '') + '</span></td><td>' + (p.codes || 0) + ' codes</td></tr>'; }).join('') + '</tbody></table>' : '<p class="muted">No products yet.</p>') + '</div></div>' +
       '<div class="modal-foot">' + (m.status === 'review' ? '<a class="btn btn-blue" href="#reviews" data-close>Review submission</a>' : '') +

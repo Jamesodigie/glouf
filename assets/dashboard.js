@@ -4,6 +4,7 @@
   var me = S.current();
   if (!me) { location.replace('login.html'); return; }
   if (!me.seeded && !me.products.length) { S.seedSample(me.id); me = S.current(); }
+  S.updateMerchant(me.id, function (m) { m.scans.forEach(function (s) { if (s.result === 'flagged') { s.result = 'verified'; s.reason = ''; } }); m.notifications = m.notifications.filter(function (n) { return n.text.indexOf('Suspicious scan') !== 0; }); }); me = S.current();
 
   var INDUSTRIES = ['Pharmaceuticals', 'Food & beverage', 'Dairy', 'Cosmetics & skincare', 'Wines & spirits', 'Auto parts', 'Electronics', 'Agro-chemicals', 'Fashion', 'Other'];
   var STATES = ['Abia', 'Abuja (FCT)', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'];
@@ -20,7 +21,6 @@
     { q: 'How to add a store', go: 'stores', act: 'add-store', steps: ['Open Stores in the menu.', 'Click "+ Add store".', 'Enter the store name, street, city and state.', 'Your store appears on a Google map, with its own store QR code.'] },
     { q: 'How to go live', go: 'overview', act: 'golive', steps: ['Add at least one product first.', 'Click the "Go live" button on your Overview, or tap your status at the top of the page.', 'Fill in your business details and upload your CAC certificate, director\'s ID and proof of address (plus NAFDAC or SON approval if your products need one).', 'Click "Submit for review". We\'ll alert you here when your account is live.'] },
     { q: 'How to test a scan', go: 'codes', steps: ['Open QR codes.', 'Click "Test a scan" next to a batch.', 'The scan appears in Overview and in Scans & analytics.', 'You can also scan a printed code with your phone camera to open the verify page.'] },
-    { q: 'What does a flagged scan mean?', go: 'analytics', steps: ['A flagged scan is a possible counterfeit.', 'It happens when the same code is scanned in different places, scanned too many times, or reported by a shopper.', 'Open Scans & analytics to see where and when it happened.'] },
     { q: 'How to see where my products are scanned', go: 'analytics', steps: ['Open Scans & analytics.', 'Look at Locations: tap any city to see it on the Google map.', 'Use the product filter to see one product at a time.'] },
     { q: 'How to edit my business profile', go: 'settings', steps: ['Open Settings.', 'Update your business name, contact, address and state.', 'Click "Save changes".'] }
   ];
@@ -69,7 +69,7 @@
     radialTimer = setTimeout(function () { show(); if (rings.length > 1) radialTimer = setInterval(show, 1000); }, 1300);
   }
   function countUp() {
-    document.querySelectorAll('.kpi b, .metric b, .hbar b, .radial-legend b, .wc-bal, .wm b, .pt-row b').forEach(function (el) {
+    document.querySelectorAll('.kpi b, .metric b, .hbar b, .radial-legend b, .wc-bal, .wm b, .pt-row b, .sc-num, .scan-badge, .pt-num').forEach(function (el) {
       var t = el.textContent.trim(), m = /^(₦)?([\d,]+)(%)?$/.exec(t);
       if (!m) return;
       var to = parseInt(m[2].replace(/,/g, ''), 10); if (!to) return;
@@ -85,6 +85,7 @@
     requestAnimationFrame(function () {
       setTimeout(function () {
         document.querySelectorAll('.ring').forEach(function (r) { r.style.strokeDashoffset = '0'; });
+        document.querySelectorAll('.donut .seg[data-da]').forEach(function (g) { g.style.strokeDasharray = g.getAttribute('data-da'); });
         document.querySelectorAll('.grow').forEach(function (b) { b.style.width = b.getAttribute('data-w') + '%'; });
         document.querySelectorAll('.grow-h').forEach(function (b) { b.style.height = b.getAttribute('data-h') + '%'; });
       }, 60);
@@ -98,7 +99,7 @@
     var C = 2 * Math.PI * 44, off = 0;
     var segs = items.map(function (x, i) {
       var len = x.n / total * C, gap = items.length > 1 ? Math.min(1.5, len / 3) : 0;
-      var seg = '<circle class="seg" data-i="' + i + '" cx="60" cy="60" r="44" fill="none" stroke="' + x.c + '" stroke-width="16" stroke-dasharray="' + (len - gap).toFixed(2) + ' ' + (C - len + gap).toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 60 60)"/>';
+      var seg = '<circle class="seg" data-i="' + i + '" cx="60" cy="60" r="44" fill="none" stroke="' + x.c + '" stroke-width="16" data-da="' + (len - gap).toFixed(2) + ' ' + (C - len + gap).toFixed(2) + '" style="stroke-dasharray:0 ' + C.toFixed(2) + ';transition-delay:' + (i * 0.08).toFixed(2) + 's" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 60 60)"/>';
       off += len; return seg;
     }).join('');
     return '<div class="donut-wrap"><div class="donut-box"><svg viewBox="0 0 120 120" class="donut" role="img" aria-label="QR code percentage by product">' + segs + '</svg><div class="donut-mid" id="donutMid"></div></div>' +
@@ -106,7 +107,7 @@
       '<script type="application/json" id="donutData">' + JSON.stringify(items.map(function (x) { return { name: x.p.name, pct: Math.round(x.n / total * 100), n: x.n, c: x.c }; })).replace(/</g, '\\u003c') + '</' + 'script>';
   }
   function startDonut() {
-    clearInterval(donutTimer);
+    clearTimeout(donutTimer); clearInterval(donutTimer);
     var el = document.getElementById('donutData'); if (!el) return;
     var data = JSON.parse(el.textContent), i = 0;
     function show() {
@@ -117,16 +118,18 @@
       if (mid) mid.innerHTML = '<b style="color:' + d.c + '">' + d.pct + '%</b><span>' + esc(d.name) + '</span><small>' + d.n.toLocaleString() + ' codes</small>';
       i++;
     }
-    show(); if (data.length > 1) donutTimer = setInterval(show, 1000);
+    donutTimer = setTimeout(function () { show(); if (data.length > 1) donutTimer = setInterval(show, 1000); }, 900);
   }
   function productTiles() {
     if (!me.products.length) return '<p class="empty">Add products to see them here.</p>';
-    return '<div class="ptiles">' + me.products.map(function (p, i) {
+    return me.products.map(function (p, i) {
       var c = p.color || PALETTE[i % PALETTE.length], sc = me.scans.filter(function (s) { return s.productId === p.id; }).length;
-      return '<div class="ptile"><span class="ptag" style="background:' + c + '1f;color:' + c + ';border-color:' + c + '55">' + esc(p.name) + '</span>' +
-        '<div class="pt-row"><span>QR codes generated</span><b>' + (p.codes || 0).toLocaleString() + '</b></div><div class="pt-row"><span>Total scanned</span><b>' + sc + '</b></div></div>';
-    }).join('') + '</div>';
+      return '<div class="gtile anim-in" style="--d:' + (0.05 * i + 0.2).toFixed(2) + 's"><span class="gtag" style="background:' + S.shade(c, 0.72) + ';color:' + S.shade(c, -0.25) + '">' + esc(p.name) + '</span>' +
+        '<small>Total number of QR code generated</small><b class="pt-num">' + (p.codes || 0).toLocaleString() + '</b>' +
+        '<small>Total number scanned</small><b class="pt-num">' + sc + '</b><span class="gicon">' + S.art(p.kind, c, 34) + '</span></div>';
+    }).join('');
   }
+
 
   /* ---------- small helpers ---------- */
   function $(sel, el) { return (el || document).querySelector(sel); }
@@ -166,8 +169,8 @@
     return '<div class="chart">' + data.map(function (d) {
       var h = Math.round((d.ok + d.bad) / max * 100);
       return '<div class="col" title="' + (d.ok + d.bad) + ' scans"><div class="stack" style="height:' + Math.max(h, 3) + '%">' +
-        '<i style="flex:' + d.ok + ';background:var(--blue)"></i><i style="flex:' + d.bad + ';background:var(--red)"></i></div><small>' + d.label + '</small></div>';
-    }).join('') + '</div><div class="legend"><span style="--c:var(--blue)">Verified / test</span><span style="--c:var(--red)">Flagged</span></div>';
+        '<i style="flex:1;background:linear-gradient(180deg,#3b6cf0,var(--blue))"></i></div><small>' + d.label + '</small></div>';
+    }).join('') + '</div><div class="legend"><span style="--c:var(--blue)">Scans</span></div>';
   }
   function locations(scans) {
     var map = {};
@@ -189,13 +192,20 @@
       ['Account live', 'Your codes become active.', me.status === 'live', '']
     ];
     var done = steps.filter(function (s) { return s[2]; }).length;
-    var sc = me.scans, ver = sc.filter(function (s) { return s.result === 'verified'; }).length, fl = sc.filter(function (s) { return s.result === 'flagged'; }).length;
-    var locs = locations(sc).slice(0, 5), top = locs[0] ? locs[0].n : 1;
-    return banner() +
-      '<div class="kpis">' +
-      kpi('Products', me.products.length) + kpi('QR codes generated', totalCodes().toLocaleString()) +
-      kpi('Scans (clicks)', sc.length) + kpi('Verified', ver, 'k-green') + kpi('Flagged', fl, 'k-red') +
+    var sc = me.scans, locs = locations(sc).slice(0, 5), top = locs[0] ? locs[0].n : 1;
+    var QR_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 20h1M17 20h.01"/></svg>';
+    var PR_IC = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="14" y="2" width="7" height="7" rx="1.5" transform="rotate(45 17.5 5.5)"/></svg>';
+    return (me.status === 'live' ? '' : banner()) +
+      '<div class="ov-top">' +
+        '<div class="ov-stats">' +
+          '<div class="stat-card anim-in" style="--d:0s"><span class="sc-ic">' + QR_IC + '</span><div class="sc-body"><small>Total number of QR codes generated</small><b class="sc-num">' + totalCodes().toLocaleString() + '</b><p class="sc-sub">Total scanned <em class="scan-badge">' + sc.length.toLocaleString() + '</em></p></div></div>' +
+          '<div class="stat-card anim-in" style="--d:.08s"><span class="sc-ic">' + PR_IC + '</span><div class="sc-body"><small>Total number of products</small><b class="sc-num">' + me.products.length + '</b></div></div>' +
+          '<div class="stat-card anim-in" style="--d:.16s"><span class="sc-ic sc-green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5 9-10"/></svg></span><div class="sc-body"><small>Verified scans</small><b class="sc-num">' + sc.filter(function (s) { return s.result === 'verified'; }).length.toLocaleString() + '</b></div></div>' +
+          '<div class="stat-card anim-in" style="--d:.24s"><span class="sc-ic sc-amber"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1.5-5h15L21 9M3 9h18v11H3zM9 20v-6h6v6"/></svg></span><div class="sc-body"><small>Stores</small><b class="sc-num">' + me.stores.length + '</b></div></div>' +
+        '</div>' +
+        '<div class="ov-donut anim-in" style="--d:.1s">' + donut() + '<p class="donut-cap">QR code percentage by product</p></div>' +
       '</div>' +
+      '<div class="ptiles-row">' + productTiles() + '</div>' +
       '<div class="grid g-21 mb">' +
       '<div class="card"><div class="card-head"><div><h3>Scans this week</h3><p class="sub">Every time a shopper scans one of your codes.</p></div><a class="btn btn-soft btn-sm" href="#analytics">View analytics</a></div>' + chart(days(7, sc)) + '</div>' +
       '<div class="card"><h3>Get set up</h3><p class="sub">' + done + ' of ' + steps.length + ' complete</p><div class="progress"><i style="width:' + Math.round(done / steps.length * 100) + '%"></i></div>' +
@@ -203,8 +213,6 @@
         return '<li class="' + (s[2] ? 'done' : '') + '"><span class="tick">' + (s[2] ? '✓' : i + 1) + '</span><span class="t"><b>' + s[0] + '</b><span>' + s[1] + '</span></span>' + (s[2] ? '' : s[3]) + '</li>';
       }).join('') + '</ul></div>' +
       '</div>' +
-      '<div class="grid g2 mb"><div class="card"><div class="card-head"><div><h3>QR code percentage by product</h3><p class="sub">Share of all codes generated.</p></div></div>' + donut() + '</div>' +
-      '<div class="card"><div class="card-head"><div><h3>Your products</h3><p class="sub">Codes generated and scans for each product.</p></div><a class="btn btn-soft btn-sm" href="#products">Manage</a></div>' + productTiles() + '</div></div>' +
       '<div class="grid g2">' +
       '<div class="card"><div class="card-head"><h3>Recent scans</h3></div>' + (sc.length ? scanTable(sc.slice(0, 6)) : '<p class="empty">No scans yet. Generate codes, then test a scan.</p>') + '</div>' +
       '<div class="card"><div class="card-head"><h3>Top locations</h3></div>' + (locs.length ? '<ul class="loc-list">' + locs.map(function (l) {
@@ -333,16 +341,16 @@
     var flagged = sc.filter(function (s) { return s.result === 'flagged'; });
     return filter +
       '<div class="kpis">' + kpi('Scans (clicks)', sc.length) + kpi('Unique codes scanned', Object.keys(uniq).length) +
-      kpi('Verified rate', sc.length ? Math.round(ver / sc.length * 100) + '%' : '—', 'k-green', me.status === 'live' ? '' : 'Test scans until live') + kpi('Flagged', fl, 'k-red') + '</div>' +
+      kpi('Verified rate', sc.length ? Math.round(ver / sc.length * 100) + '%' : '—', 'k-green', me.status === 'live' ? '' : 'Test scans until live') + kpi('Stores', me.stores.length) + '</div>' +
       '<div class="card mb"><h3>Scans over the last 14 days</h3>' + chart(days(14, sc)) + '</div>' +
       '<div class="grid g-21 mb"><div class="card"><div class="card-head"><div><h3>Where your products are scanned</h3><p class="sub">Tap a location to see it on the map.</p></div></div>' +
       (sel ? '<iframe class="map" loading="lazy" title="Map of ' + esc(sel.city) + '" src="' + mapSrc(sel.lat + ',' + sel.lng, 11) + '"></iframe>' : '') + '</div>' +
       '<div class="card"><h3>Locations</h3><ul class="loc-list" style="margin-top:10px">' + locs.map(function (l) {
-        return '<li data-act="pick-loc" data-city="' + esc(l.city) + '" class="' + (l.city === ui.loc ? 'on' : '') + '"><b>' + esc(l.city) + (l.bad ? ' <span class="pill t-red" style="padding:1px 7px">' + l.bad + '</span>' : '') + '</b><span class="bar"><i style="width:' + Math.round(l.n / top * 100) + '%"></i></span><em>' + l.n + '</em></li>';
+        return '<li data-act="pick-loc" data-city="' + esc(l.city) + '" class="' + (l.city === ui.loc ? 'on' : '') + '"><b>' + esc(l.city) + '' + '</b><span class="bar"><i style="width:' + Math.round(l.n / top * 100) + '%"></i></span><em>' + l.n + '</em></li>';
       }).join('') + '</ul></div></div>' +
-      '<div class="grid g2"><div class="card"><h3>By product</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Product</th><th>Scans</th><th>Verified</th><th>Flagged</th></tr></thead><tbody>' +
-      byProd.map(function (x) { return '<tr><td>' + esc(x.p.name) + '</td><td>' + x.n + '</td><td>' + x.v + '</td><td>' + x.f + '</td></tr>'; }).join('') + '</tbody></table></div></div>' +
-      '<div class="card"><h3>Flagged scans</h3><p class="sub">Possible counterfeits to look into.</p>' + (flagged.length ? scanTable(flagged.slice(0, 8)) : '<p class="empty">Nothing flagged. </p>') + '</div></div>';
+      '<div class="grid g2"><div class="card"><h3>By product</h3><div class="tbl-wrap"><table class="tbl"><thead><tr><th>Product</th><th>Scans</th><th>Verified</th></tr></thead><tbody>' +
+      byProd.map(function (x) { return '<tr><td>' + esc(x.p.name) + '</td><td>' + x.n + '</td><td>' + x.v + '</td></tr>'; }).join('') + '</tbody></table></div></div>' +
+      '<div class="card"><h3>Latest scans</h3><p class="sub">The most recent scans of your products.</p>' + scanTable(sc.slice(0, 8)) + '</div></div>';
   };
 
   V.golive = function () {
@@ -506,7 +514,7 @@
         var b2 = me.batches.filter(function (b) { return b.id === id; })[0], codes = S.batchCodes(me, b2, 50);
         var r = S.recordScan(codes[Math.floor(Math.random() * codes.length)]);
         me = S.current(); render();
-        toast(r.result === 'verified' ? 'Scan recorded in ' + r.city + ': verified ✓' : r.result === 'flagged' ? 'Scan flagged in ' + r.city : 'Test scan recorded in ' + r.city);
+        toast(r.result === 'verified' ? 'Scan recorded in ' + r.city + ': verified ✓'  : 'Test scan recorded in ' + r.city);
         break;
       case 'add-store': modal(storeForm()); break;
       case 'w-fund':
