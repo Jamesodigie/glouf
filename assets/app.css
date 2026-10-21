@@ -485,3 +485,4 @@ html[data-theme=dark] .sc-ic.sc-green{background:#0f2d1f}html[data-theme=dark] .
 .radial-wrap{gap:28px}
 .radial-legend{gap:10px}
 .hbars{gap:16px}
+.ov-donut{background:transparent;box-shadow:none;padding:6px 0}
