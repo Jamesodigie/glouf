@@ -3,6 +3,7 @@
   var S = window.GloufStore, esc = S.esc;
   var me = S.current();
   if (!me) { location.replace('login.html'); return; }
+  if (!me.seeded && !me.products.length) { S.seedSample(me.id); me = S.current(); }
 
   var INDUSTRIES = ['Pharmaceuticals', 'Food & beverage', 'Dairy', 'Cosmetics & skincare', 'Wines & spirits', 'Auto parts', 'Electronics', 'Agro-chemicals', 'Fashion', 'Other'];
   var STATES = ['Abia', 'Abuja (FCT)', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue', 'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo', 'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nasarawa', 'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe', 'Zamfara'];
@@ -91,7 +92,7 @@
   }
   function initials(n) { var w = String(n || '?').trim().split(/\s+/); return ((w[0] || '?')[0] + (w[1] ? w[1][0] : (w[0][1] || ''))).toUpperCase(); }
   function donut() {
-    var items = me.products.map(function (p, i) { return { p: p, n: p.codes || 0, c: PALETTE[i % PALETTE.length] }; }).filter(function (x) { return x.n > 0; });
+    var items = me.products.map(function (p, i) { return { p: p, n: p.codes || 0, c: p.color || PALETTE[i % PALETTE.length] }; }).filter(function (x) { return x.n > 0; });
     var total = items.reduce(function (a, x) { return a + x.n; }, 0);
     if (!total) return '<div class="donut-wrap"><svg viewBox="0 0 120 120" class="donut"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--sky)" stroke-width="16"/></svg><p class="muted">Generate QR codes to see each product\'s share.</p></div>';
     var C = 2 * Math.PI * 44, off = 0;
@@ -121,7 +122,7 @@
   function productTiles() {
     if (!me.products.length) return '<p class="empty">Add products to see them here.</p>';
     return '<div class="ptiles">' + me.products.map(function (p, i) {
-      var c = PALETTE[i % PALETTE.length], sc = me.scans.filter(function (s) { return s.productId === p.id; }).length;
+      var c = p.color || PALETTE[i % PALETTE.length], sc = me.scans.filter(function (s) { return s.productId === p.id; }).length;
       return '<div class="ptile"><span class="ptag" style="background:' + c + '1f;color:' + c + ';border-color:' + c + '55">' + esc(p.name) + '</span>' +
         '<div class="pt-row"><span>QR codes generated</span><b>' + (p.codes || 0).toLocaleString() + '</b></div><div class="pt-row"><span>Total scanned</span><b>' + sc + '</b></div></div>';
     }).join('') + '</div>';
@@ -396,6 +397,7 @@
       '<button class="btn btn-blue" type="submit">Save changes</button></form>' +
       '<div><div class="card mb"><h3>Account</h3><table class="tbl" style="min-width:0;margin-top:8px"><tbody><tr><td class="muted">Email</td><td>' + esc(me.email) + '</td></tr><tr><td class="muted">Merchant code</td><td class="mono">' + esc(me.short) + '</td></tr><tr><td class="muted">Status</td><td>' + statusPill() + '</td></tr><tr><td class="muted">Joined</td><td>' + new Date(me.createdAt).toLocaleDateString('en-GB') + '</td></tr></tbody></table>' +
       '<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap"><button class="btn btn-line btn-sm" data-act="logout">Sign out</button></div></div>' +
+      '<div class="card mb"><h3>Sample data</h3><p class="sub">' + (me.sample ? 'Your dashboard has sample products, codes, scans, stores and payments so you can explore.' : 'Sample data has been removed.') + '</p>' + (me.sample ? '<button class="btn btn-soft btn-sm" style="margin-top:12px" data-act="clear-sample">Remove sample data</button>' : '') + '</div>' +
       '<div class="card"><h3>Prototype data</h3><p class="sub">This preview saves everything in this browser only.</p><button class="btn btn-red btn-sm" style="margin-top:12px" data-act="reset">Delete all prototype data</button></div></div></div>';
   };
 
@@ -537,6 +539,7 @@
         break;
       case 'pick-loc': ui.loc = el.getAttribute('data-city'); render(); break;
       case 'goto-loc': ui.loc = el.getAttribute('data-city'); location.hash = 'analytics'; break;
+      case 'clear-sample': if (confirm('Remove all sample products, codes, scans, stores and payments?')) { S.clearSample(me.id); me = S.current(); render(); toast('Sample data removed'); } break;
       case 'logout': S.logout(); location.href = 'login.html'; break;
       case 'reset': if (confirm('Delete all prototype data saved in this browser?')) { try { localStorage.removeItem('glouf_demo_v1'); } catch (er) {} location.href = 'signup.html'; } break;
     }

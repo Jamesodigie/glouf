@@ -59,7 +59,7 @@
 
     /* ---------- accounts ---------- */
     createMerchant: function (f) {
-      return S.mutate(function (d) {
+      var made = S.mutate(function (d) {
         var email = String(f.email || '').trim().toLowerCase();
         var ex = d.merchants.filter(function (m) { return m.email === email; })[0];
         if (ex) { d.session = { role: 'merchant', id: ex.id }; return ex; }
@@ -74,6 +74,8 @@
         d.session = { role: 'merchant', id: m.id };
         return m;
       });
+      if (made && !made.seeded) S.seedSample(made.id);
+      return S.current() || made;
     },
     login: function (email, password) {
       /* OPEN ACCESS until the backend is connected: any email and any password
@@ -183,6 +185,64 @@
       S.updateMerchant(merchantId, function (mm) { mm.scans.sort(function (a, b) { return a.at < b.at ? 1 : -1; }); });
     },
 
+    /* ---------- sample data so a new dashboard isn't empty ---------- */
+    SAMPLE: [
+      ['Sunny Orange Drink 50cl', 'drink', '#f0a51a', 'Food & beverage', '50 cl', 350, 300],
+      ['Zesty Cola Can 33cl', 'can', '#d9434a', 'Food & beverage', '33 cl', 400, 220],
+      ['Creamy Milk Sachet', 'pouch', '#1f4fd8', 'Dairy', '400 g', 1800, 410],
+      ['Golden Spaghetti 500g', 'box', '#ea580c', 'Food & beverage', '500 g', 1100, 150],
+      ['Royal Rice 50kg', 'bag', '#169c55', 'Food & beverage', '50 kg', 78000, 90],
+      ['Glow Body Lotion', 'pump', '#db2777', 'Cosmetics & skincare', '400 ml', 6800, 120],
+      ['Paracare Tablets', 'pharma', '#7c3aed', 'Pharmaceuticals', '24 tablets', 1500, 200],
+      ['Nature Honey Jar', 'jar', '#c9850a', 'Food & beverage', '500 g', 4500, 80],
+      ['Fresh Smile Toothpaste', 'tube', '#0ea5a4', 'Cosmetics & skincare', '140 g', 1200, 160],
+      ['Ada Leather Tote', 'tote', '#0a2240', 'Fashion', 'One size', 25000, 60]
+    ],
+    seedSample: function (merchantId) {
+      return S.updateMerchant(merchantId, function (m) {
+        if (m.seeded) return;
+        m.seeded = true; m.sample = true;
+        var now = Date.now(), day = 864e5;
+        S.SAMPLE.forEach(function (x, i) {
+          var p = { id: uid('p_'), short: S.productShort(m, x[0]), name: x[0], kind: x[1], color: x[2], category: x[3], size: x[4], price: String(x[5]), sku: 'GL' + (1001 + i), reg: '', codes: x[6], nextSeq: x[6] + 1, createdAt: new Date(now - (14 - i) * day).toISOString(), sample: true };
+          m.products.push(p);
+          m.batches.push({ id: uid('b_'), productId: p.id, qty: x[6], start: 1, createdAt: p.createdAt, live: false, sample: true });
+        });
+        var reasons = ['Same code scanned in two cities on the same day', 'Code scanned more times than expected', 'Label reported as suspicious by a shopper'];
+        for (var k = 0; k < 140; k++) {
+          var pi = Math.floor(Math.pow(Math.random(), 1.4) * m.products.length), p = m.products[pi];
+          var c = CITIES[Math.random() < 0.55 ? Math.floor(Math.random() * 4) : Math.floor(Math.random() * CITIES.length)];
+          var flagged = Math.random() < 0.1;
+          m.scans.push({ id: uid('s_'), code: 'GLF-' + m.short + '-' + p.short + '-' + pad(1 + Math.floor(Math.random() * p.codes), 6), productId: p.id, city: c[0], lat: c[1], lng: c[2],
+            result: flagged ? 'flagged' : 'verified', reason: flagged ? reasons[k % 3] : '', at: new Date(now - Math.floor(Math.random() * 13.5 * day)).toISOString(), sample: true });
+        }
+        m.scans.sort(function (a, b) { return a.at < b.at ? 1 : -1; });
+        m.stores.push({ id: uid('st_'), name: m.business + ' Outlet, Ikeja', address: '12 Allen Avenue', city: 'Ikeja', state: 'Lagos', phone: '', sample: true });
+        m.stores.push({ id: uid('st_'), name: m.business + ' Store, Lekki', address: 'Admiralty Way', city: 'Lekki', state: 'Lagos', phone: '', sample: true });
+        var h = 0; for (var j = 0; j < m.id.length; j++) h = (h * 31 + m.id.charCodeAt(j)) >>> 0;
+        m.wallet = m.wallet || { acct: '90' + String(h).padStart(8, '0').slice(-8), balance: 0, tx: [] };
+        [['Payment from customer', 'Scan to pay', 4800, 0], ['Supermarket order #2231', 'Bank transfer', 125000, 1], ['Withdrawal to GTBank', 'Withdrawal', -60000, 2], ['Voucher top-up', 'Voucher', 10000, 3],
+         ['Payment from customer', 'Scan to pay', 3200, 3], ['Online order #1042', 'Payment API', 18500, 4], ['Payment from customer', 'Mobile number', 7500, 5], ['Distributor payment', 'Bank transfer', 86000, 6],
+         ['Withdrawal to Access Bank', 'Withdrawal', -40000, 8], ['Online order #1038', 'Payment API', 22400, 9]].forEach(function (t) {
+          m.wallet.balance += t[2];
+          m.wallet.tx.push({ id: uid('t_'), desc: t[0], ch: t[1], amt: t[2], at: new Date(now - t[3] * day - 3600e3 * (1 + t[3] % 5)).toISOString(), sample: true });
+        });
+        m.wallet.tx.sort(function (a, b) { return a.at < b.at ? 1 : -1; });
+        S.notify(m, 'Your dashboard is filled with sample products, codes, scans and payments so you can explore. Remove them any time in Settings.');
+      });
+    },
+    clearSample: function (merchantId) {
+      return S.updateMerchant(merchantId, function (m) {
+        var keep = function (x) { return !x.sample; };
+        var ids = m.products.filter(function (p) { return p.sample; }).map(function (p) { return p.id; });
+        m.products = m.products.filter(keep);
+        m.batches = m.batches.filter(function (b) { return !b.sample && ids.indexOf(b.productId) < 0; });
+        m.scans = m.scans.filter(function (s) { return !s.sample && ids.indexOf(s.productId) < 0; });
+        m.stores = m.stores.filter(keep);
+        if (m.wallet) { m.wallet.tx = m.wallet.tx.filter(keep); m.wallet.balance = m.wallet.tx.reduce(function (a, t) { return a + t.amt; }, 0); }
+        m.sample = false;
+      });
+    },
     /* ---------- go live / review ---------- */
     submitGoLive: function (merchantId, details) {
       return S.updateMerchant(merchantId, function (m) {
