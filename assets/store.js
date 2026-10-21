@@ -229,5 +229,12 @@
       return '<svg viewBox="-6 -6 112 232" width="' + Math.round(size * 0.48) + '" height="' + size + '" aria-hidden="true">' + inner + '</svg>';
     }
   };
+  S.theme = function (t) {
+    if (t) { try { localStorage.setItem('glouf_theme', t); } catch (e) {} }
+    else { try { t = localStorage.getItem('glouf_theme'); } catch (e) {} }
+    document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+    return t === 'dark' ? 'dark' : 'light';
+  };
+  S.theme();
   window.GloufStore = S;
 })();

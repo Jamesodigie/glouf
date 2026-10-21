@@ -9,6 +9,66 @@
   var COLORS = ['#1f4fd8', '#0a2240', '#169c55', '#d9434a', '#ffcb47', '#7c3aed', '#c97a2b'];
   var TITLES = { overview: 'Overview', products: 'Products', codes: 'QR codes', stores: 'Stores', analytics: 'Scans & analytics', golive: 'Go live', settings: 'Settings' };
   var ui = { lastBatch: null, product: 'all', loc: null };
+  var PALETTE = ['#1f4fd8', '#169c55', '#d9434a', '#f0a51a', '#7c3aed', '#0ea5a4', '#ea580c', '#db2777', '#0a2240', '#65a30d'];
+  var donutTimer = null;
+  var TIPS = [
+    { q: 'How to create a product', go: 'products', act: 'add-product', steps: ['Open Products in the menu.', 'Click "+ Add product".', 'Enter the name, category, size or weight and price.', 'Pick the container and label colour, then click "Add product".'] },
+    { q: 'How to generate QR codes', go: 'codes', steps: ['Open QR codes in the menu.', 'Choose the product.', 'Enter how many codes you need (one per unit, up to 500 at a time).', 'Click "Generate codes". Each code is unique.'] },
+    { q: 'How to download QR codes', go: 'codes', steps: ['Open QR codes and generate a batch, or click "View" on an existing batch.', 'Click "Download first as SVG" to save a single code as a file.', 'To get every code in a batch, click "Print" and choose "Save as PDF" as the printer.'] },
+    { q: 'How to print QR code labels', go: 'codes', steps: ['Open QR codes.', 'Click "Print" next to the batch you want.', 'Your printer window opens with every code laid out as labels, five per row.', 'Print on label paper, or choose "Save as PDF" to send to your printer.'] },
+    { q: 'How to add a store', go: 'stores', act: 'add-store', steps: ['Open Stores in the menu.', 'Click "+ Add store".', 'Enter the store name, street, city and state.', 'Your store appears on a Google map, with its own store QR code.'] },
+    { q: 'How to go live', go: 'golive', steps: ['Add at least one product first.', 'Open Go live in the menu.', 'Fill in your business details and upload your CAC certificate, director\'s ID and proof of address (plus NAFDAC or SON approval if your products need one).', 'Click "Submit for review". We\'ll alert you here when your account is live.'] },
+    { q: 'How to test a scan', go: 'codes', steps: ['Open QR codes.', 'Click "Test a scan" next to a batch.', 'The scan appears in Overview and in Scans & analytics.', 'You can also scan a printed code with your phone camera to open the verify page.'] },
+    { q: 'What does a flagged scan mean?', go: 'analytics', steps: ['A flagged scan is a possible counterfeit.', 'It happens when the same code is scanned in different places, scanned too many times, or reported by a shopper.', 'Open Scans & analytics to see where and when it happened.'] },
+    { q: 'How to see where my products are scanned', go: 'analytics', steps: ['Open Scans & analytics.', 'Look at Locations: tap any city to see it on the Google map.', 'Use the product filter to see one product at a time.'] },
+    { q: 'How to edit my business profile', go: 'settings', steps: ['Open Settings.', 'Update your business name, contact, address and state.', 'Click "Save changes".'] }
+  ];
+  function tipModal(t) {
+    modal(head(esc(t.q)) + '<ol class="tip-steps">' + t.steps.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>' +
+      '<div class="modal-foot"><button class="btn btn-line" data-close>Close</button><button class="btn btn-blue" data-act="tip-go" data-go="' + t.go + '" data-then="' + (t.act || '') + '">Take me there</button></div>');
+  }
+  function renderTips(q) {
+    q = (q || '').trim().toLowerCase();
+    var list = TIPS.filter(function (t) { return !q || t.q.toLowerCase().indexOf(q) > -1 || q.split(/\s+/).every(function (w) { return t.q.toLowerCase().indexOf(w) > -1; }); });
+    $('#tipsMenu').innerHTML = list.length ? list.map(function (t) { return '<button type="button" data-tip="' + TIPS.indexOf(t) + '">' + esc(t.q) + '</button>'; }).join('') : '<p class="muted" style="padding:10px 12px">No tips found. Try "QR code" or "store".</p>';
+  }
+  function initials(n) { var w = String(n || '?').trim().split(/\s+/); return ((w[0] || '?')[0] + (w[1] ? w[1][0] : (w[0][1] || ''))).toUpperCase(); }
+  function donut() {
+    var items = me.products.map(function (p, i) { return { p: p, n: p.codes || 0, c: PALETTE[i % PALETTE.length] }; }).filter(function (x) { return x.n > 0; });
+    var total = items.reduce(function (a, x) { return a + x.n; }, 0);
+    if (!total) return '<div class="donut-wrap"><svg viewBox="0 0 120 120" class="donut"><circle cx="60" cy="60" r="44" fill="none" stroke="var(--sky)" stroke-width="16"/></svg><p class="muted">Generate QR codes to see each product\'s share.</p></div>';
+    var C = 2 * Math.PI * 44, off = 0;
+    var segs = items.map(function (x, i) {
+      var len = x.n / total * C, gap = items.length > 1 ? Math.min(1.5, len / 3) : 0;
+      var seg = '<circle class="seg" data-i="' + i + '" cx="60" cy="60" r="44" fill="none" stroke="' + x.c + '" stroke-width="16" stroke-dasharray="' + (len - gap).toFixed(2) + ' ' + (C - len + gap).toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 60 60)"/>';
+      off += len; return seg;
+    }).join('');
+    return '<div class="donut-wrap"><div class="donut-box"><svg viewBox="0 0 120 120" class="donut" role="img" aria-label="QR code percentage by product">' + segs + '</svg><div class="donut-mid" id="donutMid"></div></div>' +
+      '<ul class="donut-legend">' + items.map(function (x, i) { return '<li data-i="' + i + '"><i style="background:' + x.c + '"></i><span>' + esc(x.p.name) + '</span><b>' + Math.round(x.n / total * 100) + '%</b></li>'; }).join('') + '</ul></div>' +
+      '<script type="application/json" id="donutData">' + JSON.stringify(items.map(function (x) { return { name: x.p.name, pct: Math.round(x.n / total * 100), n: x.n, c: x.c }; })).replace(/</g, '\\u003c') + '</' + 'script>';
+  }
+  function startDonut() {
+    clearInterval(donutTimer);
+    var el = document.getElementById('donutData'); if (!el) return;
+    var data = JSON.parse(el.textContent), i = 0;
+    function show() {
+      var d = data[i % data.length];
+      document.querySelectorAll('.donut .seg').forEach(function (s, k) { s.classList.toggle('on', k === i % data.length); s.classList.toggle('dim', data.length > 1 && k !== i % data.length); });
+      document.querySelectorAll('.donut-legend li').forEach(function (l, k) { l.classList.toggle('on', k === i % data.length); });
+      var mid = document.getElementById('donutMid');
+      if (mid) mid.innerHTML = '<b style="color:' + d.c + '">' + d.pct + '%</b><span>' + esc(d.name) + '</span><small>' + d.n.toLocaleString() + ' codes</small>';
+      i++;
+    }
+    show(); if (data.length > 1) donutTimer = setInterval(show, 1000);
+  }
+  function productTiles() {
+    if (!me.products.length) return '<p class="empty">Add products to see them here.</p>';
+    return '<div class="ptiles">' + me.products.map(function (p, i) {
+      var c = PALETTE[i % PALETTE.length], sc = me.scans.filter(function (s) { return s.productId === p.id; }).length;
+      return '<div class="ptile"><span class="ptag" style="background:' + c + '1f;color:' + c + ';border-color:' + c + '55">' + esc(p.name) + '</span>' +
+        '<div class="pt-row"><span>QR codes generated</span><b>' + (p.codes || 0).toLocaleString() + '</b></div><div class="pt-row"><span>Total scanned</span><b>' + sc + '</b></div></div>';
+    }).join('') + '</div>';
+  }
 
   /* ---------- small helpers ---------- */
   function $(sel, el) { return (el || document).querySelector(sel); }
@@ -85,6 +145,8 @@
         return '<li class="' + (s[2] ? 'done' : '') + '"><span class="tick">' + (s[2] ? '✓' : i + 1) + '</span><span class="t"><b>' + s[0] + '</b><span>' + s[1] + '</span></span>' + (s[2] ? '' : s[3]) + '</li>';
       }).join('') + '</ul></div>' +
       '</div>' +
+      '<div class="grid g2 mb"><div class="card"><div class="card-head"><div><h3>QR code percentage by product</h3><p class="sub">Share of all codes generated.</p></div></div>' + donut() + '</div>' +
+      '<div class="card"><div class="card-head"><div><h3>Your products</h3><p class="sub">Codes generated and scans for each product.</p></div><a class="btn btn-soft btn-sm" href="#products">Manage</a></div>' + productTiles() + '</div></div>' +
       '<div class="grid g2">' +
       '<div class="card"><div class="card-head"><h3>Recent scans</h3></div>' + (sc.length ? scanTable(sc.slice(0, 6)) : '<p class="empty">No scans yet. Generate codes, then test a scan.</p>') + '</div>' +
       '<div class="card"><div class="card-head"><h3>Top locations</h3></div>' + (locs.length ? '<ul class="loc-list">' + locs.map(function (l) {
@@ -282,10 +344,11 @@
     document.title = TITLES[v] + ' · Glouf merchant';
     $('#st').innerHTML = statusPill();
     $('#uname').textContent = me.business; $('#uemail').textContent = me.email;
-    $('#avatar').textContent = (me.business || '?').trim()[0].toUpperCase();
+    $('#avatar').textContent = initials(me.business);
     renderBell();
     $('#view').innerHTML = V[v]();
     $('.app').classList.remove('open');
+    if (v === 'overview') startDonut(); else clearInterval(donutTimer);
   }
   function renderBell() {
     var unread = me.notifications.filter(function (n) { return !n.read; }).length;
@@ -306,11 +369,20 @@
       return;
     }
     if (!e.target.closest('.bell')) { var b = $('.bell.open'); if (b) { b.classList.remove('open'); renderBell(); } }
+    var tipBtn = e.target.closest('[data-tip]');
+    if (tipBtn) { $('#search').classList.remove('open'); $('#tipQ').value = ''; tipModal(TIPS[+tipBtn.getAttribute('data-tip')]); return; }
+    if (!e.target.closest('#search')) $('#search').classList.remove('open');
     var el = e.target.closest('[data-act]'); if (!el) return;
     var act = el.getAttribute('data-act'), id = el.getAttribute('data-id');
     if (el.tagName === 'SELECT') return;
     switch (act) {
       case 'menu': $('.app').classList.toggle('open'); break;
+      case 'msearch': var tp = $('.top'); tp.classList.toggle('searching'); if (tp.classList.contains('searching')) $('#tipQ').focus(); break;
+      case 'theme': S.theme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); break;
+      case 'tip-go':
+        var then = el.getAttribute('data-then'); closeModal(); location.hash = el.getAttribute('data-go');
+        if (then) setTimeout(function () { modal(then === 'add-store' ? storeForm() : productForm()); }, 60);
+        break;
       case 'add-product': modal(productForm()); break;
       case 'edit-product': modal(productForm(prod(id))); break;
       case 'del-product':
@@ -389,6 +461,13 @@
       save(function (m) { m.business = d.business; m.industry = d.industry; m.name = d.name; m.phone = d.phone; m.profile.address = d.address; m.profile.city = d.city; m.profile.state = d.state; });
       render(); toast('Profile saved');
     }
+  });
+  var tipQ = $('#tipQ');
+  tipQ.addEventListener('focus', function () { renderTips(tipQ.value); $('#search').classList.add('open'); });
+  tipQ.addEventListener('input', function () { renderTips(tipQ.value); $('#search').classList.add('open'); });
+  tipQ.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { $('#search').classList.remove('open'); tipQ.blur(); }
+    if (e.key === 'Enter') { var first = $('#tipsMenu [data-tip]'); if (first) first.click(); }
   });
   window.addEventListener('hashchange', function () { render(); window.scrollTo(0, 0); });
   window.addEventListener('storage', function () { render(); });

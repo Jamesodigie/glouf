@@ -786,6 +786,22 @@ footer{background:#0b1b2e;border-radius:36px 36px 0 0;margin-top:100px}
 .verify-result span{color:var(--muted);font-size:.92rem}
 .m-menu .btn{text-align:center;display:flex}
 .m-menu .btn-line{border:1.5px solid var(--navy) !important;background:transparent;color:var(--navy) !important}
+
+/* scan story: time-driven, no long scroll */
+section.story{height:auto;padding:0}
+.story .story-pin{position:relative;top:auto;height:auto;min-height:640px;padding:70px 0}
+.story .panel{transition:opacity .25s,transform .25s}
+.story .scr{transition:opacity .25s}
+.story .prog i{transition:background .25s,width .25s}
+@media(max-width:860px){section.story{height:auto}.story .story-pin{min-height:0;padding:56px 0 40px;row-gap:26px}}
+
+/* industry tags: each with its own colour, highlighted in turn */
+.wa-chips span{--c:#1f4fd8;background:color-mix(in srgb,var(--c) 9%,#fff);border-color:color-mix(in srgb,var(--c) 30%,#fff);color:var(--c);transition:background .3s,color .3s,transform .3s,box-shadow .3s}
+.wa-chips span:nth-child(9n+1){--c:#1f4fd8}.wa-chips span:nth-child(9n+2){--c:#169c55}.wa-chips span:nth-child(9n+3){--c:#d9434a}
+.wa-chips span:nth-child(9n+4){--c:#c9850a}.wa-chips span:nth-child(9n+5){--c:#7c3aed}.wa-chips span:nth-child(9n+6){--c:#0e8f8e}
+.wa-chips span:nth-child(9n+7){--c:#ea580c}.wa-chips span:nth-child(9n+8){--c:#db2777}.wa-chips span:nth-child(9n){--c:#0a2240}
+.wa-chips span.on{background:var(--c);border-color:var(--c);color:#fff;transform:translateY(-3px) scale(1.07);box-shadow:0 12px 24px -12px var(--c)}
+@media(prefers-reduced-motion:reduce){.wa-chips span.on{transform:none}}
 </style>
 </head>
 <body>
@@ -911,13 +927,16 @@ document.querySelectorAll('#mMenu a').forEach(a=>a.addEventListener('click',()=>
 
 const rot=document.getElementById('rot');
 if(rot){const w=['your brand','your product','your packaging','your reputation'];let i=0;
-  setInterval(()=>{rot.classList.add('out');setTimeout(()=>{i=(i+1)%w.length;rot.textContent=w[i];rot.classList.remove('out')},300)},2600)}
+  setInterval(()=>{rot.classList.add('out');setTimeout(()=>{i=(i+1)%w.length;rot.textContent=w[i];rot.classList.remove('out')},250)},1500)}
 
 const story=document.getElementById('story');
-if(story){const P=story.querySelectorAll('.panel'),S=story.querySelectorAll('.scr'),D=story.querySelectorAll('.prog i');let cur=-1;
-  const f=()=>{const r=story.getBoundingClientRect(),t=story.offsetHeight-innerHeight;const p=Math.min(Math.max(-r.top/t,0),.999);const k=Math.floor(p*3);
-    if(k!==cur){cur=k;[P,S,D].forEach(g=>g.forEach((el,j)=>el.classList.toggle('on',j===k)))}};
-  addEventListener('scroll',f,{passive:true});f()}
+if(story){const P=story.querySelectorAll('.panel'),S=story.querySelectorAll('.scr'),D=story.querySelectorAll('.prog i');let cur=0,tm=null;
+  const show=k=>{cur=k%3;[P,S,D].forEach(g=>g.forEach((el,j)=>el.classList.toggle('on',j===cur)))};
+  D.forEach((d,j)=>{d.style.cursor='pointer';d.addEventListener('click',()=>show(j))});
+  new IntersectionObserver(es=>{es.forEach(e=>{clearInterval(tm);if(e.isIntersecting)tm=setInterval(()=>show(cur+1),1000)})},{threshold:.35}).observe(story);
+  show(0)}
+const chips=document.querySelectorAll('.wa-chips span');
+if(chips.length){let c=0;const hl=()=>{chips.forEach((x,j)=>x.classList.toggle('on',j===c));c=(c+1)%chips.length};hl();setInterval(hl,1000)}
 
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));

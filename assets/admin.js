@@ -103,6 +103,7 @@
     var act = el.getAttribute('data-act'), id = el.getAttribute('data-id');
     var m = id && all().filter(function (x) { return x.id === id; })[0];
     if (act === 'menu') $('.app').classList.toggle('open');
+    if (act === 'theme') S.theme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     if (act === 'open') modal(detail(m));
     if (act === 'loc') { ui.loc = el.getAttribute('data-city'); render(); }
     if (act === 'approve') { S.adminDecision(id, true); render(); toast(m.business + ' is now live. The merchant has been alerted.'); }
